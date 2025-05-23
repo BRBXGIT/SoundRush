@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "SoundRush"
 include(":app")
+include("core")
+include(":core:design-system")

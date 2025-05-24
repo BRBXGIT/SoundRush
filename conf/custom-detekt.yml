@@ -279,7 +279,7 @@ formatting:
         autoCorrect: true
         insertFinalNewLine: true
     ImportOrdering:
-        active: true
+        active: false
         autoCorrect: true
         layout: '*,java.**,javax.**,kotlin.**,kotlinx.android.synthetic.**,^'
     Indentation:
@@ -461,7 +461,7 @@ naming:
         privatePropertyPattern: '(_)?[A-Za-z][_A-Za-z0-9]*'
         excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     PackageNaming:
-        active: true
+        active: false
         packagePattern: '^[a-z]+(\.[a-z][a-z0-9]*)*$'
         excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/uikit_sample/**']
     TopLevelPropertyNaming:

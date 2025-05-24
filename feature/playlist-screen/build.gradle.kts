@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    //Compose
+    // Compose
     alias(libs.plugins.kotlin.compose)
-    //Nav
+    // Nav
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -31,14 +31,14 @@ android {
 
 dependencies {
 
-    //Core modules
+    // Core modules
     implementation(project(":core:design-system"))
 
-    //Compose
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
-    //Material 3
+    // Material 3
     implementation(libs.androidx.material3)
-    //Nav
+    // Nav
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 }

@@ -1,7 +1,6 @@
 package com.example.detekt
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    //Ksp
+    // Ksp
     alias(libs.plugins.ksp)
-    //Hilt
+    // Hilt
     alias(libs.plugins.hilt.android)
 }
 
@@ -28,7 +28,7 @@ android {
 
 dependencies {
 
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 }

@@ -1,7 +1,6 @@
 package com.example.network
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

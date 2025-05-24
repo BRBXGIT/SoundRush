@@ -1,7 +1,6 @@
 package com.example.composition_screen
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

@@ -1,7 +1,6 @@
 package com.example.design_system
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

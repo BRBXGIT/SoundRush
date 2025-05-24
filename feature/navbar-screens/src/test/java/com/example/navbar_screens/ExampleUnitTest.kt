@@ -1,7 +1,6 @@
 package com.example.navbar_screens
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

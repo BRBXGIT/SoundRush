@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    //Compose
+    // Compose
     alias(libs.plugins.kotlin.compose)
-    //Nav
+    // Nav
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -44,19 +44,19 @@ android {
 
 dependencies {
 
-    //Core modules
+    // Core modules
     implementation(project(":core:design-system"))
-    //Feature modules
+    // Feature modules
     implementation(project(":feature:navbar-screens"))
     implementation(project(":feature:composition-screen"))
     implementation(project(":feature:playlist-screen"))
     implementation(project(":feature:onboarding-screen"))
 
-    //Nav
+    // Nav
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
-    //Basic libraries
+    // Basic libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

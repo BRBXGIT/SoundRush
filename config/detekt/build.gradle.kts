@@ -21,8 +21,3 @@ android {
         jvmTarget = "11"
     }
 }
-
-dependencies {
-
-    
-}

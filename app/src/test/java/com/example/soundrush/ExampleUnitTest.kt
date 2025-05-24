@@ -1,7 +1,6 @@
 package com.example.soundrush
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

@@ -31,6 +31,9 @@ android {
 
 dependencies {
 
+    //Core modules
+    implementation(project(":core:design-system"))
+
     //Compose
     implementation(platform(libs.androidx.compose.bom))
     //Material 3

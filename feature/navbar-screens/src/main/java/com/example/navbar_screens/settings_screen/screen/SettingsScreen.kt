@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.design_system.theme.mColors
 
+//Delete this comment
+
 @Composable
 fun SettingsScreen() {
     Scaffold(

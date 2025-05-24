@@ -1,4 +1,4 @@
-package com.example.navbar_screens.settings_screen.screen
+package com.example.composition_screen.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SettingsScreen() {
+fun CompositionScreen() {
     Scaffold(
         modifier = Modifier
             .fillMaxSize() //TODO add bg color
@@ -20,7 +20,7 @@ fun SettingsScreen() {
                 .padding(innerPadding)
         ) {
             Text(
-                text = "Settings Screen"
+                text = "Composition Screen"
             )
         }
     }

@@ -44,6 +44,8 @@ android {
 
 dependencies {
 
+    //Core modules
+    implementation(project(":core:design-system"))
     //Feature modules
     implementation(project(":feature:navbar-screens"))
     implementation(project(":feature:composition-screen"))

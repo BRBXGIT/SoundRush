@@ -31,4 +31,6 @@ dependencies {
 
     //Compose
     implementation(platform(libs.androidx.compose.bom))
+    //Material 3
+    implementation(libs.androidx.material3)
 }

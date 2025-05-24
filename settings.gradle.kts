@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "SoundRush"
 include(":app")
+include("config")
 include("core")
 include(":core:design-system")
 include(":core:data")
@@ -32,3 +33,4 @@ include(":feature:composition-screen")
 include(":core:common")
 include(":feature:playlist-screen")
 include(":feature:onboarding-screen")
+include(":config:detekt")

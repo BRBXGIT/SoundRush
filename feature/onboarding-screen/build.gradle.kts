@@ -33,6 +33,8 @@ dependencies {
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
     // Material 3
     implementation(libs.androidx.material3)
     // Nav

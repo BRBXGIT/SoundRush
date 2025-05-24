@@ -54,6 +54,7 @@ media3Exoplayer = "1.7.1"
 media3ExoplayerHls = "1.7.1"
 media3Ui = "1.7.1"
 
+
 [libraries]
 #Basic libraries
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

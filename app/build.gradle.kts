@@ -47,7 +47,8 @@ dependencies {
     //Feature modules
     implementation(project(":feature:navbar-screens"))
     implementation(project(":feature:composition-screen"))
-    implementation(project((":feature:playlist-screen")))
+    implementation(project(":feature:playlist-screen"))
+    implementation(project(":feature:onboarding-screen"))
 
     //Nav
     implementation(libs.navigation.compose)

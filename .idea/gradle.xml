@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/composition-screen" />
             <option value="$PROJECT_DIR$/feature/navbar-screens" />
+            <option value="$PROJECT_DIR$/feature/onboarding-screen" />
             <option value="$PROJECT_DIR$/feature/playlist-screen" />
           </set>
         </option>

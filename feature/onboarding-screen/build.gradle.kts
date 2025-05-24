@@ -35,6 +35,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     //Material 3
     implementation(libs.androidx.material3)
+    //Haze materials
+    implementation(libs.haze.materials)
     //Nav
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)

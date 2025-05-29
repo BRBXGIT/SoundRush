@@ -22,7 +22,7 @@ import com.example.onboarding_screen.screen.OnBoardingScreenUtils
 fun AuthButton() {
     Button(
         shape = mShapes.small,
-        onClick = {  },
+        onClick = {},
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -37,7 +37,7 @@ fun AuthButton() {
             )
 
             Text(
-                text = "Authenticate with SoundCloud",
+                text = "Connect with SoundCloud",
             )
         }
     }

@@ -50,6 +50,7 @@ dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
+    implementation(project(":core:data"))
     // Feature modules
     implementation(project(":feature:navbar-screens"))
     implementation(project(":feature:composition-screen"))

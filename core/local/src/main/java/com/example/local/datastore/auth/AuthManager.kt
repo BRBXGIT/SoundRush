@@ -1,4 +1,4 @@
-package com.example.local.datastore
+package com.example.local.datastore.auth
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

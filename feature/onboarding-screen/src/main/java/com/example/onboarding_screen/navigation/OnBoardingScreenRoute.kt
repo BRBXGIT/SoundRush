@@ -14,6 +14,6 @@ fun NavGraphBuilder.onBoardingScreen() = composable<OnBoardingScreenRoute> {
     val onBoardingScreenVM = hiltViewModel<OnBoardingScreenVM>()
 
     OnBoardingScreen(
-        viewModel = onBoardingScreenVM
+        viewModel = onBoardingScreenVM,
     )
 }

@@ -21,7 +21,7 @@ import com.example.onboarding_screen.sections.OnBoardingHeader
 
 @Composable
 fun OnBoardingScreen(
-    viewModel: OnBoardingScreenVM
+    viewModel: OnBoardingScreenVM,
 ) {
     Scaffold(
         modifier = Modifier
@@ -60,9 +60,7 @@ fun OnBoardingScreen(
                 AboutAppSection()
 
                 AuthButton(
-                    onClick = {
-                        viewModel.sendIntent(OnBoardingScreenIntent.SaveAccessToken("some_access_token"))
-                    }
+                    onClick = {}
                 )
             }
         }
@@ -76,7 +74,7 @@ fun OnBoardingScreenPreview() {
         val onBoardingScreenVM = hiltViewModel<OnBoardingScreenVM>()
 
         OnBoardingScreen(
-            viewModel = onBoardingScreenVM
+            viewModel = onBoardingScreenVM,
         )
     }
 }

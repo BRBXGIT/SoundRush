@@ -15,7 +15,6 @@ class OnBoardingScreenVM @Inject constructor(
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher,
     private val authRepo: AuthRepo
 ): ViewModel() {
-
     private fun saveAccessToken(token: String) {
         viewModelScope.launch(dispatcherIo) {
             authRepo.saveAccessToken(token)

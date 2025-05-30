@@ -12,7 +12,7 @@ import com.example.playlist_screen.navigation.playlistScreen
 
 @Composable
 fun NavGraph(
-    startDestination: Any
+    startDestination: Any,
 ) {
     val navController = rememberNavController()
 

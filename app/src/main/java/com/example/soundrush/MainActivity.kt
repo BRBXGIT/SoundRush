@@ -5,9 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,26 +25,24 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            var isLoggedIn by rememberSaveable { mutableStateOf(false) }
             val authVM = hiltViewModel<AuthVM>()
             val authState by authVM.authState.collectAsStateWithLifecycle()
 
             val splashScreen = installSplashScreen()
             splashScreen.setKeepOnScreenCondition {
-                when(authState) {
-                    AuthState.Loading -> true
-                    AuthState.LoggedOut -> false
-                    AuthState.LoggedIn -> {
-                        isLoggedIn = true
-                        false // Remove splashscreen
-                    }
-                }
+                authState is AuthState.Loading
             }
 
             SoundRushTheme {
-                NavGraph(
-                    startDestination = if (isLoggedIn) PlaylistScreenRoute else OnBoardingScreenRoute
-                )
+                if(authState !is AuthState.Loading) {
+                    NavGraph(
+                        startDestination = if (authState is AuthState.LoggedIn) {
+                            PlaylistScreenRoute
+                        } else {
+                            OnBoardingScreenRoute
+                        },
+                    )
+                }
             }
         }
     }

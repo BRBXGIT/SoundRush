@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.design_system.theme.ScreenDimens
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
@@ -19,7 +20,9 @@ import com.example.onboarding_screen.sections.AuthButton
 import com.example.onboarding_screen.sections.OnBoardingHeader
 
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(
+    viewModel: OnBoardingScreenVM
+) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +59,11 @@ fun OnBoardingScreen() {
             ) {
                 AboutAppSection()
 
-                AuthButton()
+                AuthButton(
+                    onClick = {
+                        viewModel.sendIntent(OnBoardingScreenIntent.SaveAccessToken("some_access_token"))
+                    }
+                )
             }
         }
     }
@@ -66,6 +73,10 @@ fun OnBoardingScreen() {
 @Composable
 fun OnBoardingScreenPreview() {
     SoundRushTheme {
-        OnBoardingScreen()
+        val onBoardingScreenVM = hiltViewModel<OnBoardingScreenVM>()
+
+        OnBoardingScreen(
+            viewModel = onBoardingScreenVM
+        )
     }
 }

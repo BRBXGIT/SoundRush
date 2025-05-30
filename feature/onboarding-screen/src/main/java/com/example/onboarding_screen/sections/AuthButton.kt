@@ -19,10 +19,12 @@ import com.example.design_system.theme.mShapes
 import com.example.onboarding_screen.screen.OnBoardingScreenUtils
 
 @Composable
-fun AuthButton() {
+fun AuthButton(
+    onClick: () -> Unit
+) {
     Button(
         shape = mShapes.small,
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -47,6 +49,8 @@ fun AuthButton() {
 @Composable
 fun AuthButtonPreview() {
     SoundRushTheme {
-        AuthButton()
+        AuthButton(
+            onClick = {}
+        )
     }
 }

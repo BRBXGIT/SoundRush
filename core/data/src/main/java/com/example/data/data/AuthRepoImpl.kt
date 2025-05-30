@@ -1,15 +1,15 @@
 package com.example.data.data
 
-import com.example.data.domain.OnBoardingScreenRepo
+import com.example.data.domain.AuthRepo
 import com.example.local.datastore.auth.AuthManager
 import com.example.local.datastore.auth.AuthState
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class OnBoardingScreenRepoImpl @Inject constructor(
+class AuthRepoImpl @Inject constructor(
     private val authManager: AuthManager
-): OnBoardingScreenRepo {
+): AuthRepo {
 
     override val accessTokenFlow: Flow<String?>
         get() = authManager.accessTokenFlow

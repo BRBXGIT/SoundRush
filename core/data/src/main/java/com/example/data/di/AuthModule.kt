@@ -1,8 +1,8 @@
 package com.example.data.di
 
 import android.content.Context
-import com.example.data.data.OnBoardingScreenRepoImpl
-import com.example.data.domain.OnBoardingScreenRepo
+import com.example.data.data.AuthRepoImpl
+import com.example.data.domain.AuthRepo
 import com.example.local.datastore.auth.AuthManager
 import dagger.Module
 import dagger.Provides
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object OnBoardingScreenModule {
+object AuthModule {
 
     @Provides
     @Singleton
@@ -25,7 +25,7 @@ object OnBoardingScreenModule {
 
     @Provides
     @Singleton
-    fun provideOnBoardingScreenRepo(authManager: AuthManager): OnBoardingScreenRepo {
-        return OnBoardingScreenRepoImpl(authManager)
+    fun provideOnBoardingScreenRepo(authManager: AuthManager): AuthRepo {
+        return AuthRepoImpl(authManager)
     }
 }

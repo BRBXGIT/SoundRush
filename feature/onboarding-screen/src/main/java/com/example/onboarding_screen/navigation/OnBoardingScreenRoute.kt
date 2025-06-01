@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OnBoardingScreenRoute(
     @SerialName("code")
-    val codee: String? = null // Don't know why but the value name must be different from the serial name
+    val codee: String? = null // The value name must be different from the serial name
 )
 
 fun NavGraphBuilder.onBoardingScreen() = composable<OnBoardingScreenRoute>(

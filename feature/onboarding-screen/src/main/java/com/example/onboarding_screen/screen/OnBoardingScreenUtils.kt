@@ -17,7 +17,7 @@ object OnBoardingScreenUtils {
 
     // TODO rewrite to encrypted
     const val CLIENT_ID = "6gzvoKOdbET4tkbPsZsJDg6QhaYXtNoZ"
-    const val REDIRECT_URI = "https://sound-rush.com/"
+    const val REDIRECT_URI = "https://soundrush-6c78e.web.app/"
     const val RESPONSE_TYPE = "code"
     const val CODE_CHALLENGE = "vYADCzxvYHc5oymZLHgyKUQ6fOFNcrCDnmq1aTo_I_I"
     const val CODE_CHALLENGE_METHOD = "S256"

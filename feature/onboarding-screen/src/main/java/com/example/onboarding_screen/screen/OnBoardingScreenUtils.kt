@@ -22,4 +22,6 @@ object OnBoardingScreenUtils {
     const val CODE_CHALLENGE = "vYADCzxvYHc5oymZLHgyKUQ6fOFNcrCDnmq1aTo_I_I"
     const val CODE_CHALLENGE_METHOD = "S256"
     const val STATE = "62790beb52ab211c4ad5c93dad15ba3de8854cb7f86a5785489adefa"
+
+    const val BASIC_DEEP_LINK_DOMAIN = "soundrush-6c78e.web.app"
 }

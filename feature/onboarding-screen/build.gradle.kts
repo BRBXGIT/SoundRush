@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     // Compose
     alias(libs.plugins.kotlin.compose)
-    // Nav
+    // Serialization
     alias(libs.plugins.kotlin.serialization)
     // Ksp
     alias(libs.plugins.ksp)

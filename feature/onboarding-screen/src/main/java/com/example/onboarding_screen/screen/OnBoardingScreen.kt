@@ -1,5 +1,6 @@
 package com.example.onboarding_screen.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +24,12 @@ import com.example.onboarding_screen.sections.OnBoardingHeader
 @Composable
 fun OnBoardingScreen(
     viewModel: OnBoardingScreenVM,
+    accessToken: String?
 ) {
+    LaunchedEffect(accessToken) {
+        Log.d("CCCC", accessToken.toString())
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -75,6 +82,7 @@ fun OnBoardingScreenPreview() {
 
         OnBoardingScreen(
             viewModel = onBoardingScreenVM,
+            accessToken = ""
         )
     }
 }

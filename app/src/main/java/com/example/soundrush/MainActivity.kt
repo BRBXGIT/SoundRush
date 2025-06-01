@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = if (authState is AuthState.LoggedIn) {
                             PlaylistScreenRoute
                         } else {
-                            OnBoardingScreenRoute
+                            OnBoardingScreenRoute()
                         },
                     )
                 }

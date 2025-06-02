@@ -26,11 +26,12 @@ import com.example.onboarding_screen.sections.OnBoardingHeader
 @Composable
 fun OnBoardingScreen(
     viewModel: OnBoardingScreenVM,
-    accessToken: String?
+    accessToken: String?,
+    state: String?
 ) {
     LaunchedEffect(accessToken) {
-        if(accessToken != null) {
-            viewModel.sendIntent(OnBoardingScreenIntent.SaveAccessToken(accessToken))
+        if((accessToken != null) and (state != null)) {
+            viewModel.sendIntent(OnBoardingScreenIntent.SaveAccessToken(accessToken!!))
         }
     }
 
@@ -100,7 +101,8 @@ fun OnBoardingScreenPreview() {
 
         OnBoardingScreen(
             viewModel = onBoardingScreenVM,
-            accessToken = ""
+            accessToken = null,
+            state = null
         )
     }
 }

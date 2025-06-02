@@ -14,21 +14,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OnBoardingScreenRoute(
     @SerialName("code")
-    val codee: String? = null // The value name must be different from the serial name
+    val codee: String? = null, // The value name must be different from the serial name
+    @SerialName("state")
+    val statee: String? = null
 )
 
 fun NavGraphBuilder.onBoardingScreen() = composable<OnBoardingScreenRoute>(
     deepLinks = listOf(
         navDeepLink {
-            uriPattern = "http://${OnBoardingScreenUtils.BASIC_DEEP_LINK_DOMAIN}/?code={code}"
+            uriPattern = "https://${OnBoardingScreenUtils.BASIC_DEEP_LINK_DOMAIN}/?code={code}&state={state}"
         }
     )
 ) {
     val onBoardingScreenVM = hiltViewModel<OnBoardingScreenVM>()
 
     val accessToken = it.toRoute<OnBoardingScreenRoute>().codee
+    val state = it.toRoute<OnBoardingScreenRoute>().statee
     OnBoardingScreen(
         viewModel = onBoardingScreenVM,
-        accessToken = accessToken
+        accessToken = accessToken,
+        state = state
     )
 }

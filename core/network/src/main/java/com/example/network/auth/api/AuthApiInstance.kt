@@ -13,6 +13,7 @@ interface AuthApiInstance {
     suspend fun getUserTokens(
         @Field("grant_type") grantType: String = "authorization_code",
         @Field("client_id") clientId: String,
+        @Field("client_secret") clientSecret: String,
         @Field("redirect_uri") redirectUri: String,
         @Field("code_verifier") codeVerifier: String,
         @Field("code") code: String

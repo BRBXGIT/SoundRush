@@ -16,6 +16,7 @@ interface AuthRepo {
     suspend fun getUserTokens(
         grantType: String = "authorization_code",
         clientId: String,
+        clientSecret: String,
         redirectUri: String,
         codeVerifier: String,
         code: String

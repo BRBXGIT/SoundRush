@@ -8,6 +8,9 @@ import com.example.common.functions.NetworkErrors
 import com.example.common.functions.processNetworkErrors
 import com.example.common.functions.processNetworkErrorsForUi
 import com.example.data.domain.AuthRepo
+import com.example.design_system.snackbars.SnackbarAction
+import com.example.design_system.snackbars.SnackbarController
+import com.example.design_system.snackbars.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -37,6 +40,7 @@ class OnBoardingScreenVM @Inject constructor(
     private fun fetchUserTokens(
         grantType: String,
         clientId: String,
+        clientSecret: String,
         redirectUri: String,
         codeVerifier: String,
         code: String
@@ -47,6 +51,7 @@ class OnBoardingScreenVM @Inject constructor(
             val response = authRepo.getUserTokens(
                 grantType,
                 clientId,
+                clientSecret,
                 redirectUri,
                 codeVerifier,
                 code
@@ -55,8 +60,24 @@ class OnBoardingScreenVM @Inject constructor(
             if(networkError == NetworkErrors.SUCCESS) {
                 saveAccessToken(response.body()!!.accessToken)
             } else {
-                // TODO Add snack bars
-                processNetworkErrorsForUi(networkError)
+                SnackbarController.sendEvent(
+                    SnackbarEvent(
+                        message = processNetworkErrorsForUi(networkError),
+                        action = SnackbarAction(
+                            name = "Refresh",
+                            action = {
+                                fetchUserTokens(
+                                    grantType,
+                                    clientId,
+                                    clientSecret,
+                                    redirectUri,
+                                    codeVerifier,
+                                    code
+                                )
+                            }
+                        )
+                    )
+                )
             }
 
             _onBoardingScreenState.value.copy(isUserTokensLoading = false)
@@ -69,6 +90,7 @@ class OnBoardingScreenVM @Inject constructor(
                 fetchUserTokens(
                     intent.grantType,
                     intent.clientId,
+                    intent.clientSecret,
                     intent.redirectUri,
                     intent.codeVerifier,
                     intent.code

@@ -27,16 +27,18 @@ class AuthRepoImpl @Inject constructor(
     override suspend fun getUserTokens(
         grantType: String,
         clientId: String,
+        clientSecret: String,
         redirectUri: String,
         codeVerifier: String,
         code: String
     ): Response<UserTokensResponse> {
         return apiInstance.getUserTokens(
-            grantType,
-            clientId,
-            redirectUri,
-            codeVerifier,
-            code
+            grantType = grantType,
+            clientId = clientId,
+            clientSecret = clientSecret,
+            redirectUri = redirectUri,
+            codeVerifier = codeVerifier,
+            code = code
         )
     }
 }

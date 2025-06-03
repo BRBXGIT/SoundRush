@@ -20,7 +20,7 @@ fun processNetworkErrorsForUi(error: NetworkError): String {
         NetworkErrors.REQUEST_TIMEOUT -> "Timeout, please refresh"
         NetworkErrors.CONFLICT -> "Seems something conflict"
         NetworkErrors.PAYLOAD_TOO_LARGE -> "Payload too large"
-        NetworkErrors.TOO_MANY_REQUESTS -> "Too many requests, giv soundcloud a little rest :)"
+        NetworkErrors.TOO_MANY_REQUESTS -> "Too many requests, give soundcloud a little rest :)"
         NetworkErrors.SERVER_ERROR -> "Server error"
         else -> "Mystic and unknown error"
     }

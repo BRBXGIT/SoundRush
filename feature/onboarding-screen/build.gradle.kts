@@ -35,6 +35,7 @@ dependencies {
     // Core modules
     implementation(project(":core:design-system"))
     implementation(project(":core:data"))
+    implementation(project(":core:network"))
     implementation(project(":core:common"))
 
     // Compose
@@ -50,4 +51,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    // Json
+    implementation(libs.converter.gson)
 }

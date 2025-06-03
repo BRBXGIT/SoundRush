@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
+import com.example.common.functions.NetworkErrors
+import com.example.common.functions.processNetworkErrors
+import com.example.common.functions.processNetworkErrorsForUi
 import com.example.data.domain.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -31,10 +34,6 @@ class OnBoardingScreenVM @Inject constructor(
         OnBoardingScreenState()
     )
 
-    private fun updateScreenSate(state: OnBoardingScreenState) {
-        _onBoardingScreenState.value = state
-    }
-
     private fun fetchUserTokens(
         grantType: String,
         clientId: String,
@@ -45,13 +44,20 @@ class OnBoardingScreenVM @Inject constructor(
         viewModelScope.launch(dispatcherIo) {
             _onBoardingScreenState.value.copy(isUserTokensLoading = true)
 
-            authRepo.getUserTokens(
+            val response = authRepo.getUserTokens(
                 grantType,
                 clientId,
                 redirectUri,
                 codeVerifier,
                 code
             )
+            val networkError = processNetworkErrors(response.code())
+            if(networkError == NetworkErrors.SUCCESS) {
+                saveAccessToken(response.body()!!.accessToken)
+            } else {
+                // TODO Add snack bars
+                processNetworkErrorsForUi(networkError)
+            }
 
             _onBoardingScreenState.value.copy(isUserTokensLoading = false)
         }
@@ -59,8 +65,6 @@ class OnBoardingScreenVM @Inject constructor(
 
     fun sendIntent(intent: OnBoardingScreenIntent) {
         when(intent) {
-            is OnBoardingScreenIntent.SaveAccessToken -> saveAccessToken(intent.accessToken)
-            is OnBoardingScreenIntent.UpdateScreenState -> updateScreenSate(intent.state)
             is OnBoardingScreenIntent.FetchUserTokens -> {
                 fetchUserTokens(
                     intent.grantType,

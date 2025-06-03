@@ -1,6 +1,8 @@
 package com.example.onboarding_screen.navigation
 
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
@@ -27,12 +29,15 @@ fun NavGraphBuilder.onBoardingScreen() = composable<OnBoardingScreenRoute>(
     )
 ) {
     val onBoardingScreenVM = hiltViewModel<OnBoardingScreenVM>()
+    // Initialize here to avoid recompositions and drop the state after signing in
+    val onBoardingScreenState by onBoardingScreenVM.onBoardingScreenState.collectAsStateWithLifecycle()
 
-    val accessToken = it.toRoute<OnBoardingScreenRoute>().codee
+    val code = it.toRoute<OnBoardingScreenRoute>().codee
     val state = it.toRoute<OnBoardingScreenRoute>().statee
     OnBoardingScreen(
         viewModel = onBoardingScreenVM,
-        accessToken = accessToken,
-        state = state
+        code = code,
+        state = state,
+        screenState = onBoardingScreenState
     )
 }

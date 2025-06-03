@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -23,15 +25,24 @@ import com.example.onboarding_screen.sections.AboutAppSection
 import com.example.onboarding_screen.sections.AuthButton
 import com.example.onboarding_screen.sections.OnBoardingHeader
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoardingScreen(
     viewModel: OnBoardingScreenVM,
-    accessToken: String?,
-    state: String?
+    code: String?,
+    state: String?,
+    screenState: OnBoardingScreenState
 ) {
-    LaunchedEffect(accessToken) {
-        if((accessToken != null) and (state != null)) {
-            viewModel.sendIntent(OnBoardingScreenIntent.SaveAccessToken(accessToken!!))
+    LaunchedEffect(code, state) {
+        if((code != null) and (state != null)) {
+            viewModel.sendIntent(
+                OnBoardingScreenIntent.FetchUserTokens(
+                    clientId = OnBoardingScreenUtils.CLIENT_ID,
+                    redirectUri = OnBoardingScreenUtils.REDIRECT_URI,
+                    codeVerifier = OnBoardingScreenUtils.CODE_VERIFIER,
+                    code = code!!
+                )
+            )
         }
     }
 
@@ -40,54 +51,59 @@ fun OnBoardingScreen(
             .fillMaxSize()
             .background(mColors.background)
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            mColors.primaryContainer,
-                            mColors.secondary
+        PullToRefreshBox(
+            isRefreshing = screenState.isUserTokensLoading,
+            onRefresh = {}
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                mColors.primaryContainer,
+                                mColors.secondary
+                            )
                         )
                     )
-                )
-        )
-
-        Column(
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = innerPadding.calculateTopPadding() + OnBoardingScreenUtils.VerticalPadding,
-                    bottom = innerPadding.calculateBottomPadding() + OnBoardingScreenUtils.VerticalPadding,
-                    start = ScreenDimens.HorizontalPadding,
-                    end = ScreenDimens.HorizontalPadding
-                )
-        ) {
-            OnBoardingHeader()
+            )
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(OnBoardingScreenUtils.AboutAppAuthButtonSpacer)
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = innerPadding.calculateTopPadding() + OnBoardingScreenUtils.VerticalPadding,
+                        bottom = innerPadding.calculateBottomPadding() + OnBoardingScreenUtils.VerticalPadding,
+                        start = ScreenDimens.HorizontalPadding,
+                        end = ScreenDimens.HorizontalPadding
+                    )
             ) {
-                AboutAppSection()
+                OnBoardingHeader()
 
-                val context = LocalContext.current
-                val authLink = "https://secure.soundcloud.com/authorize?" +
-                        "client_id=${OnBoardingScreenUtils.CLIENT_ID}&" +
-                        "redirect_uri=${OnBoardingScreenUtils.REDIRECT_URI}&" +
-                        "response_type=${OnBoardingScreenUtils.RESPONSE_TYPE}&" +
-                        "code_challenge=${OnBoardingScreenUtils.CODE_CHALLENGE}&" +
-                        "code_challenge_method=${OnBoardingScreenUtils.CODE_CHALLENGE_METHOD}&" +
-                        "state=${OnBoardingScreenUtils.STATE}"
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    authLink.toUri()
-                )
-                AuthButton(
-                    onClick = {
-                        context.startActivity(intent)
-                    }
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(OnBoardingScreenUtils.AboutAppAuthButtonSpacer)
+                ) {
+                    AboutAppSection()
+
+                    val context = LocalContext.current
+                    val authLink = "https://secure.soundcloud.com/authorize?" +
+                            "client_id=${OnBoardingScreenUtils.CLIENT_ID}&" +
+                            "redirect_uri=${OnBoardingScreenUtils.REDIRECT_URI}&" +
+                            "response_type=${OnBoardingScreenUtils.RESPONSE_TYPE}&" +
+                            "code_challenge=${OnBoardingScreenUtils.CODE_CHALLENGE}&" +
+                            "code_challenge_method=${OnBoardingScreenUtils.CODE_CHALLENGE_METHOD}&" +
+                            "state=${OnBoardingScreenUtils.STATE}"
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        authLink.toUri()
+                    )
+                    AuthButton(
+                        onClick = {
+                            context.startActivity(intent)
+                        }
+                    )
+                }
             }
         }
     }
@@ -101,8 +117,9 @@ fun OnBoardingScreenPreview() {
 
         OnBoardingScreen(
             viewModel = onBoardingScreenVM,
-            accessToken = null,
-            state = null
+            code = null,
+            state = null,
+            screenState = OnBoardingScreenState()
         )
     }
 }

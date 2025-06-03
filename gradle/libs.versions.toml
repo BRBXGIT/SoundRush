@@ -57,6 +57,10 @@ media3Ui = "1.7.1"
 # Detekt
 detekt = "1.23.3"
 
+# Retrofit
+retrofit = "2.11.0"
+converterGson = "2.11.0"
+
 
 [libraries]
 # Basic libraries
@@ -122,6 +126,10 @@ androidx-media3-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls
 staticAnalysis-detektCli = { module = "io.gitlab.arturbosch.detekt:detekt-cli", version.ref = "detekt" }
 staticAnalysis-detektFormatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 staticAnalysis-detektLibraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
+
+# Retrofit
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 
 
 [bundles]

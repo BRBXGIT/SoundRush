@@ -6,7 +6,6 @@ enum class NetworkErrors: NetworkError {
     UNAUTHORIZED,
     CONFLICT,
     TOO_MANY_REQUESTS,
-    NO_INTERNET,
     PAYLOAD_TOO_LARGE,
     SERVER_ERROR,
     UNKNOWN

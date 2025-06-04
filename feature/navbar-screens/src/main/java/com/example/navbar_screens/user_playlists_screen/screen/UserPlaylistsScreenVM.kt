@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.AuthRepo
+import com.example.data.domain.UserPlaylistsScreenRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class UserPlaylistsScreenVM @Inject constructor(
-    private val authRepo: AuthRepo,
+    private val repository: UserPlaylistsScreenRepo,
+    private val authRepository: AuthRepo,
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher
 ): ViewModel() {
 
@@ -30,7 +32,7 @@ class UserPlaylistsScreenVM @Inject constructor(
     private fun fetchAccessToken() {
         viewModelScope.launch(dispatcherIo) {
             _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
-                accessToken = authRepo.accessTokenFlow.first()
+                accessToken = authRepository.accessTokenFlow.first()
             )
         }
     }

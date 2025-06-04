@@ -38,4 +38,6 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     // Json
     implementation(libs.converter.gson)
+    // Paging
+    implementation(libs.androidx.paging.compose)
 }

@@ -22,6 +22,7 @@ fun processNetworkErrorsForUi(error: NetworkError): String {
         NetworkErrors.PAYLOAD_TOO_LARGE -> "Payload too large"
         NetworkErrors.TOO_MANY_REQUESTS -> "Too many requests, give soundcloud a little rest :)"
         NetworkErrors.SERVER_ERROR -> "Server error"
+        NetworkErrors.INTERNET -> "Please connect to internet :)"
         else -> "Mystic and unknown error"
     }
 }

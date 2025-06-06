@@ -10,11 +10,11 @@ import com.example.network.user_playlists_screen.paging.UserPlaylistsPagingSourc
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class UserPlaylistsRepoImpl @Inject constructor(
-    private val apiInstance: UserPlaylistsApiInstance,
+class UserPlaylistsScreenRepoImpl @Inject constructor(
+    private val apiInstance: UserPlaylistsApiInstance
 ): UserPlaylistsScreenRepo {
 
-    override fun getTrendingAnimeList(oAuthToken: String): Flow<PagingData<Collection>> {
+    override fun getUserPlaylists(oAuthToken: String): Flow<PagingData<Collection>> {
         return Pager(
             config = PagingConfig(pageSize = 25, enablePlaceholders = false),
             pagingSourceFactory = { UserPlaylistsPagingSource(apiInstance, oAuthToken) }

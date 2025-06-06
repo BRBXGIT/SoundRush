@@ -41,4 +41,24 @@ class AuthRepoImpl @Inject constructor(
             code = code
         )
     }
+
+    override val refreshTokenFlow = authManager.refreshTokenFlow
+
+    override suspend fun saveRefreshToken(token: String) {
+        authManager.saveRefreshToken(token)
+    }
+
+    override suspend fun refreshUserTokens(
+        grantType: String,
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String
+    ): Response<UserTokensResponse> {
+        return apiInstance.refreshTokens(
+            grantType = grantType,
+            clientId = clientId,
+            clientSecret = clientSecret,
+            refreshToken = refreshToken
+        )
+    }
 }

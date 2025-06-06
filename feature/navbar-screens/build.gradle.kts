@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":core:design-system"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))
+    implementation(project(":core:network"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -53,4 +54,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    // Paging
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    // Json
+    implementation(libs.converter.gson)
 }

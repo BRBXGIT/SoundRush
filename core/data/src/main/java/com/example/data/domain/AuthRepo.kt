@@ -21,4 +21,15 @@ interface AuthRepo {
         codeVerifier: String,
         code: String
     ): Response<UserTokensResponse>
+
+    val refreshTokenFlow: Flow<String?>
+
+    suspend fun saveRefreshToken(token: String)
+
+    suspend fun refreshUserTokens(
+        grantType: String = "refresh_token",
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String
+    ): Response<UserTokensResponse>
 }

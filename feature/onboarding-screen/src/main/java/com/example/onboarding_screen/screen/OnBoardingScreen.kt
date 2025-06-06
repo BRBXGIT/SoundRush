@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common.utils.AuthUtils
 import com.example.design_system.snackbars.ObserveAsEvents
 import com.example.design_system.snackbars.SnackbarController
 import com.example.design_system.theme.ScreenDimens
@@ -46,10 +47,10 @@ fun OnBoardingScreen(
         if((code != null) and (state != null)) {
             viewModel.sendIntent(
                 OnBoardingScreenIntent.FetchUserTokens(
-                    clientId = OnBoardingScreenUtils.CLIENT_ID,
-                    clientSecret = OnBoardingScreenUtils.CLIENT_SECRET,
-                    redirectUri = OnBoardingScreenUtils.REDIRECT_URI,
-                    codeVerifier = OnBoardingScreenUtils.CODE_VERIFIER,
+                    clientId = AuthUtils.CLIENT_ID,
+                    clientSecret = AuthUtils.CLIENT_SECRET,
+                    redirectUri = AuthUtils.REDIRECT_URI,
+                    codeVerifier = AuthUtils.CODE_VERIFIER,
                     code = code!!
                 )
             )
@@ -119,12 +120,12 @@ fun OnBoardingScreen(
 
                     val context = LocalContext.current
                     val authLink = "https://secure.soundcloud.com/authorize?" +
-                            "client_id=${OnBoardingScreenUtils.CLIENT_ID}&" +
-                            "redirect_uri=${OnBoardingScreenUtils.REDIRECT_URI}&" +
-                            "response_type=${OnBoardingScreenUtils.RESPONSE_TYPE}&" +
-                            "code_challenge=${OnBoardingScreenUtils.CODE_CHALLENGE}&" +
-                            "code_challenge_method=${OnBoardingScreenUtils.CODE_CHALLENGE_METHOD}&" +
-                            "state=${OnBoardingScreenUtils.STATE}"
+                            "client_id=${AuthUtils.CLIENT_ID}&" +
+                            "redirect_uri=${AuthUtils.REDIRECT_URI}&" +
+                            "response_type=${AuthUtils.RESPONSE_TYPE}&" +
+                            "code_challenge=${AuthUtils.CODE_CHALLENGE}&" +
+                            "code_challenge_method=${AuthUtils.CODE_CHALLENGE_METHOD}&" +
+                            "state=${AuthUtils.STATE}"
                     val intent = Intent(
                         Intent.ACTION_VIEW,
                         authLink.toUri()

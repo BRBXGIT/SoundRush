@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserPlaylistsScreenRepo {
 
-    fun getTrendingAnimeList(oAuthToken: String): Flow<PagingData<Collection>>
+    fun getUserPlaylists(oAuthToken: String): Flow<PagingData<Collection>>
 }

@@ -24,9 +24,10 @@ class OnBoardingScreenVM @Inject constructor(
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher,
     private val authRepo: AuthRepo
 ): ViewModel() {
-    private fun saveAccessToken(token: String) {
+    private fun saveTokens(accessToken: String, refreshToken: String) {
         viewModelScope.launch(dispatcherIo) {
-            authRepo.saveAccessToken(token)
+            authRepo.saveAccessToken(accessToken)
+            authRepo.saveRefreshToken(refreshToken)
         }
     }
 
@@ -58,7 +59,10 @@ class OnBoardingScreenVM @Inject constructor(
             )
             val networkError = processNetworkErrors(response.code())
             if(networkError == NetworkErrors.SUCCESS) {
-                saveAccessToken(response.body()!!.accessToken)
+                saveTokens(
+                    accessToken = response.body()!!.accessToken,
+                    refreshToken = response.body()!!.refreshToken
+                )
             } else {
                 SnackbarController.sendEvent(
                     SnackbarEvent(

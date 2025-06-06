@@ -11,7 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -28,12 +28,8 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideAuthApiInstance(): AuthApiInstance {
-        return Retrofit.Builder()
-            .baseUrl("https://secure.soundcloud.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(AuthApiInstance::class.java)
+    fun provideAuthApiInstance(@Named("auth") retrofit: Retrofit): AuthApiInstance {
+        return retrofit.create(AuthApiInstance::class.java)
     }
 
     @Provides

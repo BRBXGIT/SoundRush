@@ -1,5 +1,10 @@
 package com.example.common.functions
 
+class NetworkException(
+    val error: NetworkError,
+    val label: String
+): Exception()
+
 fun processNetworkErrors(statusCode: Int): NetworkError {
     return when (statusCode) {
         200 -> NetworkErrors.SUCCESS

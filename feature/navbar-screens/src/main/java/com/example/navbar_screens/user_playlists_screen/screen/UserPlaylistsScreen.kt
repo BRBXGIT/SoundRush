@@ -9,6 +9,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.common.functions.NetworkErrors
+import com.example.common.functions.NetworkException
 import com.example.design_system.snackbars.ObserveAsEvents
 import com.example.design_system.snackbars.SnackbarAction
 import com.example.design_system.snackbars.SnackbarController
@@ -66,22 +69,37 @@ fun UserPlaylistsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-
+            Text(
+                text = playlists.itemCount.toString()
+            )
         }
     }
 
     LaunchedEffect(playlists.loadState.refresh) {
         if (playlists.loadState.refresh is LoadState.Error) {
-            val error = (playlists.loadState.refresh as LoadState.Error).error.message
-            SnackbarController.sendEvent(
-                SnackbarEvent(
-                    message = error.toString(),
-                    action = SnackbarAction(
-                        name = "Refresh",
-                        action = { playlists.refresh() }
+            val error = (playlists.loadState.refresh as LoadState.Error).error as NetworkException
+            if (error.error == NetworkErrors.UNAUTHORIZED) {
+                SnackbarController.sendEvent(
+                    SnackbarEvent(
+                        message = UserPlaylistsScreenUtils.REFRESHING_TOKENS_TEXT,
                     )
                 )
-            )
+                viewModel.sendIntent(
+                    UserPlaylistsScreenIntent.RefreshUserTokens(
+                        onComplete = { playlists.retry() }
+                    )
+                )
+            } else {
+                SnackbarController.sendEvent(
+                    SnackbarEvent(
+                        message = error.label,
+                        action = SnackbarAction(
+                            name = UserPlaylistsScreenUtils.REFRESH_TEXT,
+                            action = { playlists.refresh() }
+                        )
+                    )
+                )
+            }
         }
     }
 }

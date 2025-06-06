@@ -7,9 +7,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
+import javax.inject.Named
+import javax.inject.Singleton
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -17,12 +17,8 @@ object UserPlaylistsScreenModule {
 
     @Provides
     @Singleton
-    fun provideUserPlaylistsScreenApiInstance(): UserPlaylistsApiInstance {
-        return Retrofit.Builder()
-            .baseUrl("https://api.soundcloud.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(UserPlaylistsApiInstance::class.java)
+    fun provideUserPlaylistsScreenApiInstance(@Named("main_api") retrofit: Retrofit): UserPlaylistsApiInstance {
+        return retrofit.create(UserPlaylistsApiInstance::class.java)
     }
 
     @Provides

@@ -26,8 +26,7 @@ class OnBoardingScreenVM @Inject constructor(
 ): ViewModel() {
     private fun saveTokens(accessToken: String, refreshToken: String) {
         viewModelScope.launch(dispatcherIo) {
-            authRepo.saveAccessToken(accessToken)
-            authRepo.saveRefreshToken(refreshToken)
+            authRepo.saveUserTokens(accessToken, refreshToken)
         }
     }
 

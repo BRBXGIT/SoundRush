@@ -9,9 +9,11 @@ interface AuthRepo {
 
     val accessTokenFlow: Flow<String?>
 
+    val refreshTokenFlow: Flow<String?>
+
     val authState: Flow<AuthState>
 
-    suspend fun saveAccessToken(token: String)
+    suspend fun saveUserTokens(accessToken: String, refreshToken: String)
 
     suspend fun getUserTokens(
         grantType: String = "authorization_code",
@@ -21,10 +23,6 @@ interface AuthRepo {
         codeVerifier: String,
         code: String
     ): Response<UserTokensResponse>
-
-    val refreshTokenFlow: Flow<String?>
-
-    suspend fun saveRefreshToken(token: String)
 
     suspend fun refreshUserTokens(
         grantType: String = "refresh_token",

@@ -21,26 +21,21 @@ class AuthManager(
     val accessTokenFlow: Flow<String?> = context.dataStore.data
         .map { preferences -> preferences[ACCESS_TOKEN_KEY] }
 
-    suspend fun saveAccessToken(token: String) {
+    val refreshTokenFlow: Flow<String?> = context.dataStore.data
+        .map { preferences -> preferences[REFRESH_TOKEN_KEY] }
+
+    suspend fun saveUserTokens(accessToken: String, refreshToken: String) {
         context.dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN_KEY] = token
+            preferences[ACCESS_TOKEN_KEY] = accessToken
+        }
+        context.dataStore.edit { preferences ->
+            preferences[REFRESH_TOKEN_KEY] = refreshToken
         }
     }
 
     suspend fun clearAccessToken() {
         context.dataStore.edit { preferences ->
             preferences.remove(ACCESS_TOKEN_KEY)
-        }
-    }
-
-
-
-    val refreshTokenFlow: Flow<String?> = context.dataStore.data
-        .map { preferences -> preferences[REFRESH_TOKEN_KEY] }
-
-    suspend fun saveRefreshToken(token: String) {
-        context.dataStore.edit { preferences ->
-            preferences[REFRESH_TOKEN_KEY] = token
         }
     }
 

@@ -16,12 +16,14 @@ class AuthRepoImpl @Inject constructor(
 
     override val accessTokenFlow = authManager.accessTokenFlow
 
+    override val refreshTokenFlow = authManager.refreshTokenFlow
+
     override val authState = accessTokenFlow.map { token ->
         if (token.isNullOrBlank()) AuthState.LoggedOut else AuthState.LoggedIn
     }
 
-    override suspend fun saveAccessToken(token: String) {
-        authManager.saveAccessToken(token)
+    override suspend fun saveUserTokens(accessToken: String, refreshToken: String) {
+        authManager.saveUserTokens(accessToken, refreshToken)
     }
 
     override suspend fun getUserTokens(
@@ -40,12 +42,6 @@ class AuthRepoImpl @Inject constructor(
             codeVerifier = codeVerifier,
             code = code
         )
-    }
-
-    override val refreshTokenFlow = authManager.refreshTokenFlow
-
-    override suspend fun saveRefreshToken(token: String) {
-        authManager.saveRefreshToken(token)
     }
 
     override suspend fun refreshUserTokens(

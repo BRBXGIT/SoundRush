@@ -1,6 +1,5 @@
 package com.example.navbar_screens.user_playlists_screen.screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -20,7 +19,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -46,9 +44,8 @@ class UserPlaylistsScreenVM @Inject constructor(
     val playlists = _userPlaylistsScreenState
         .map { it.accessToken }
         .filterNotNull()
-        .distinctUntilChanged()
         .flatMapLatest { token ->
-            repository.getUserPlaylists(token)
+            repository.getUserPlaylists("${UserPlaylistsScreenUtils.TOKEN_TYPE} $token")
         }
         .cachedIn(viewModelScope)
 
@@ -64,8 +61,7 @@ class UserPlaylistsScreenVM @Inject constructor(
 
     private fun saveTokens(accessToken: String, refreshToken: String) {
         viewModelScope.launch(dispatcherIo) {
-            authRepository.saveAccessToken(accessToken)
-            authRepository.saveRefreshToken(refreshToken)
+            authRepository.saveUserTokens(accessToken, refreshToken)
         }
     }
 
@@ -73,6 +69,10 @@ class UserPlaylistsScreenVM @Inject constructor(
         onComplete: () -> Unit
     ) {
         viewModelScope.launch(dispatcherIo) {
+            _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                isTokensRefreshing = true
+            )
+
             val response = authRepository.refreshUserTokens(
                 clientId = AuthUtils.CLIENT_ID,
                 clientSecret = AuthUtils.CLIENT_SECRET,
@@ -83,12 +83,18 @@ class UserPlaylistsScreenVM @Inject constructor(
                 saveTokens(response.body()!!.accessToken, response.body()!!.refreshToken)
                 fetchTokens()
                 onComplete()
+                _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                    isTokensRefreshing = false
+                )
             } else {
+                _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                    isTokensRefreshing = false
+                )
                 SnackbarController.sendEvent(
                     SnackbarEvent(
-                        message = "Problem while refreshing your tokens",
+                        message = UserPlaylistsScreenUtils.REFRESHING_TOKENS_ERROR_TEXT,
                         action = SnackbarAction(
-                            name = "Retry",
+                            name = UserPlaylistsScreenUtils.RETRY_TEXT,
                             action = { refreshUserTokens(onComplete) }
                         )
                     )

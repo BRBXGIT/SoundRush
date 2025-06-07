@@ -43,7 +43,7 @@ fun PlaylistItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clip(mShapes.small)
+            .clip(mShapes.extraSmall)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick

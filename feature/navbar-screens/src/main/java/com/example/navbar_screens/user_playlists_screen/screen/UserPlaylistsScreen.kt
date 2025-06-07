@@ -79,14 +79,14 @@ fun UserPlaylistsScreen(
             .background(mColors.background)
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
-        PullToRefreshBox(
-            onRefresh = {},
-            isRefreshing = screenState.isTokensRefreshing
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
+            PullToRefreshBox(
+                isRefreshing = screenState.isTokensRefreshing,
+                onRefresh = {}
             ) {
                 PlaylistsLC(playlists)
             }

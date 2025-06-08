@@ -1,10 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    // Compose
-    alias(libs.plugins.kotlin.compose)
-    // Nav
-    alias(libs.plugins.kotlin.serialization)
     // Ksp
     alias(libs.plugins.ksp)
     // Hilt
@@ -12,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.navbar_screens"
+    namespace = "com.example.common"
     compileSdk = 35
 
     defaultConfig {
@@ -28,9 +24,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
@@ -40,25 +33,11 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
-    //Feature modules
-    implementation(project(":feature:common"))
 
-    // Compose
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
-    // Material 3
-    implementation(libs.androidx.material3)
-    // Nav
-    implementation(libs.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
+    // Json
+    implementation(libs.converter.gson)
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    // Paging
-    implementation(libs.androidx.paging.compose)
-    implementation(libs.androidx.paging.runtime.ktx)
-    // Json
-    implementation(libs.converter.gson)
 }

@@ -24,6 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.common.CommonIntent
+import com.example.common.CommonVM
 import com.example.common.functions.NetworkErrors
 import com.example.common.functions.NetworkException
 import com.example.design_system.snackbars.ObserveAsEvents
@@ -39,6 +41,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserPlaylistsScreen(
+    commonVM: CommonVM,
     viewModel: UserPlaylistsScreenVM,
     screenState: UserPlaylistsScreenState
 ) {
@@ -98,14 +101,32 @@ fun UserPlaylistsScreen(
             val error = (playlists.loadState.refresh as LoadState.Error).error as NetworkException
             if (error.error == NetworkErrors.UNAUTHORIZED) {
                 if (!screenState.isTokensRefreshing) {
-                    SnackbarController.sendEvent(
-                        SnackbarEvent(
-                            message = UserPlaylistsScreenUtils.REFRESHING_TOKENS_TEXT,
-                        )
-                    )
-                    viewModel.sendIntent(
-                        UserPlaylistsScreenIntent.RefreshUserTokens(
-                            onComplete = { playlists.retry() }
+                    commonVM.sendIntent(
+                        CommonIntent.RefreshUserTokens(
+                            refreshToken = screenState.refreshToken!!,
+                            onStart = {
+                                viewModel.sendIntent(
+                                    UserPlaylistsScreenIntent.UpdateScreenState(
+                                        screenState.copy(isTokensRefreshing = true)
+                                    )
+                                )
+                            },
+                            onComplete = {
+                                viewModel.sendIntent(UserPlaylistsScreenIntent.FetchUserTokens)
+                                viewModel.sendIntent(
+                                    UserPlaylistsScreenIntent.UpdateScreenState(
+                                        screenState.copy(isTokensRefreshing = false)
+                                    )
+                                )
+                            },
+                            onError = {
+                                viewModel.sendIntent(
+                                    UserPlaylistsScreenIntent.UpdateScreenState(
+                                        screenState.copy(isTokensRefreshing = false)
+                                    )
+                                )
+                                playlists.refresh()
+                            }
                         )
                     )
                 }
@@ -130,8 +151,10 @@ fun UserPlaylistsScreenPreview() {
     SoundRushTheme {
         val userPlaylistsScreenVM = hiltViewModel<UserPlaylistsScreenVM>()
         val userPlaylistsScreenState by userPlaylistsScreenVM.userPlaylistsScreenState.collectAsStateWithLifecycle()
+        val commonVM = hiltViewModel<CommonVM>()
 
         UserPlaylistsScreen(
+            commonVM = commonVM,
             viewModel = userPlaylistsScreenVM,
             screenState = userPlaylistsScreenState
         )

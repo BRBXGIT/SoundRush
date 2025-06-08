@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":feature:composition-screen"))
     implementation(project(":feature:playlist-screen"))
     implementation(project(":feature:onboarding-screen"))
+    implementation(project(":feature:common"))
 
     // Nav
     implementation(libs.navigation.compose)

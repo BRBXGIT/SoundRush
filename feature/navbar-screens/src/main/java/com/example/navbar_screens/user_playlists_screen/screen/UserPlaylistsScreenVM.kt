@@ -40,6 +40,10 @@ class UserPlaylistsScreenVM @Inject constructor(
         UserPlaylistsScreenState()
     )
 
+    private fun updateScreenState(state: UserPlaylistsScreenState) {
+        _userPlaylistsScreenState.value = state
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val playlists = _userPlaylistsScreenState
         .map { it.accessToken }
@@ -59,53 +63,10 @@ class UserPlaylistsScreenVM @Inject constructor(
         }
     }
 
-    private fun saveTokens(accessToken: String, refreshToken: String) {
-        viewModelScope.launch(dispatcherIo) {
-            authRepository.saveUserTokens(accessToken, refreshToken)
-        }
-    }
-
-    private fun refreshUserTokens(
-        onComplete: () -> Unit
-    ) {
-        viewModelScope.launch(dispatcherIo) {
-            _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
-                isTokensRefreshing = true
-            )
-
-            val response = authRepository.refreshUserTokens(
-                clientId = AuthUtils.CLIENT_ID,
-                clientSecret = AuthUtils.CLIENT_SECRET,
-                refreshToken = _userPlaylistsScreenState.value.refreshToken!!
-            )
-            val networkError = processNetworkErrors(response.code())
-            if (networkError == NetworkErrors.SUCCESS) {
-                saveTokens(response.body()!!.accessToken, response.body()!!.refreshToken)
-                fetchTokens()
-                onComplete()
-                _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
-                    isTokensRefreshing = false
-                )
-            } else {
-                _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
-                    isTokensRefreshing = false
-                )
-                SnackbarController.sendEvent(
-                    SnackbarEvent(
-                        message = UserPlaylistsScreenUtils.REFRESHING_TOKENS_ERROR_TEXT,
-                        action = SnackbarAction(
-                            name = UserPlaylistsScreenUtils.RETRY_TEXT,
-                            action = { refreshUserTokens(onComplete) }
-                        )
-                    )
-                )
-            }
-        }
-    }
-
     fun sendIntent(intent: UserPlaylistsScreenIntent) {
         when (intent) {
-            is UserPlaylistsScreenIntent.RefreshUserTokens -> refreshUserTokens(intent.onComplete)
+            is UserPlaylistsScreenIntent.FetchUserTokens -> fetchTokens()
+            is UserPlaylistsScreenIntent.UpdateScreenState -> updateScreenState(intent.state)
         }
     }
 

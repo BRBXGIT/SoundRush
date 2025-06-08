@@ -1,7 +1,9 @@
 package com.example.soundrush
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.common.CommonVM
@@ -19,17 +21,30 @@ fun NavGraph(
     val navController = rememberNavController()
 
     val commonVM = hiltViewModel<CommonVM>()
+    val commonState by commonVM.commonState.collectAsStateWithLifecycle()
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         onBoardingScreen()
 
-        userPlaylistsScreen(commonVM)
+        userPlaylistsScreen(
+            commonVM = commonVM,
+            commonState = commonState,
+            navController = navController
+        )
 
-        userFavouritesScreen()
+        userFavouritesScreen(
+            commonVM = commonVM,
+            commonState = commonState,
+            navController = navController
+        )
 
-        settingsScreen()
+        settingsScreen(
+            commonVM = commonVM,
+            commonState = commonState,
+            navController = navController
+        )
 
         compositionScreen()
 

@@ -22,9 +22,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.CommonIntent
+import com.example.common.CommonState
 import com.example.common.CommonVM
 import com.example.common.functions.NetworkErrors
 import com.example.common.functions.NetworkException
@@ -34,6 +37,7 @@ import com.example.design_system.snackbars.SnackbarController
 import com.example.design_system.snackbars.SnackbarEvent
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
+import com.example.navbar_screens.common.BottomNavBar
 import com.example.navbar_screens.user_playlists_screen.sections.PlaylistsLC
 import com.example.navbar_screens.user_playlists_screen.sections.UserPlaylistsScreenTopBar
 import kotlinx.coroutines.launch
@@ -43,7 +47,9 @@ import kotlinx.coroutines.launch
 fun UserPlaylistsScreen(
     commonVM: CommonVM,
     viewModel: UserPlaylistsScreenVM,
-    screenState: UserPlaylistsScreenState
+    screenState: UserPlaylistsScreenState,
+    commonState: CommonState,
+    navController: NavController
 ) {
     // Snackbars stuff
     val snackbarHostState = remember { SnackbarHostState() }
@@ -75,6 +81,21 @@ fun UserPlaylistsScreen(
                 scrollBehavior = topBarScrollBehavior,
                 onSearchClick = {},
                 onPlusClick = {},
+            )
+        },
+        bottomBar = {
+            BottomNavBar(
+                selectedItemIndex = commonState.chosenNavBarIndex,
+                onNavItemClick = { index, route ->
+                    commonVM.sendIntent(
+                        CommonIntent.UpdateCommonState(
+                            commonState.copy(
+                                chosenNavBarIndex = index
+                            )
+                        )
+                    )
+                    navController.navigate(route)
+                }
             )
         },
         modifier = Modifier
@@ -152,11 +173,15 @@ fun UserPlaylistsScreenPreview() {
         val userPlaylistsScreenVM = hiltViewModel<UserPlaylistsScreenVM>()
         val userPlaylistsScreenState by userPlaylistsScreenVM.userPlaylistsScreenState.collectAsStateWithLifecycle()
         val commonVM = hiltViewModel<CommonVM>()
+        val commonState by commonVM.commonState.collectAsStateWithLifecycle()
+        val navController = rememberNavController()
 
         UserPlaylistsScreen(
             commonVM = commonVM,
             viewModel = userPlaylistsScreenVM,
-            screenState = userPlaylistsScreenState
+            screenState = userPlaylistsScreenState,
+            commonState = commonState,
+            navController = navController
         )
     }
 }

@@ -1,7 +1,6 @@
 package com.example.soundrush
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -21,7 +20,7 @@ fun NavGraph(
     val navController = rememberNavController()
 
     val commonVM = hiltViewModel<CommonVM>()
-    val commonState by commonVM.commonState.collectAsStateWithLifecycle()
+    val commonState = commonVM.commonState.collectAsStateWithLifecycle().value
     NavHost(
         navController = navController,
         startDestination = startDestination

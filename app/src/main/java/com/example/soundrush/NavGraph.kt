@@ -10,6 +10,7 @@ import com.example.composition_screen.navigation.compositionScreen
 import com.example.navbar_screens.settings_screen.navigation.settingsScreen
 import com.example.navbar_screens.user_favourites_screen.navigation.userFavouritesScreen
 import com.example.navbar_screens.user_playlists_screen.navigation.userPlaylistsScreen
+import com.example.navbar_screens.user_playlists_screen.screen.UserPlaylistsScreenVM
 import com.example.onboarding_screen.navigation.onBoardingScreen
 import com.example.playlist_screen.navigation.playlistScreen
 
@@ -19,8 +20,11 @@ fun NavGraph(
 ) {
     val navController = rememberNavController()
 
+    // Initialize here to don't recreate values
     val commonVM = hiltViewModel<CommonVM>()
+
     val commonState = commonVM.commonState.collectAsStateWithLifecycle().value
+    val userPlaylistsScreenVM = hiltViewModel<UserPlaylistsScreenVM>()
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -28,6 +32,7 @@ fun NavGraph(
         onBoardingScreen()
 
         userPlaylistsScreen(
+            userPlaylistsScreenVM = userPlaylistsScreenVM,
             commonVM = commonVM,
             commonState = commonState,
             navController = navController

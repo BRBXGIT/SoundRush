@@ -108,9 +108,12 @@ fun UserPlaylistsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            val isRefreshing = (commonState.isUserTokensRefreshing) or
+                    (playlists.loadState.refresh is LoadState.Loading)
+
             PullToRefreshBox(
-                isRefreshing = screenState.isTokensRefreshing,
-                onRefresh = {}
+                isRefreshing = isRefreshing,
+                onRefresh = { playlists.refresh() },
             ) {
                 PlaylistsLC(playlists)
             }
@@ -121,31 +124,12 @@ fun UserPlaylistsScreen(
         if (playlists.loadState.refresh is LoadState.Error) {
             val error = (playlists.loadState.refresh as LoadState.Error).error as NetworkException
             if (error.error == NetworkErrors.UNAUTHORIZED) {
-                if (!screenState.isTokensRefreshing) {
+                if (!commonState.isUserTokensRefreshing) {
                     commonVM.sendIntent(
                         CommonIntent.RefreshUserTokens(
                             refreshToken = screenState.refreshToken!!,
-                            onStart = {
-                                viewModel.sendIntent(
-                                    UserPlaylistsScreenIntent.UpdateScreenState(
-                                        screenState.copy(isTokensRefreshing = true)
-                                    )
-                                )
-                            },
                             onComplete = {
                                 viewModel.sendIntent(UserPlaylistsScreenIntent.FetchUserTokens)
-                                viewModel.sendIntent(
-                                    UserPlaylistsScreenIntent.UpdateScreenState(
-                                        screenState.copy(isTokensRefreshing = false)
-                                    )
-                                )
-                            },
-                            onError = {
-                                viewModel.sendIntent(
-                                    UserPlaylistsScreenIntent.UpdateScreenState(
-                                        screenState.copy(isTokensRefreshing = false)
-                                    )
-                                )
                                 playlists.refresh()
                             }
                         )

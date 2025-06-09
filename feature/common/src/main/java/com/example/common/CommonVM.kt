@@ -44,9 +44,7 @@ class CommonVM @Inject constructor(
 
     private fun refreshUserTokens(
         refreshToken: String,
-        onStart: () -> Unit,
         onComplete: () -> Unit,
-        onError: () -> Unit
     ) {
         viewModelScope.launch(dispatcherIo) {
             SnackbarController.sendEvent(
@@ -54,7 +52,9 @@ class CommonVM @Inject constructor(
                     message = CommonUtils.REFRESHING_TOKENS_TEXT
                 )
             )
-            onStart()
+            _commonState.value = _commonState.value.copy(
+                isUserTokensRefreshing = true
+            )
 
             val response = authRepository.refreshUserTokens(
                 clientId = AuthUtils.CLIENT_ID,
@@ -66,14 +66,19 @@ class CommonVM @Inject constructor(
             if (networkError == NetworkErrors.SUCCESS) {
                 saveTokens(response.body()!!.accessToken, response.body()!!.refreshToken)
                 onComplete()
+                _commonState.value = _commonState.value.copy(
+                    isUserTokensRefreshing = false
+                )
             } else {
-                onError()
+                _commonState.value = _commonState.value.copy(
+                    isUserTokensRefreshing = false
+                )
                 SnackbarController.sendEvent(
                     SnackbarEvent(
                         message = CommonUtils.REFRESHING_TOKENS_ERROR_TEXT,
                         action = SnackbarAction(
                             name = CommonUtils.RETRY_TEXT,
-                            action = { refreshUserTokens(refreshToken, onStart, onComplete, onError) }
+                            action = { refreshUserTokens(refreshToken, onComplete) }
                         )
                     )
                 )
@@ -85,9 +90,7 @@ class CommonVM @Inject constructor(
         when (intent) {
             is CommonIntent.RefreshUserTokens -> refreshUserTokens(
                 refreshToken = intent.refreshToken,
-                onStart = intent.onStart,
-                onComplete = intent.onComplete,
-                onError = intent.onError
+                onComplete = intent.onComplete
             )
             is CommonIntent.UpdateCommonState -> updateCommonState(intent.state)
         }

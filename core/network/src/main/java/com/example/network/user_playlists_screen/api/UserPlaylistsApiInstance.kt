@@ -1,8 +1,11 @@
 package com.example.network.user_playlists_screen.api
 
+import com.example.network.user_playlists_screen.models.create_playlist_request.CreatePlaylistRequest
+import com.example.network.user_playlists_screen.models.create_playlist_response.CreatePlaylistResponse
 import com.example.network.user_playlists_screen.models.user_playlists_response.UserPlaylistsResponse
 import com.example.network.user_playlists_screen.paging.UserPlaylistsUtils
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -27,6 +30,7 @@ interface UserPlaylistsApiInstance {
 
     @POST("playlists")
     suspend fun createPlaylist(
+        @Body createPlaylistRequest: CreatePlaylistRequest,
         @Header("Authorization") oAuthToken: String,
-    )
+    ): Response<CreatePlaylistResponse>
 }

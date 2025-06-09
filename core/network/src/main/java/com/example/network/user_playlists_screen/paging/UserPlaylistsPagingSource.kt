@@ -7,7 +7,7 @@ import com.example.common.functions.NetworkException
 import com.example.common.functions.processNetworkErrors
 import com.example.common.functions.processNetworkErrorsForUi
 import com.example.network.user_playlists_screen.api.UserPlaylistsApiInstance
-import com.example.network.user_playlists_screen.models.Collection
+import com.example.network.user_playlists_screen.models.user_playlists_response.Collection
 import java.io.IOException
 import java.net.SocketException
 import java.net.UnknownHostException

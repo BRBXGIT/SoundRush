@@ -13,7 +13,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.design_system.playlist_item.PlaylistItem
 import com.example.design_system.theme.SoundRushTheme
 import com.example.navbar_screens.user_playlists_screen.screen.UserPlaylistsScreenVM
-import com.example.network.user_playlists_screen.models.Collection
+import com.example.network.user_playlists_screen.models.user_playlists_response.Collection
 
 @Composable
 fun PlaylistsLC(

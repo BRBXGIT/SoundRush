@@ -1,10 +1,11 @@
 package com.example.network.user_playlists_screen.api
 
-import com.example.network.user_playlists_screen.models.UserPlaylistsResponse
+import com.example.network.user_playlists_screen.models.user_playlists_response.UserPlaylistsResponse
 import com.example.network.user_playlists_screen.paging.UserPlaylistsUtils
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
@@ -23,4 +24,9 @@ interface UserPlaylistsApiInstance {
         @Header("Authorization") oAuthToken: String,
         @Url nextHref: String
     ): Response<UserPlaylistsResponse>
+
+    @POST("playlists")
+    suspend fun createPlaylist(
+        @Header("Authorization") oAuthToken: String,
+    )
 }

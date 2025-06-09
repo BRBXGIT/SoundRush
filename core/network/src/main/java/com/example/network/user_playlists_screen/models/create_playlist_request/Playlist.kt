@@ -1,6 +1,5 @@
 package com.example.network.user_playlists_screen.models.create_playlist_request
 
-
 import com.google.gson.annotations.SerializedName
 
 data class Playlist(
@@ -11,5 +10,5 @@ data class Playlist(
     @SerializedName("title")
     val title: String = "",
     @SerializedName("tracks")
-    val tracks: List<Track> = listOf()
+    val tracks: List<Track> = emptyList()
 )

@@ -7,7 +7,7 @@ import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.common.functions.NetworkErrors
 import com.example.common.functions.processNetworkErrors
-import com.example.common.utils.AuthUtils
+import com.example.common.functions.processNetworkErrorsForUi
 import com.example.data.domain.AuthRepo
 import com.example.data.domain.UserPlaylistsScreenRepo
 import com.example.design_system.snackbars.SnackbarAction
@@ -63,10 +63,66 @@ class UserPlaylistsScreenVM @Inject constructor(
         }
     }
 
+    private fun createPlaylist(
+        title: String,
+        description: String,
+        onComplete: () -> Unit,
+        onUnauthorized: () -> Unit
+    ) {
+        viewModelScope.launch(dispatcherIo) {
+            _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                isLoading = true
+            )
+
+            val response = repository.createPlaylist(
+                title,
+                description,
+                "${UserPlaylistsScreenUtils.TOKEN_TYPE} ${_userPlaylistsScreenState.value.accessToken!!}"
+            )
+            val networkError = processNetworkErrors(response.code())
+            when (networkError) {
+                NetworkErrors.SUCCESS -> {
+                    onComplete()
+                    _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                        isLoading = false
+                    )
+                }
+                NetworkErrors.UNAUTHORIZED -> {
+                    onUnauthorized()
+                    _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                        isLoading = false
+                    )
+                }
+                else -> {
+                    _userPlaylistsScreenState.value = _userPlaylistsScreenState.value.copy(
+                        isLoading = false
+                    )
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(
+                            message = processNetworkErrorsForUi(networkError),
+                            action = SnackbarAction(
+                                name = UserPlaylistsScreenUtils.RETRY_TEXT,
+                                action = {
+                                    createPlaylist(title, description, onComplete, onUnauthorized)
+                                }
+                            )
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     fun sendIntent(intent: UserPlaylistsScreenIntent) {
         when (intent) {
             is UserPlaylistsScreenIntent.FetchUserTokens -> fetchTokens()
             is UserPlaylistsScreenIntent.UpdateScreenState -> updateScreenState(intent.state)
+            is UserPlaylistsScreenIntent.CreatePlaylist -> createPlaylist(
+                intent.title,
+                intent.description,
+                intent.onComplete,
+                intent.onUnauthorized
+            )
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.example.data.domain.UserPlaylistsScreenRepo
 import com.example.network.user_playlists_screen.api.UserPlaylistsApiInstance
 import com.example.network.user_playlists_screen.models.create_playlist_request.CreatePlaylistRequest
+import com.example.network.user_playlists_screen.models.create_playlist_request.Playlist
 import com.example.network.user_playlists_screen.models.create_playlist_response.CreatePlaylistResponse
 import com.example.network.user_playlists_screen.models.user_playlists_response.Collection
 import com.example.network.user_playlists_screen.paging.UserPlaylistsPagingSource
@@ -25,9 +26,17 @@ class UserPlaylistsScreenRepoImpl @Inject constructor(
     }
 
     override suspend fun createPlaylist(
-        createPlaylistRequest: CreatePlaylistRequest,
-        oAuthToken: String
+        title: String,
+        description: String,
+        oAuthToken: String,
     ): Response<CreatePlaylistResponse> {
-        return apiInstance.createPlaylist(createPlaylistRequest, oAuthToken)
+        val request = CreatePlaylistRequest(
+            playlist = Playlist(
+                description = description,
+                title = title
+            )
+        )
+
+        return apiInstance.createPlaylist(request, oAuthToken)
     }
 }

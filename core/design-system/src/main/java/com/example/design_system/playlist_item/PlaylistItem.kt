@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.design_system.theme.ScreenDimens
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
 import com.example.design_system.theme.mShapes
@@ -30,7 +31,7 @@ import com.example.design_system.theme.mTypography
 
 @Composable
 fun PlaylistItem(
-    imageUrl: String,
+    imageUrl: String?,
     playlistName: String,
     playlistAuthor: String,
     tracksAmount: Int,
@@ -42,7 +43,7 @@ fun PlaylistItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = ScreenDimens.HorizontalPadding)
             .clip(mShapes.extraSmall)
             .combinedClickable(
                 onClick = onClick,

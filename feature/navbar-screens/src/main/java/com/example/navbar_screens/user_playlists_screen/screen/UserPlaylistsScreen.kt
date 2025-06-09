@@ -1,6 +1,5 @@
 package com.example.navbar_screens.user_playlists_screen.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -81,7 +80,35 @@ fun UserPlaylistsScreen(
             UserPlaylistsScreenTopBar(
                 scrollBehavior = topBarScrollBehavior,
                 onSearchClick = {},
-                onPlusClick = {},
+                onPlusClick = {
+                    viewModel.sendIntent(
+                        UserPlaylistsScreenIntent.CreatePlaylist(
+                            title = "",
+                            description = "",
+                            onComplete = { playlists.refresh() },
+                            onUnauthorized = {
+                                if (!commonState.isUserTokensRefreshing) {
+                                    commonVM.sendIntent(
+                                        CommonIntent.RefreshUserTokens(
+                                            refreshToken = screenState.refreshToken!!,
+                                            onComplete = {
+                                                viewModel.sendIntent(UserPlaylistsScreenIntent.FetchUserTokens)
+                                                viewModel.sendIntent(
+                                                    UserPlaylistsScreenIntent.CreatePlaylist(
+                                                        title = "",
+                                                        description = "",
+                                                        onComplete = { playlists.refresh() },
+                                                        onUnauthorized = {}
+                                                    )
+                                                )
+                                            }
+                                        )
+                                    )
+                                }
+                            }
+                        )
+                    )
+                },
             )
         },
         bottomBar = {
@@ -110,7 +137,8 @@ fun UserPlaylistsScreen(
                 .padding(innerPadding)
         ) {
             val isRefreshing = (commonState.isUserTokensRefreshing) or
-                    (playlists.loadState.refresh is LoadState.Loading)
+                    (playlists.loadState.refresh is LoadState.Loading) or
+                    (screenState.isLoading)
 
             PullToRefreshBox(
                 isRefreshing = isRefreshing,

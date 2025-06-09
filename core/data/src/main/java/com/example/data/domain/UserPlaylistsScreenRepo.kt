@@ -12,7 +12,8 @@ interface UserPlaylistsScreenRepo {
     fun getUserPlaylists(oAuthToken: String): Flow<PagingData<Collection>>
 
     suspend fun createPlaylist(
-        createPlaylistRequest: CreatePlaylistRequest,
+        title: String,
+        description: String,
         oAuthToken: String,
     ): Response<CreatePlaylistResponse>
 }

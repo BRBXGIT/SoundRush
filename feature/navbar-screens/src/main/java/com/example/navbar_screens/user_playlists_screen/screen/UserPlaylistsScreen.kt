@@ -38,6 +38,7 @@ import com.example.design_system.snackbars.SnackbarEvent
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
 import com.example.navbar_screens.common.BottomNavBar
+import com.example.navbar_screens.user_playlists_screen.sections.CreatePlaylistBS
 import com.example.navbar_screens.user_playlists_screen.sections.PlaylistsLC
 import com.example.navbar_screens.user_playlists_screen.sections.UserPlaylistsScreenTopBar
 import kotlinx.coroutines.launch
@@ -72,6 +73,61 @@ fun UserPlaylistsScreen(
     }
 
     val playlists = viewModel.playlists.collectAsLazyPagingItems()
+    if (screenState.isCreatePlaylistBSOpen) {
+        CreatePlaylistBS(
+            screenState = screenState,
+            onDismissRequest = {
+                viewModel.sendIntent(
+                    UserPlaylistsScreenIntent.UpdateScreenState(
+                        screenState.copy(isCreatePlaylistBSOpen = false)
+                    )
+                )
+            },
+            onTitleChange = { title ->
+                viewModel.sendIntent(
+                    UserPlaylistsScreenIntent.UpdateScreenState(
+                        screenState.copy(newPlaylistTitle = title)
+                    )
+                )
+            },
+            onDescriptionChange = { description ->
+                viewModel.sendIntent(
+                    UserPlaylistsScreenIntent.UpdateScreenState(
+                        screenState.copy(newPlaylistDescription = description)
+                    )
+                )
+            },
+            onCreatePlaylistClick = {
+                viewModel.sendIntent(
+                    UserPlaylistsScreenIntent.CreatePlaylist(
+                        title = screenState.newPlaylistTitle,
+                        description = screenState.newPlaylistDescription,
+                        onComplete = { playlists.refresh() },
+                        onUnauthorized = {
+                            if (!commonState.isUserTokensRefreshing) {
+                                commonVM.sendIntent(
+                                    CommonIntent.RefreshUserTokens(
+                                        refreshToken = screenState.refreshToken!!,
+                                        onComplete = {
+                                            viewModel.sendIntent(UserPlaylistsScreenIntent.FetchUserTokens)
+                                            viewModel.sendIntent(
+                                                UserPlaylistsScreenIntent.CreatePlaylist(
+                                                    title = screenState.newPlaylistTitle,
+                                                    description = screenState.newPlaylistDescription,
+                                                    onComplete = { playlists.refresh() },
+                                                    onUnauthorized = {}
+                                                )
+                                            )
+                                        }
+                                    )
+                                )
+                            }
+                        }
+                    )
+                )
+            }
+        )
+    }
 
     val topBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -82,30 +138,8 @@ fun UserPlaylistsScreen(
                 onSearchClick = {},
                 onPlusClick = {
                     viewModel.sendIntent(
-                        UserPlaylistsScreenIntent.CreatePlaylist(
-                            title = "TITLE",
-                            description = "DESCRIPTION",
-                            onComplete = { playlists.refresh() },
-                            onUnauthorized = {
-                                if (!commonState.isUserTokensRefreshing) {
-                                    commonVM.sendIntent(
-                                        CommonIntent.RefreshUserTokens(
-                                            refreshToken = screenState.refreshToken!!,
-                                            onComplete = {
-                                                viewModel.sendIntent(UserPlaylistsScreenIntent.FetchUserTokens)
-                                                viewModel.sendIntent(
-                                                    UserPlaylistsScreenIntent.CreatePlaylist(
-                                                        title = "TITLE",
-                                                        description = "DESCRIPTION",
-                                                        onComplete = { playlists.refresh() },
-                                                        onUnauthorized = {}
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    )
-                                }
-                            }
+                        UserPlaylistsScreenIntent.UpdateScreenState(
+                            screenState.copy(isCreatePlaylistBSOpen = true)
                         )
                     )
                 },

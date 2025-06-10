@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common.utils.AuthUtils
@@ -107,8 +108,8 @@ fun OnBoardingScreen(
                     .padding(
                         top = innerPadding.calculateTopPadding() + OnBoardingScreenUtils.VerticalPadding,
                         bottom = innerPadding.calculateBottomPadding() + OnBoardingScreenUtils.VerticalPadding,
-                        start = ScreenDimens.HorizontalPadding,
-                        end = ScreenDimens.HorizontalPadding
+                        start = ScreenDimens.HORIZONTAL_PADDING.dp,
+                        end = ScreenDimens.HORIZONTAL_PADDING.dp
                     )
             ) {
                 OnBoardingHeader()

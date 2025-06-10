@@ -43,7 +43,7 @@ fun PlaylistItem(
         horizontalArrangement = Arrangement.spacedBy(PlaylistItemDimens.IMAGE_INFO_SPACER.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = ScreenDimens.HorizontalPadding)
+            .padding(horizontal = ScreenDimens.HORIZONTAL_PADDING.dp)
             .clip(mShapes.extraSmall)
             .combinedClickable(
                 onClick = onClick,

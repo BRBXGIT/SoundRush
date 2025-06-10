@@ -83,8 +83,8 @@ fun UserPlaylistsScreen(
                 onPlusClick = {
                     viewModel.sendIntent(
                         UserPlaylistsScreenIntent.CreatePlaylist(
-                            title = "",
-                            description = "",
+                            title = "TITLE",
+                            description = "DESCRIPTION",
                             onComplete = { playlists.refresh() },
                             onUnauthorized = {
                                 if (!commonState.isUserTokensRefreshing) {
@@ -95,8 +95,8 @@ fun UserPlaylistsScreen(
                                                 viewModel.sendIntent(UserPlaylistsScreenIntent.FetchUserTokens)
                                                 viewModel.sendIntent(
                                                     UserPlaylistsScreenIntent.CreatePlaylist(
-                                                        title = "",
-                                                        description = "",
+                                                        title = "TITLE",
+                                                        description = "DESCRIPTION",
                                                         onComplete = { playlists.refresh() },
                                                         onUnauthorized = {}
                                                     )

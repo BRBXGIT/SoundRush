@@ -7,6 +7,7 @@ import com.example.data.domain.UserPlaylistsScreenRepo
 import com.example.network.user_playlists_screen.api.UserPlaylistsApiInstance
 import com.example.network.user_playlists_screen.models.create_playlist_request.CreatePlaylistRequest
 import com.example.network.user_playlists_screen.models.create_playlist_request.Playlist
+import com.example.network.user_playlists_screen.models.create_playlist_request.Track
 import com.example.network.user_playlists_screen.models.create_playlist_response.CreatePlaylistResponse
 import com.example.network.user_playlists_screen.models.user_playlists_response.Collection
 import com.example.network.user_playlists_screen.paging.UserPlaylistsPagingSource
@@ -33,7 +34,10 @@ class UserPlaylistsScreenRepoImpl @Inject constructor(
         val request = CreatePlaylistRequest(
             playlist = Playlist(
                 description = description,
-                title = title
+                title = title,
+                tracks = listOf(
+                    Track(id = 1)
+                )
             )
         )
 

@@ -7,7 +7,7 @@ class NetworkException(
 
 fun processNetworkErrors(statusCode: Int): NetworkError {
     return when (statusCode) {
-        200 -> NetworkErrors.SUCCESS
+        in 200..299 -> NetworkErrors.SUCCESS
         401 -> NetworkErrors.UNAUTHORIZED
         408 -> NetworkErrors.REQUEST_TIMEOUT
         409 -> NetworkErrors.CONFLICT

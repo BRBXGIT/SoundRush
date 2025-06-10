@@ -6,4 +6,7 @@ object UserPlaylistsScreenUtils {
     const val RETRY_TEXT = "Retry"
 
     const val TOKEN_TYPE = "OAuth"
+
+    const val PLAYLISTS_LC_VERTICAL_PADDING = 16
+    const val PLAYLISTS_LC_SPACER = 16
 }

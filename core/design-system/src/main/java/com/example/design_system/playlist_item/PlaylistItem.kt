@@ -40,7 +40,7 @@ fun PlaylistItem(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(PlaylistItemDimens.IMAGE_INFO_SPACER.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = ScreenDimens.HorizontalPadding)
@@ -49,11 +49,11 @@ fun PlaylistItem(
                 onClick = onClick,
                 onLongClick = onLongClick
             )
-            .padding(8.dp)
+            .padding(PlaylistItemDimens.MAIN_ROW_PADDING.dp)
     ) {
         Box(
             modifier = Modifier
-                .size(68.dp)
+                .size(PlaylistItemDimens.IMAGE_SIZE.dp)
                 .background(
                     color = mColors.surfaceVariant,
                     shape = mShapes.extraSmall
@@ -67,16 +67,16 @@ fun PlaylistItem(
                     .build(),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(68.dp, 68.dp)
+                    .size(PlaylistItemDimens.IMAGE_SIZE.dp, PlaylistItemDimens.IMAGE_SIZE.dp)
                     .clip(mShapes.extraSmall),
                 filterQuality = FilterQuality.Low,
                 contentScale = ContentScale.Crop,
-                loading = { AnimatedShimmer(68.dp, 68.dp) }
+                loading = { AnimatedShimmer(PlaylistItemDimens.IMAGE_SIZE.dp, PlaylistItemDimens.IMAGE_SIZE.dp) }
             )
         }
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(PlaylistItemDimens.INFO_COLUMN_SPACER.dp)
         ) {
             Text(
                 text = playlistName,

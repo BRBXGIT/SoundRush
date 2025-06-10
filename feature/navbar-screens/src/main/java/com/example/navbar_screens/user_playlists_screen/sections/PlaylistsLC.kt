@@ -13,6 +13,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.design_system.playlist_item.PlaylistItem
 import com.example.design_system.theme.SoundRushTheme
+import com.example.navbar_screens.user_playlists_screen.screen.UserPlaylistsScreenUtils
 import com.example.navbar_screens.user_playlists_screen.screen.UserPlaylistsScreenVM
 import com.example.network.user_playlists_screen.models.user_playlists_response.Collection
 
@@ -21,8 +22,8 @@ fun PlaylistsLC(
     playlists: LazyPagingItems<Collection>
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(vertical = UserPlaylistsScreenUtils.PLAYLISTS_LC_VERTICAL_PADDING.dp),
+        verticalArrangement = Arrangement.spacedBy(UserPlaylistsScreenUtils.PLAYLISTS_LC_SPACER.dp),
         modifier = Modifier
             .fillMaxSize()
     ) {

@@ -13,7 +13,6 @@ import com.example.design_system.theme.SoundRushIcons
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserPlaylistsScreenTopBar(
-    onSearchClick: () -> Unit,
     onPlusClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
@@ -25,15 +24,6 @@ fun UserPlaylistsScreenTopBar(
             )
         },
         actions = {
-            IconButton(
-                onClick = onSearchClick
-            ) {
-                Icon(
-                    painter = painterResource(SoundRushIcons.Magnifier),
-                    contentDescription = null
-                )
-            }
-
             IconButton(
                 onClick = onPlusClick
             ) {

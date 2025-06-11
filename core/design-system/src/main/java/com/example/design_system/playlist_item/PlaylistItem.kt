@@ -91,7 +91,7 @@ fun PlaylistItem(
             )
 
             Text(
-                text = "Playlist $tracksAmount tracks",
+                text = "Playlist • $tracksAmount tracks",
                 style = mTypography.bodyMedium
             )
         }

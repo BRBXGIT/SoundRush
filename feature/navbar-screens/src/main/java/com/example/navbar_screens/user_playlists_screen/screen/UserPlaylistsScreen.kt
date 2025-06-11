@@ -72,6 +72,7 @@ fun UserPlaylistsScreen(
         }
     }
 
+    // Ui
     val playlists = viewModel.playlists.collectAsLazyPagingItems()
     if (screenState.isCreatePlaylistBSOpen) {
         CreatePlaylistBS(
@@ -102,7 +103,18 @@ fun UserPlaylistsScreen(
                     UserPlaylistsScreenIntent.CreatePlaylist(
                         title = screenState.newPlaylistTitle,
                         description = screenState.newPlaylistDescription,
-                        onComplete = { playlists.refresh() },
+                        onComplete = {
+                            playlists.refresh()
+                            viewModel.sendIntent(
+                                UserPlaylistsScreenIntent.UpdateScreenState(
+                                    screenState.copy(
+                                        isCreatePlaylistBSOpen = false,
+                                        newPlaylistTitle = UserPlaylistsScreenUtils.EMPTY_STRING,
+                                        newPlaylistDescription = UserPlaylistsScreenUtils.EMPTY_STRING
+                                    )
+                                )
+                            )
+                        },
                         onUnauthorized = {
                             if (!commonState.isUserTokensRefreshing) {
                                 commonVM.sendIntent(
@@ -135,7 +147,6 @@ fun UserPlaylistsScreen(
         topBar = {
             UserPlaylistsScreenTopBar(
                 scrollBehavior = topBarScrollBehavior,
-                onSearchClick = {},
                 onPlusClick = {
                     viewModel.sendIntent(
                         UserPlaylistsScreenIntent.UpdateScreenState(
@@ -183,6 +194,7 @@ fun UserPlaylistsScreen(
         }
     }
 
+    // Process paging errors
     LaunchedEffect(playlists.loadState.refresh) {
         if (playlists.loadState.refresh is LoadState.Error) {
             val error = (playlists.loadState.refresh as LoadState.Error).error as NetworkException

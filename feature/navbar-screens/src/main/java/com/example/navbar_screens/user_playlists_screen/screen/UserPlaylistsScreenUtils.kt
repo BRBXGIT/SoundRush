@@ -15,4 +15,5 @@ object UserPlaylistsScreenUtils {
     const val CREATE_PLAYLIST_TITLE_TF_LABEL = "Title"
     const val CREATE_PLAYLIST_DESCRIPTION_TF_LABEL = "Description"
     const val CREATE_PLAYLIST_BTN_TEXT = "Create"
+    const val EMPTY_STRING = ""
 }

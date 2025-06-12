@@ -28,14 +28,14 @@ fun PlaylistsLC(
             .fillMaxSize()
     ) {
         items(playlists.itemCount) { index ->
-            val playlists = playlists[index]
+            val playlist = playlists[index]
 
-            playlists?.let {
+            playlist?.let {
                 PlaylistItem(
-                    imageUrl = playlists.artworkUrl,
-                    playlistName = playlists.title,
-                    playlistAuthor = playlists.user.fullName,
-                    tracksAmount = playlists.trackCount,
+                    imageUrl = playlist.artworkUrl,
+                    playlistName = playlist.title,
+                    playlistAuthor = playlist.user.fullName,
+                    tracksAmount = playlist.trackCount,
                     onClick = {},
                     onLongClick = {},
                 )

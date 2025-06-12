@@ -1,22 +1,22 @@
-package com.example.navbar_screens.user_favourites_screen.navigation
+package com.example.navbar_screens.user_likes_screen.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.common.CommonState
 import com.example.common.CommonVM
-import com.example.navbar_screens.user_favourites_screen.screen.UserFavouritesScreen
+import com.example.navbar_screens.user_likes_screen.screen.UserLikesScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object UserFavouritesScreenRoute
+data object UserLikesScreenRoute
 
-fun NavGraphBuilder.userFavouritesScreen(
+fun NavGraphBuilder.userLikesScreen(
     commonVM: CommonVM,
     commonState: CommonState,
     navController: NavController
-) = composable<UserFavouritesScreenRoute> {
-    UserFavouritesScreen(
+) = composable<UserLikesScreenRoute> {
+    UserLikesScreen(
         commonVM = commonVM,
         commonState = commonState,
         navController = navController

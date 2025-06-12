@@ -1,4 +1,4 @@
-package com.example.navbar_screens.user_favourites_screen.screen
+package com.example.navbar_screens.user_likes_screen.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import com.example.design_system.theme.mColors
 import com.example.navbar_screens.common.BottomNavBar
 
 @Composable
-fun UserFavouritesScreen(
+fun UserLikesScreen(
     commonVM: CommonVM,
     commonState: CommonState,
     navController: NavController
@@ -47,7 +47,7 @@ fun UserFavouritesScreen(
                 .padding(innerPadding)
         ) {
             Text(
-                text = "User Favourites Screen"
+                text = "User Likes Screen"
             )
         }
     }

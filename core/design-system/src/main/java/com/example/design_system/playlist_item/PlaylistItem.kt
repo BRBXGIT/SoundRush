@@ -89,7 +89,7 @@ fun PlaylistItem(
                 text = playlistAuthor,
                 style = mTypography.bodyMedium
             )
-
+    
             Text(
                 text = "Playlist • $tracksAmount tracks",
                 style = mTypography.bodyMedium

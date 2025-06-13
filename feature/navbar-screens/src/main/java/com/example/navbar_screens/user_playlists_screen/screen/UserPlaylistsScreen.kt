@@ -1,6 +1,5 @@
 package com.example.navbar_screens.user_playlists_screen.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +28,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.CommonIntent
 import com.example.common.CommonState
+import com.example.common.CommonUtils
 import com.example.common.CommonVM
 import com.example.common.functions.NetworkErrors
 import com.example.common.functions.NetworkException
@@ -42,6 +42,7 @@ import com.example.navbar_screens.common.BottomNavBar
 import com.example.navbar_screens.user_playlists_screen.sections.CreatePlaylistBS
 import com.example.navbar_screens.user_playlists_screen.sections.PlaylistsLC
 import com.example.navbar_screens.user_playlists_screen.sections.UserPlaylistsScreenTopBar
+import com.example.playlist_screen.navigation.PlaylistScreenRoute
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,10 +54,6 @@ fun UserPlaylistsScreen(
     commonState: CommonState,
     navController: NavController
 ) {
-    LaunchedEffect(screenState) {
-        Log.d("CCCC", screenState.accessToken.toString())
-    }
-
     // Snackbars stuff
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -194,7 +191,12 @@ fun UserPlaylistsScreen(
                 isRefreshing = isRefreshing,
                 onRefresh = { playlists.refresh() },
             ) {
-                PlaylistsLC(playlists)
+                PlaylistsLC(
+                    playlists = playlists,
+                    onPlaylistClick = {
+                        navController.navigate(PlaylistScreenRoute(it))
+                    }
+                )
             }
         }
     }
@@ -220,7 +222,7 @@ fun UserPlaylistsScreen(
                     SnackbarEvent(
                         message = error.label,
                         action = SnackbarAction(
-                            name = UserPlaylistsScreenUtils.REFRESH_TEXT,
+                            name = CommonUtils.REFRESH_TEXT,
                             action = { playlists.refresh() }
                         )
                     )

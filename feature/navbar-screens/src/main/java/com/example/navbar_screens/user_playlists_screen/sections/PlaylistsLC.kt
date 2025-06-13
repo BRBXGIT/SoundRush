@@ -19,7 +19,8 @@ import com.example.network.user_playlists_screen.models.user_playlists_response.
 
 @Composable
 fun PlaylistsLC(
-    playlists: LazyPagingItems<Collection>
+    playlists: LazyPagingItems<Collection>,
+    onPlaylistClick: (Int) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = UserPlaylistsScreenUtils.PLAYLISTS_LC_VERTICAL_PADDING.dp),
@@ -36,7 +37,9 @@ fun PlaylistsLC(
                     playlistName = playlist.title,
                     playlistAuthor = playlist.user.fullName,
                     tracksAmount = playlist.trackCount,
-                    onClick = {},
+                    onClick = {
+                        onPlaylistClick(playlist.id)
+                    },
                     onLongClick = {},
                 )
             }
@@ -51,6 +54,9 @@ fun PlaylistsLCPreview() {
         val userPlaylistsScreenVM = hiltViewModel<UserPlaylistsScreenVM>()
         val playlists = userPlaylistsScreenVM.playlists.collectAsLazyPagingItems()
 
-        PlaylistsLC(playlists)
+        PlaylistsLC(
+            playlists = playlists,
+            onPlaylistClick = {}
+        )
     }
 }

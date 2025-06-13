@@ -40,8 +40,9 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
-    //Feature modules
+    // Feature modules
     implementation(project(":feature:common"))
+    implementation(project(":feature:playlist-screen"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))

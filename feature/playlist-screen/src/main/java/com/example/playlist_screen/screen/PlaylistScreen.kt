@@ -7,11 +7,47 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.example.common.CommonIntent
+import com.example.common.CommonState
+import com.example.common.CommonVM
 import com.example.design_system.theme.mColors
 
 @Composable
-fun PlaylistScreen() {
+fun PlaylistScreen(
+    playlistId: Int,
+    viewModel: PlaylistScreenVM,
+    screenState: PlaylistScreenState,
+    commonState: CommonState,
+    commonVM: CommonVM
+) {
+    // Set playlist id to state and fetch playlist
+    LaunchedEffect(playlistId) {
+        viewModel.sendIntent(
+            PlaylistScreenIntent.UpdateScreenState(screenState.copy(playlistId = playlistId))
+        )
+        viewModel.sendIntent(
+            PlaylistScreenIntent.FetchPlaylist(
+                onUnauthorized = {
+                    if (!commonState.isUserTokensRefreshing) {
+                        commonVM.sendIntent(
+                            CommonIntent.RefreshUserTokens(
+                                refreshToken = screenState.refreshToken!!,
+                                onComplete = {
+                                    viewModel.sendIntent(PlaylistScreenIntent.FetchTokens)
+                                    viewModel.sendIntent(
+                                        PlaylistScreenIntent.FetchPlaylist(onUnauthorized = {})
+                                    )
+                                }
+                            )
+                        )
+                    }
+                }
+            )
+        )
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -23,7 +59,7 @@ fun PlaylistScreen() {
                 .padding(innerPadding)
         ) {
             Text(
-                text = "Playlist Screen"
+                text = screenState.playlist?.id.toString()
             )
         }
     }

@@ -23,29 +23,31 @@ fun PlaylistScreen(
     commonVM: CommonVM
 ) {
     // Set playlist id to state and fetch playlist
-    LaunchedEffect(playlistId) {
-        viewModel.sendIntent(
-            PlaylistScreenIntent.UpdateScreenState(screenState.copy(playlistId = playlistId))
-        )
-        viewModel.sendIntent(
-            PlaylistScreenIntent.FetchPlaylist(
-                onUnauthorized = {
-                    if (!commonState.isUserTokensRefreshing) {
-                        commonVM.sendIntent(
-                            CommonIntent.RefreshUserTokens(
-                                refreshToken = screenState.refreshToken!!,
-                                onComplete = {
-                                    viewModel.sendIntent(PlaylistScreenIntent.FetchTokens)
-                                    viewModel.sendIntent(
-                                        PlaylistScreenIntent.FetchPlaylist(onUnauthorized = {})
-                                    )
-                                }
-                            )
-                        )
-                    }
-                }
+    LaunchedEffect(playlistId, screenState.accessToken) {
+        if (screenState.accessToken != null) {
+            viewModel.sendIntent(
+                PlaylistScreenIntent.UpdateScreenState(screenState.copy(playlistId = playlistId))
             )
-        )
+            viewModel.sendIntent(
+                PlaylistScreenIntent.FetchPlaylist(
+                    onUnauthorized = {
+                        if (!commonState.isUserTokensRefreshing) {
+                            commonVM.sendIntent(
+                                CommonIntent.RefreshUserTokens(
+                                    refreshToken = screenState.refreshToken!!,
+                                    onComplete = {
+                                        viewModel.sendIntent(PlaylistScreenIntent.FetchTokens)
+                                        viewModel.sendIntent(
+                                            PlaylistScreenIntent.FetchPlaylist(onUnauthorized = {})
+                                        )
+                                    }
+                                )
+                            )
+                        }
+                    }
+                )
+            )
+        }
     }
 
     Scaffold(

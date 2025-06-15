@@ -1,6 +1,5 @@
 package com.example.playlist_screen.screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.CommonUtils
@@ -34,7 +33,7 @@ class PlaylistScreenVM @Inject constructor(
     private val _playlistScreenState = MutableStateFlow(PlaylistScreenState())
     val playlistScreenState = _playlistScreenState.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(1),
+        SharingStarted.WhileSubscribed(5_000),
         PlaylistScreenState()
     )
 
@@ -61,7 +60,7 @@ class PlaylistScreenVM @Inject constructor(
             }
 
             val response = repository.getPlaylist(
-                oAuthToken = "${CommonUtils.TOKEN_TYPE} ${_playlistScreenState.value.accessToken!!}",
+                oAuthToken = "${CommonUtils.TOKEN_TYPE} ${_playlistScreenState.value.accessToken}",
                 playlistId = playlistId
             )
 

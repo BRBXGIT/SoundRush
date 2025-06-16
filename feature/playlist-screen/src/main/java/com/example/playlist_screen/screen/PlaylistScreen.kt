@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -13,6 +12,7 @@ import com.example.common.CommonIntent
 import com.example.common.CommonState
 import com.example.common.CommonVM
 import com.example.design_system.theme.mColors
+import com.example.playlist_screen.sections.PlaylistHeader
 
 @Composable
 fun PlaylistScreen(
@@ -60,9 +60,17 @@ fun PlaylistScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Text(
-                text = screenState.playlist?.id.toString()
-            )
+            val playlist = screenState.playlist
+            playlist?.let {
+                PlaylistHeader(
+                    posterPath = playlist.artworkUrl,
+                    playlistName = playlist.title,
+                    tracksAmount = playlist.trackCount,
+                    playlistDuration = playlist.duration,
+                    createdBy = playlist.user.fullName,
+                    description = playlist.description
+                )
+            }
         }
     }
 }

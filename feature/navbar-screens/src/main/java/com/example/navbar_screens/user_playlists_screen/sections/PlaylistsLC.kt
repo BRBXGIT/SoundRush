@@ -33,7 +33,7 @@ fun PlaylistsLC(
 
             playlist?.let {
                 PlaylistItem(
-                    imageUrl = playlist.artworkUrl,
+                    posterPath = playlist.artworkUrl,
                     playlistName = playlist.title,
                     playlistAuthor = playlist.user.fullName,
                     tracksAmount = playlist.trackCount,

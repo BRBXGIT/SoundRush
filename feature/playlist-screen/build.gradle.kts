@@ -45,6 +45,8 @@ dependencies {
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
     // Material 3
     implementation(libs.androidx.material3)
     // Nav
@@ -56,4 +58,6 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     // Json
     implementation(libs.converter.gson)
+    // Coil
+    implementation(libs.coil.compose)
 }

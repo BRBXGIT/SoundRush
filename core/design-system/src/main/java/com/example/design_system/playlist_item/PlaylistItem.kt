@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.design_system.theme.ScreenDimens
+import com.example.design_system.theme.CommonDimens
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
 import com.example.design_system.theme.mShapes
@@ -31,7 +31,7 @@ import com.example.design_system.theme.mTypography
 
 @Composable
 fun PlaylistItem(
-    imageUrl: String?,
+    posterPath: String?,
     playlistName: String,
     playlistAuthor: String,
     tracksAmount: Int,
@@ -43,7 +43,7 @@ fun PlaylistItem(
         horizontalArrangement = Arrangement.spacedBy(PlaylistItemDimens.IMAGE_INFO_SPACER.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = ScreenDimens.HORIZONTAL_PADDING.dp)
+            .padding(horizontal = CommonDimens.HORIZONTAL_PADDING.dp)
             .clip(mShapes.extraSmall)
             .combinedClickable(
                 onClick = onClick,
@@ -61,7 +61,7 @@ fun PlaylistItem(
         ) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
+                    .data(posterPath)
                     .crossfade(500)
                     .size(Size.ORIGINAL)
                     .build(),
@@ -103,7 +103,7 @@ fun PlaylistItem(
 fun PlaylistItemPreview() {
     SoundRushTheme {
         PlaylistItem(
-            imageUrl = "",
+            posterPath = "",
             playlistName = "Phonk",
             playlistAuthor = "BRBX",
             tracksAmount = 123,

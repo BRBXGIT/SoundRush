@@ -28,7 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common.utils.AuthUtils
 import com.example.design_system.snackbars.ObserveAsEvents
 import com.example.design_system.snackbars.SnackbarController
-import com.example.design_system.theme.ScreenDimens
+import com.example.design_system.theme.CommonDimens
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
 import com.example.onboarding_screen.sections.AboutAppSection
@@ -108,8 +108,8 @@ fun OnBoardingScreen(
                     .padding(
                         top = innerPadding.calculateTopPadding() + OnBoardingScreenUtils.VerticalPadding,
                         bottom = innerPadding.calculateBottomPadding() + OnBoardingScreenUtils.VerticalPadding,
-                        start = ScreenDimens.HORIZONTAL_PADDING.dp,
-                        end = ScreenDimens.HORIZONTAL_PADDING.dp
+                        start = CommonDimens.HORIZONTAL_PADDING.dp,
+                        end = CommonDimens.HORIZONTAL_PADDING.dp
                     )
             ) {
                 OnBoardingHeader()

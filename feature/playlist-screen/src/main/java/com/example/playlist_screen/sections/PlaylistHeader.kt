@@ -45,7 +45,6 @@ fun PlaylistHeader(
     tracksAmount: Int,
     playlistDuration: Int,
     createdBy: String,
-    description: String
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(PlaylistScreenDimens.PLAYLIST_HEADER_ARRANGEMENT.dp),
@@ -141,7 +140,6 @@ fun PlaylistHeaderPreview() {
             tracksAmount = 13,
             playlistDuration = 122,
             createdBy = "BRBX",
-            description = "Simple playlist"
         )
     }
 }

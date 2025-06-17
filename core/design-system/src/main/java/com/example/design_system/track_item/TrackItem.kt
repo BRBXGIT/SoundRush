@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -92,6 +93,8 @@ fun TrackItem(
                 .height(TrackItemDimens.IMAGE_SIZE.dp)
         ) {
             Text(
+                maxLines = TrackItemDimens.TRACK_NAME_MAX_LINES,
+                overflow = TextOverflow.Ellipsis,
                 text = trackName,
                 style = mTypography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold
@@ -99,6 +102,8 @@ fun TrackItem(
             )
 
             Text(
+                overflow = TextOverflow.Ellipsis,
+                maxLines = TrackItemDimens.TRACK_AUTHOR_MAX_LINES,
                 text = author,
                 style = mTypography.bodyLarge
             )

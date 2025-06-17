@@ -74,7 +74,7 @@ fun PlaylistScreen(
     Scaffold(
         topBar = {
             PlaylistScreenTopBar(
-                playlistName = if (playlist?.title == null) "Loading..." else playlist.title,
+                playlistName = playlist?.title,
                 scrollBehavior = scrollBehavior,
                 onNavIconClick = { navController.navigateUp() }
             )
@@ -123,7 +123,6 @@ fun PlaylistScreen(
                                 tracksAmount = playlist.trackCount,
                                 playlistDuration = playlist.duration,
                                 createdBy = playlist.user.username,
-                                description = playlist.description
                             )
                         }
 

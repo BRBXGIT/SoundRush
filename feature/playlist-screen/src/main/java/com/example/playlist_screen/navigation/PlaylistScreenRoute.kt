@@ -2,6 +2,7 @@ package com.example.playlist_screen.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
@@ -17,6 +18,7 @@ data class PlaylistScreenRoute(
 )
 
 fun NavGraphBuilder.playlistScreen(
+    navController: NavController,
     commonVM: CommonVM,
     commonState: CommonState
 ) = composable<PlaylistScreenRoute> {
@@ -25,6 +27,7 @@ fun NavGraphBuilder.playlistScreen(
     val playlistScreenState = playlistScreenVM.playlistScreenState.collectAsStateWithLifecycle().value
 
     PlaylistScreen(
+        navController = navController,
         playlistId = playlistId,
         viewModel = playlistScreenVM,
         screenState = playlistScreenState,

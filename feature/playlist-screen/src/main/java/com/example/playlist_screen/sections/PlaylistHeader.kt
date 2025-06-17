@@ -17,8 +17,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -102,8 +105,20 @@ fun PlaylistHeader(
                     )
                 }
 
+                // TODO create link to user
+                val createdByAnnotatedString = buildAnnotatedString {
+                    append("Created by ")
+                    withStyle(
+                        style = SpanStyle(
+                            color = mColors.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append(createdBy)
+                    }
+                }
                 Text(
-                    text = "Created by $createdBy",
+                    text = createdByAnnotatedString,
                     modifier = Modifier.align(Alignment.BottomStart),
                     maxLines = PlaylistScreenDimens.PLAYLIST_CREATED_BY_MAX_LINES,
                     overflow = TextOverflow.Ellipsis

@@ -9,6 +9,8 @@ object SoundRushIcons {
     val Magnifier = R.drawable.ic_magnifier
     val Plus = R.drawable.ic_plus
 
+    val ArrowLeft = R.drawable.ic_arrow_left
+
     val PlaylistAnimated = R.drawable.ic_playlist_animated
     val HeartAnimated = R.drawable.ic_heart_animated
     val GearAnimated = R.drawable.ic_gear_animated

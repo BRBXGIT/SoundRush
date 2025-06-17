@@ -7,4 +7,6 @@ object PlaylistScreenDimens {
     const val PLAYLIST_INFO_MAX_LINES = 2
     const val PLAYLIST_CREATED_BY_MAX_LINES = 1
     const val PLAYLIST_INFO_SPACER = 0
+
+    const val TOP_BAR_SHOW_TITLE_OFFSET = 100F
 }

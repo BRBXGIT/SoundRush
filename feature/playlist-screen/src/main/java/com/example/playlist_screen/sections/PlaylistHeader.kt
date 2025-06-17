@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.design_system.playlist_item.AnimatedShimmer
+import com.example.design_system.utils.AnimatedShimmer
 import com.example.design_system.theme.CommonDimens
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
@@ -126,10 +127,7 @@ fun PlaylistHeader(
             }
         }
 
-        Text(
-            text = description,
-            style = mTypography.bodyLarge
-        )
+        HorizontalDivider()
     }
 }
 

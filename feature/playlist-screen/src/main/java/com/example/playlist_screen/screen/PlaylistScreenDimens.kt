@@ -9,4 +9,7 @@ object PlaylistScreenDimens {
     const val PLAYLIST_INFO_SPACER = 0
 
     const val TOP_BAR_SHOW_TITLE_OFFSET = 100F
+
+    const val TRACKS_LC_VERTICAL_ARRANGEMENT = 16
+    const val TRACKS_LC_CONTENT_PADDING = 16
 }

@@ -1,6 +1,5 @@
 package com.example.playlist_screen.sections
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -13,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.design_system.theme.SoundRushIcons
 import com.example.design_system.theme.SoundRushTheme
-import com.example.playlist_screen.screen.PlaylistScreenDimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,13 +22,9 @@ fun PlaylistScreenTopBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            AnimatedVisibility(
-                scrollBehavior.state.contentOffset > PlaylistScreenDimens.TOP_BAR_SHOW_TITLE_OFFSET
-            ) {
-                Text(
-                    text = playlistName
-                )
-            }
+            Text(
+                text = playlistName
+            )
         },
         scrollBehavior = scrollBehavior,
         navigationIcon = {

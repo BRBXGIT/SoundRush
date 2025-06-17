@@ -1,4 +1,4 @@
-package com.example.design_system.playlist_item
+package com.example.design_system.utils
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode

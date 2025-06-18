@@ -3,6 +3,7 @@ package com.example.navbar_screens.user_playlists_screen.screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.common.CommonUtils
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.common.functions.NetworkErrors
@@ -51,10 +52,9 @@ class UserPlaylistsScreenVM @Inject constructor(
         .filterNotNull()
         .distinctUntilChanged()
         .flatMapLatest { token ->
-            repository.getUserPlaylists("${UserPlaylistsScreenUtils.TOKEN_TYPE} $token")
+            repository.getUserPlaylists("${CommonUtils.TOKEN_TYPE} $token")
         }
         .cachedIn(viewModelScope)
-
 
     private fun fetchTokens() {
         viewModelScope.launch(dispatcherIo) {
@@ -79,7 +79,7 @@ class UserPlaylistsScreenVM @Inject constructor(
             val response = repository.createPlaylist(
                 title,
                 description,
-                "${UserPlaylistsScreenUtils.TOKEN_TYPE} ${_userPlaylistsScreenState.value.accessToken!!}"
+                "${CommonUtils.TOKEN_TYPE} ${_userPlaylistsScreenState.value.accessToken!!}"
             )
             val networkError = processNetworkErrors(response.code())
             when (networkError) {
@@ -103,7 +103,7 @@ class UserPlaylistsScreenVM @Inject constructor(
                         SnackbarEvent(
                             message = processNetworkErrorsForUi(networkError),
                             action = SnackbarAction(
-                                name = UserPlaylistsScreenUtils.RETRY_TEXT,
+                                name = CommonUtils.RETRY_TEXT,
                                 action = {
                                     createPlaylist(title, description, onComplete, onUnauthorized)
                                 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.design_system.theme.ScreenDimens
+import com.example.design_system.theme.CommonDimens
 import com.example.design_system.theme.mShapes
 import com.example.design_system.theme.mTypography
 import com.example.navbar_screens.user_playlists_screen.screen.UserPlaylistsScreenState
@@ -36,7 +36,7 @@ fun CreatePlaylistBS(
         Column(
             verticalArrangement = Arrangement.spacedBy(UserPlaylistsScreenUtils.BS_COLUMN_SPACER.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = ScreenDimens.HORIZONTAL_PADDING.dp)
+            modifier = Modifier.padding(horizontal = CommonDimens.HORIZONTAL_PADDING.dp)
         ) {
             Text(
                 text = UserPlaylistsScreenUtils.CREATE_PLAYLIST_TEXT,

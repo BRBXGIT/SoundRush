@@ -52,6 +52,10 @@ fun NavGraph(
 
         compositionScreen()
 
-        playlistScreen()
+        playlistScreen(
+            navController = navController,
+            commonVM = commonVM,
+            commonState = commonState
+        )
     }
 }

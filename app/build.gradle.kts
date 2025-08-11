@@ -1,7 +1,12 @@
 plugins {
+    // Basic plugins
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // Ksp
+    alias(libs.plugins.ksp)
+    // Hilt
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -44,6 +49,11 @@ dependencies {
     // Core modules
     implementation(project(":core:design-system"))
 
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Basic libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

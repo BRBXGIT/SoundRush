@@ -21,4 +21,13 @@ dependencyResolutionManagement {
 
 rootProject.name = "SoundRush"
 include(":app")
- 
+include("core")
+include("feature")
+include("feature")
+
+include(":core:network")
+include(":core:data")
+include(":core:local")
+include(":core:design-system")
+include(":core:common")
+include(":feature:onboardng-screen")

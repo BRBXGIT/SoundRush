@@ -1,18 +1,18 @@
 package com.example.data.repositories
 
-import com.example.data.domain.OnBoardingScreenRepo
+import com.example.data.domain.OnboardingScreenRepo
 import com.example.data.utils.OnBoardingState
-import com.example.local.datastore.onboarding.OnBoardingManager
+import com.example.local.datastore.onboarding.OnboardingManager
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class OnBoardingScreenRepoImpl @Inject constructor(
-    private val manager: OnBoardingManager
-): OnBoardingScreenRepo {
+class OnboardingScreenRepoImpl @Inject constructor(
+    private val manager: OnboardingManager
+): OnboardingScreenRepo {
 
-    override val isOnBoardingCompletedFlow = manager.isOnboardingCompletedFlow
+    override val isOnboardingCompletedFlow = manager.isOnboardingCompletedFlow
 
-    override val onBoardingState = isOnBoardingCompletedFlow.map { isCompleted ->
+    override val onboardingState = isOnboardingCompletedFlow.map { isCompleted ->
         if ((isCompleted == null) or (isCompleted == false)) OnBoardingState.NotCompleted else OnBoardingState.Completed
     }
 

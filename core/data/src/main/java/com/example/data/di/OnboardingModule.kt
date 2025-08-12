@@ -1,7 +1,7 @@
 package com.example.data.di
 
 import android.content.Context
-import com.example.local.datastore.onboarding.OnBoardingManager
+import com.example.local.datastore.onboarding.OnboardingManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +15,5 @@ object OnboardingModule {
 
     @Provides
     @Singleton
-    fun provideOnboardingManager(@ApplicationContext context: Context) = OnBoardingManager(context)
+    fun provideOnboardingManager(@ApplicationContext context: Context) = OnboardingManager(context)
 }

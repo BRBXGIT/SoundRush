@@ -3,11 +3,11 @@ package com.example.data.domain
 import com.example.data.utils.OnBoardingState
 import kotlinx.coroutines.flow.Flow
 
-interface OnBoardingScreenRepo {
+interface OnboardingScreenRepo {
 
-    val isOnBoardingCompletedFlow: Flow<Boolean?>
+    val isOnboardingCompletedFlow: Flow<Boolean?>
 
-    val onBoardingState: Flow<OnBoardingState>
+    val onboardingState: Flow<OnBoardingState>
 
     suspend fun saveOnboardingCompleted()
 

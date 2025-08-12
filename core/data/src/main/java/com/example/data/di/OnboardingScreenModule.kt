@@ -1,8 +1,8 @@
 package com.example.data.di
 
-import com.example.data.domain.OnBoardingScreenRepo
-import com.example.data.repositories.OnBoardingScreenRepoImpl
-import com.example.local.datastore.onboarding.OnBoardingManager
+import com.example.data.domain.OnboardingScreenRepo
+import com.example.data.repositories.OnboardingScreenRepoImpl
+import com.example.local.datastore.onboarding.OnboardingManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object OnboardingScreenModule {
 
     @Provides
     @Singleton
-    fun provideOnboardingScreenRepo(onBoardingManager: OnBoardingManager): OnBoardingScreenRepo {
-        return OnBoardingScreenRepoImpl(onBoardingManager)
+    fun provideOnboardingScreenRepo(onBoardingManager: OnboardingManager): OnboardingScreenRepo {
+        return OnboardingScreenRepoImpl(onBoardingManager)
     }
 }

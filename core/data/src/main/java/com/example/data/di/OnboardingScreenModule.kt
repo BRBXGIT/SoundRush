@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.domain.OnboardingScreenRepo
 import com.example.data.repositories.OnboardingScreenRepoImpl
+import com.example.local.datastore.auth.AuthManager
 import com.example.local.datastore.onboarding.OnboardingManager
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,10 @@ object OnboardingScreenModule {
 
     @Provides
     @Singleton
-    fun provideOnboardingScreenRepo(onBoardingManager: OnboardingManager): OnboardingScreenRepo {
-        return OnboardingScreenRepoImpl(onBoardingManager)
+    fun provideOnboardingScreenRepo(
+        onBoardingManager: OnboardingManager,
+        authManager: AuthManager
+    ): OnboardingScreenRepo {
+        return OnboardingScreenRepoImpl(onBoardingManager, authManager)
     }
 }

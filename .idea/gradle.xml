@@ -18,7 +18,7 @@
             <option value="$PROJECT_DIR$/core/local" />
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/feature" />
-            <option value="$PROJECT_DIR$/feature/onboardng-screen" />
+            <option value="$PROJECT_DIR$/feature/onboarding-screen" />
           </set>
         </option>
       </GradleProjectSettings>

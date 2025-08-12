@@ -2,11 +2,14 @@ plugins {
     // Basic plugins
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    // Compose
     alias(libs.plugins.kotlin.compose)
     // Ksp
     alias(libs.plugins.ksp)
     // Hilt
     alias(libs.plugins.hilt.android)
+    // Serialization
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -48,10 +51,15 @@ dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
+    // Feature modules
+    implementation(project(":feature:onboarding-screen"))
 
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    // Nav
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     // Basic libraries
     implementation(libs.androidx.core.ktx)

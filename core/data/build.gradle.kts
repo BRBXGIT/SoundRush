@@ -30,10 +30,13 @@ dependencies {
 
     // Core modules
     implementation(project(":core:local"))
+    implementation(project(":core:network"))
 
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    // Gson
+    implementation(libs.converter.gson)
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

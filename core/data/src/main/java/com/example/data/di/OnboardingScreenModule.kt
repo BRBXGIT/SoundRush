@@ -4,6 +4,7 @@ import com.example.data.domain.OnboardingScreenRepo
 import com.example.data.repositories.OnboardingScreenRepoImpl
 import com.example.local.datastore.auth.AuthManager
 import com.example.local.datastore.onboarding.OnboardingManager
+import com.example.network.auth.api.AuthApiInstance
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +19,9 @@ object OnboardingScreenModule {
     @Singleton
     fun provideOnboardingScreenRepo(
         onBoardingManager: OnboardingManager,
-        authManager: AuthManager
+        authManager: AuthManager,
+        authApiInstance: AuthApiInstance
     ): OnboardingScreenRepo {
-        return OnboardingScreenRepoImpl(onBoardingManager, authManager)
+        return OnboardingScreenRepoImpl(onBoardingManager, authManager, authApiInstance)
     }
 }

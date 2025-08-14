@@ -1,6 +1,6 @@
 package com.example.onboardng_screen.screen
 
-// Rewrite to encrypted
+// TODO - Rewrite to encrypted
 object Utils {
     const val CLIENT_ID = "6gzvoKOdbET4tkbPsZsJDg6QhaYXtNoZ"
     const val CLIENT_SECRET = "MpbtoVOZxmVLkfcxmSVZ8XOXooDRYlUb"

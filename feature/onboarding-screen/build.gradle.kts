@@ -36,6 +36,9 @@ dependencies {
     implementation(project(":core:design-system"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    // Feature modules
+    implementation(project(":feature:common"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -50,4 +53,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
 }

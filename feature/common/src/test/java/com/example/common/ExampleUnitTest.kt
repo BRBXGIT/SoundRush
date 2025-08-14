@@ -1,4 +1,4 @@
-package com.example.onboardng_screen
+package com.example.common
 
 import org.junit.Test
 

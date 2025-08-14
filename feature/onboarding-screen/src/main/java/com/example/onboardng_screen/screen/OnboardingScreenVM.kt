@@ -5,24 +5,78 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.OnboardingScreenRepo
+import com.example.design_system.snackbars.sendRetrySnackbar
+import com.example.network.common.NetworkErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+// TODO - create tests
 @HiltViewModel
 class OnboardingScreenVM @Inject constructor(
     private val repo: OnboardingScreenRepo,
-    @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher
+    @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher,
+    @Dispatcher(SoundRushDispatchers.Main) private val dispatcherMain: CoroutineDispatcher
 ): ViewModel() {
 
-    fun saveTokens(
+    private val _onboardingScreenState = MutableStateFlow(OnboardingScreenState())
+    val onboardingScreenState = _onboardingScreenState.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        OnboardingScreenState()
+    )
+
+    private fun saveTokens(
         accessToken: String,
         refreshToken: String
     ) {
         viewModelScope.launch(dispatcherIo) {
             repo.saveAccessToken(accessToken)
             repo.saveRefreshToken(refreshToken)
+        }
+    }
+
+    private fun getTokens(
+        code: String,
+        onComplete: () -> Unit
+    ) {
+        viewModelScope.launch(dispatcherIo) {
+            _onboardingScreenState.update { state -> state.copy(isLoading = true) }
+
+            val result = repo.getTokens(
+                clientId = Utils.CLIENT_ID,
+                clientSecret = Utils.CLIENT_SECRET,
+                redirectUri = Utils.REDIRECT_URI,
+                codeVerifier = Utils.CODE_VERIFIER,
+                code = code
+            )
+
+            if (result.error == NetworkErrors.SUCCESS) {
+                saveTokens(
+                    accessToken = result.response!!.accessToken,
+                    refreshToken = result.response!!.refreshToken
+                )
+                withContext(dispatcherMain) { onComplete() }
+            } else {
+                sendRetrySnackbar(
+                    label = result.label!!,
+                    action = { getTokens(code, onComplete) }
+                )
+            }
+
+            _onboardingScreenState.update { state -> state.copy(isLoading = false) }
+        }
+    }
+
+    fun sendIntent(intent: OnboardingScreenIntent) {
+        when(intent) {
+            is OnboardingScreenIntent.GetTokens -> getTokens(intent.code, intent.onComplete)
         }
     }
 }

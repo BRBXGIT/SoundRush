@@ -1,0 +1,16 @@
+package com.example.design_system.snackbars
+
+suspend fun sendRetrySnackbar(
+    label: String,
+    action: () -> Unit
+) {
+    SnackbarController.sendEvent(
+        SnackbarEvent(
+            message = label,
+            action = SnackbarAction(
+                name = "Retry",
+                action = action
+            )
+        )
+    )
+}

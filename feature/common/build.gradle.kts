@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    // Compose
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.example.network"
+    namespace = "com.example.common"
     compileSdk = 35
 
     defaultConfig {
@@ -20,19 +22,18 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
 
-    // Retrofit
-    implementation(libs.retrofit)
-    // Gson converter
-    implementation(libs.converter.gson)
-    // Paging
-    implementation(libs.androidx.paging.compose)
-    implementation(libs.androidx.paging.runtime.ktx)
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.coroutines.test)
+    // Core modules
+    implementation(project(":core:design-system"))
+
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
 }

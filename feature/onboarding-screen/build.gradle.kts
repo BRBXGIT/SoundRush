@@ -13,7 +13,7 @@ plugins {
 
 android {
     namespace = "com.example.onboardng_screen"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28

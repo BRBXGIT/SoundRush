@@ -3,11 +3,15 @@ plugins {
     alias(libs.plugins.kotlin.android)
     // Compose
     alias(libs.plugins.kotlin.compose)
+    // Hilt
+    alias(libs.plugins.hilt.android)
+    // Ksp
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.common"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28
@@ -36,4 +40,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
 }

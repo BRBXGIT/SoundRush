@@ -16,4 +16,6 @@ fun NavGraph() {
     ) {
         onboardingScreen(navController)
     }
+
+    // TODO - create bottom bar without scaffold
 }

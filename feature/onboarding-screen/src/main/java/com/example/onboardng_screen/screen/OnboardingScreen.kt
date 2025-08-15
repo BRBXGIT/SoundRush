@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
@@ -15,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
+import com.example.design_system.snackbars.SnackbarController
+import com.example.design_system.snackbars.SnackbarEvent
 import com.example.design_system.theme.SoundRushIcons
 import com.example.design_system.theme.UiConstants
 import com.example.onboardng_screen.sections.AboutAppSection
@@ -28,6 +31,24 @@ fun OnboardingScreen(
     state: String?,
     error: String?
 ) {
+    LaunchedEffect(state, error) {
+        if (state != null) {
+            viewModel.sendIntent(
+                OnboardingScreenIntent.GetTokens(
+                    code = state,
+                    onComplete = {} // TODO
+                )
+            )
+        }
+        if (error != null) {
+            SnackbarController.sendEvent(
+                SnackbarEvent(
+                    message = error
+                )
+            )
+        }
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->

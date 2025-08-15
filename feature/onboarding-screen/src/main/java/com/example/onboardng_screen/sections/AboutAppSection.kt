@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mTypography
+import com.example.onboardng_screen.screen.Strings
 
 @Composable
 fun AboutAppSection() {
@@ -16,14 +17,14 @@ fun AboutAppSection() {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Hello in SoundRush",
+            text = Strings.HELLO_IN,
             style = mTypography.headlineSmall.copy(
                 fontWeight = FontWeight.Bold
             )
         )
 
         Text(
-            text = "SoundRush is an app where you can listen, save and explore music",
+            text = Strings.ABOUT_APP,
             style = mTypography.bodyLarge
         )
     }

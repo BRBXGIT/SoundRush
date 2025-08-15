@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
+import com.example.onboardng_screen.screen.Strings
 
 @Composable
 fun ScreenHeader() {
@@ -21,7 +22,7 @@ fun ScreenHeader() {
                 fontWeight = FontWeight.Bold,
             )
         ) {
-            append("SoundRush\n")
+            append("${Strings.APP_NAME}\n")
         }
         withStyle(
             style = SpanStyle(
@@ -29,7 +30,7 @@ fun ScreenHeader() {
                 fontSize = 16.sp,
             )
         ) {
-            append("Powered by SoundCloud api")
+            append(Strings.POWERED_BY)
         }
     }
 

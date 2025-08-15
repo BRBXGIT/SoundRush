@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.design_system.theme.SoundRushIcons
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mShapes
+import com.example.onboardng_screen.screen.Strings
 
 @Composable
 fun StartButton(
@@ -37,7 +38,7 @@ fun StartButton(
             )
 
             Text(
-                text = "Connect with SoundCloud"
+                text = Strings.CONNECT_WITH
             )
         }
     }

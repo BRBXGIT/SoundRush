@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -15,6 +17,10 @@ android {
     namespace = "com.example.onboardng_screen"
     compileSdk = 36
 
+    fun Packaging.() {
+        resources.excludes += "META-INF/LICENSE-notice.md"
+        resources.excludes += "META-INF/LICENSE.md"
+    }
     defaultConfig {
         minSdk = 28
 
@@ -58,5 +64,8 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.turbine)
-    testImplementation(libs.androidx.ui.test.junit4.android)
+    // Android testing
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.coroutines.test)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -1,6 +1,7 @@
 package com.example.onboardng_screen
 
 import com.example.data.domain.OnboardingScreenRepo
+import com.example.design_system.snackbars.SnackbarController
 import com.example.network.auth.models.TokensResponse
 import com.example.network.common.NetworkErrors
 import com.example.network.common.NetworkResponse
@@ -12,6 +13,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.mockkObject
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

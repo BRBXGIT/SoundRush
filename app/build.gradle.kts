@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     // Basic plugins
     alias(libs.plugins.android.application)

@@ -17,7 +17,7 @@ class StartButtonUnitTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun`startButton calls onClick`() {
+    fun startButton_calls_onClick() {
         var clicked = false
         composeTestRule.setContent {
             SoundRushTheme {

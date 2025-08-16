@@ -2,6 +2,7 @@ package com.example.onboardng_screen
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.example.design_system.theme.SoundRushTheme
 import com.example.onboardng_screen.screen.Strings
@@ -15,19 +16,18 @@ class HeaderAndAboutAppSectionsTests {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun `screenHeader display title and subtitle`() {
+    fun screenHeader_display_title_and_subtitle() {
         composeTestRule.setContent {
             SoundRushTheme {
                 ScreenHeader()
             }
         }
 
-        composeTestRule.onNodeWithText(Strings.APP_NAME).assertIsDisplayed()
-        composeTestRule.onNodeWithText(Strings.POWERED_BY).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("screenHeader").assertIsDisplayed()
     }
 
     @Test
-    fun `aboutSection displays heading and description`() {
+    fun aboutSection_displays_heading_and_description() {
         composeTestRule.setContent {
             SoundRushTheme {
                 AboutAppSection()

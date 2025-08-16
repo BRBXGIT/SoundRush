@@ -17,12 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-// TODO - create tests
 @HiltViewModel
 class OnboardingScreenVM @Inject constructor(
     private val repo: OnboardingScreenRepo,
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher,
-    @Dispatcher(SoundRushDispatchers.Main) private val dispatcherMain: CoroutineDispatcher
 ): ViewModel() {
 
     private val _onboardingScreenState = MutableStateFlow(OnboardingScreenState())
@@ -39,12 +37,12 @@ class OnboardingScreenVM @Inject constructor(
         viewModelScope.launch(dispatcherIo) {
             repo.saveAccessToken(accessToken)
             repo.saveRefreshToken(refreshToken)
+            repo.saveOnboardingCompleted()
         }
     }
 
     private fun getTokens(
         code: String,
-        onComplete: () -> Unit
     ) {
         viewModelScope.launch(dispatcherIo) {
             _onboardingScreenState.update { state -> state.copy(isLoading = true) }
@@ -62,11 +60,10 @@ class OnboardingScreenVM @Inject constructor(
                     accessToken = result.response!!.accessToken,
                     refreshToken = result.response!!.refreshToken
                 )
-                withContext(dispatcherMain) { onComplete() }
             } else {
                 sendRetrySnackbar(
                     label = result.label!!,
-                    action = { getTokens(code, onComplete) }
+                    action = { getTokens(code) }
                 )
             }
 
@@ -76,7 +73,7 @@ class OnboardingScreenVM @Inject constructor(
 
     fun sendIntent(intent: OnboardingScreenIntent) {
         when(intent) {
-            is OnboardingScreenIntent.GetTokens -> getTokens(intent.code, intent.onComplete)
+            is OnboardingScreenIntent.GetTokens -> getTokens(intent.code)
         }
     }
 }

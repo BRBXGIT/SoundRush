@@ -44,7 +44,6 @@ class OnboardingScreenVMTest {
         vm = OnboardingScreenVM(
             repo = repo,
             dispatcherIo = dispatcher,
-            dispatcherMain = dispatcher
         )
     }
 
@@ -78,7 +77,7 @@ class OnboardingScreenVMTest {
     }
 
     @Test
-    fun `test loading state, onComplete and save tokens functions when get tokens is succcess`() = runTest {
+    fun `test loading state and save tokens functions when get tokens is success`() = runTest {
         val code = "123"
 
         coEvery {
@@ -90,11 +89,9 @@ class OnboardingScreenVMTest {
 
         assertFalse(vm.onboardingScreenState.value.isLoading)
 
-        var isCompleted = false
         vm.sendIntent(
             OnboardingScreenIntent.GetTokens(
                 code = code,
-                onComplete = { isCompleted = true }
             )
         )
 
@@ -104,25 +101,21 @@ class OnboardingScreenVMTest {
         coVerify(exactly = 1) { repo.saveRefreshToken("ref_456") }
 
         assertFalse(vm.onboardingScreenState.value.isLoading)
-        assertTrue(isCompleted)
     }
 
     @Test
-    fun `on error do not call onComplete and loading state is false`() = runTest {
+    fun `on error do not call and loading state is false`() = runTest {
         val code = "123"
         coEvery { repo.getTokens(any(), any(), any(), any(), code) } returns errorResult()
 
-        var completed = false
         vm.sendIntent(
             OnboardingScreenIntent.GetTokens(
                 code = code,
-                onComplete = { completed = true }
             )
         )
 
         advanceUntilIdle()
 
-        assertFalse(completed)
         assertFalse(vm.onboardingScreenState.value.isLoading)
     }
 }

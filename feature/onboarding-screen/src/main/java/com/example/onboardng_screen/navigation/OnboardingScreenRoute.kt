@@ -19,9 +19,7 @@ data class OnboardingScreenRoute(
     val errorr: String? = null
 )
 
-fun NavGraphBuilder.onboardingScreen(
-    navController: NavController
-) = composable<OnboardingScreenRoute>(
+fun NavGraphBuilder.onboardingScreen() = composable<OnboardingScreenRoute>(
     deepLinks = listOf(
         navDeepLink {
             uriPattern = "https://soundrush-6c78e.web.app/?error={error}&state={state}"
@@ -34,7 +32,6 @@ fun NavGraphBuilder.onboardingScreen(
 
     OnboardingScreen(
         viewModel = onboardingScreenVM,
-        navController = navController,
         state = state,
         error = error
     )

@@ -26,7 +26,6 @@ import com.example.onboardng_screen.sections.StartButton
 
 @Composable
 fun OnboardingScreen(
-    navController: NavController,
     viewModel: OnboardingScreenVM,
     state: String?,
     error: String?
@@ -36,7 +35,6 @@ fun OnboardingScreen(
             viewModel.sendIntent(
                 OnboardingScreenIntent.GetTokens(
                     code = state,
-                    onComplete = {} // TODO
                 )
             )
         }

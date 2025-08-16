@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -14,7 +12,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.onboardng_screen"
+    namespace = "com.example.home_screen"
     compileSdk = 36
 
     defaultConfig {
@@ -36,9 +34,6 @@ dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
-    implementation(project(":core:data"))
-    implementation(project(":core:common"))
-    implementation(project(":core:network"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -53,13 +48,4 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.turbine)
-    // Android testing
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.coroutines.test)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

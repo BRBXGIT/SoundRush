@@ -53,12 +53,15 @@ dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
+    implementation(project(":core:data"))
     // Feature modules
     implementation(project(":feature:onboarding-screen"))
+    implementation(project(":feature:home-screen"))
     implementation(project(":feature:common"))
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
     // Nav
     implementation(libs.navigation.compose)

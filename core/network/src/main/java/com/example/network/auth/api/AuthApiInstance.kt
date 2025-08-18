@@ -3,10 +3,12 @@ package com.example.network.auth.api
 import com.example.network.auth.models.TokensResponse
 import retrofit2.Response
 import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface AuthApiInstance {
 
+    @FormUrlEncoded
     @POST("oauth/token")
     suspend fun getTokens(
         @Field("grant_type") grantType: String = "authorization_code",

@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.data.utils.OnBoardingState
+import com.example.data.utils.OnboardingState
 import com.example.design_system.theme.SoundRushTheme
 import com.example.home_screen.navigation.HomeScreenRoute
 import com.example.onboardng_screen.navigation.OnboardingScreenRoute
@@ -23,10 +23,14 @@ class MainActivity : ComponentActivity() {
             val onboardingState by appStartingVM.onboardingState.collectAsStateWithLifecycle()
 
             SoundRushTheme {
-                when(onboardingState) {
-                    OnBoardingState.Completed -> NavGraph(HomeScreenRoute)
-                    OnBoardingState.Loading -> {}
-                    OnBoardingState.NotCompleted -> NavGraph(OnboardingScreenRoute())
+                if (onboardingState !is OnboardingState.Loading) {
+                    NavGraph(
+                        startDestination = if (onboardingState is OnboardingState.Completed) {
+                            HomeScreenRoute
+                        } else {
+                            OnboardingScreenRoute()
+                        }
+                    )
                 }
             }
         }

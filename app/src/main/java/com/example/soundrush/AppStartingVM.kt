@@ -3,7 +3,7 @@ package com.example.soundrush
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.domain.AppStartingRepo
-import com.example.data.utils.OnBoardingState
+import com.example.data.utils.OnboardingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,6 +17,6 @@ class AppStartingVM @Inject constructor(
     val onboardingState = repo.onboardingState.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
-        OnBoardingState.Loading
+        OnboardingState.Loading
     )
 }

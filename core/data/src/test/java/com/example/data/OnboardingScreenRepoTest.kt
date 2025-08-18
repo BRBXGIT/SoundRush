@@ -93,10 +93,6 @@ class OnboardingScreenRepoTest {
         } returns response
 
         val result = repo.getTokens(
-            clientId = "",
-            clientSecret = "",
-            redirectUri = "",
-            codeVerifier = "",
             code = ""
         )
 
@@ -117,10 +113,6 @@ class OnboardingScreenRepoTest {
         } throws UnknownHostException()
 
         val result = repo.getTokens(
-            clientId = "",
-            clientSecret = "",
-            redirectUri = "",
-            codeVerifier = "",
             code = ""
         )
 
@@ -145,10 +137,6 @@ class OnboardingScreenRepoTest {
         ) } returns response
 
         val result = repo.getTokens(
-            clientId = "",
-            clientSecret = "",
-            redirectUri = "",
-            codeVerifier = "",
             code = ""
         )
 

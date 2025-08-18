@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.OnboardingScreenRepo
+import com.example.data.utils.AuthUtils
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.network.common.NetworkErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,13 +47,7 @@ class OnboardingScreenVM @Inject constructor(
         viewModelScope.launch(dispatcherIo) {
             _onboardingScreenState.update { state -> state.copy(isLoading = true) }
 
-            val result = repo.getTokens(
-                clientId = Utils.CLIENT_ID,
-                clientSecret = Utils.CLIENT_SECRET,
-                redirectUri = Utils.REDIRECT_URI,
-                codeVerifier = Utils.CODE_VERIFIER,
-                code = code
-            )
+            val result = repo.getTokens(code)
 
             if (result.error == NetworkErrors.SUCCESS) {
                 saveTokens(

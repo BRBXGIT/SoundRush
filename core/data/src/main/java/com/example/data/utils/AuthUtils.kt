@@ -1,7 +1,7 @@
-package com.example.onboardng_screen.screen
+package com.example.data.utils
 
 // TODO - Rewrite to encrypted
-object Utils {
+object AuthUtils {
     const val CLIENT_ID = "6gzvoKOdbET4tkbPsZsJDg6QhaYXtNoZ"
     const val CLIENT_SECRET = "MpbtoVOZxmVLkfcxmSVZ8XOXooDRYlUb"
     const val REDIRECT_URI = "https://soundrush-6c78e.web.app/"

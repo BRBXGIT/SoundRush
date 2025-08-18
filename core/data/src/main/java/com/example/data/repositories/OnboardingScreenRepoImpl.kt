@@ -1,6 +1,7 @@
 package com.example.data.repositories
 
 import com.example.data.domain.OnboardingScreenRepo
+import com.example.data.utils.AuthUtils
 import com.example.local.datastore.auth.AuthManager
 import com.example.local.datastore.onboarding.OnboardingManager
 import com.example.network.auth.api.AuthApiInstance
@@ -21,18 +22,12 @@ class OnboardingScreenRepoImpl @Inject constructor(
 
     override suspend fun saveRefreshToken(token: String) = authManager.saveRefreshToken(token)
 
-    override suspend fun getTokens(
-        clientId: String,
-        clientSecret: String,
-        redirectUri: String,
-        codeVerifier: String,
-        code: String
-    ): NetworkResponse<TokensResponse> = NetworkRequest.exec {
+    override suspend fun getTokens(code: String): NetworkResponse<TokensResponse> = NetworkRequest.exec {
         authApiInstance.getTokens(
-            clientId = clientId,
-            clientSecret = clientSecret,
-            redirectUri = redirectUri,
-            codeVerifier = codeVerifier,
+            clientId = AuthUtils.CLIENT_ID,
+            clientSecret = AuthUtils.CLIENT_SECRET,
+            redirectUri = AuthUtils.REDIRECT_URI,
+            codeVerifier = AuthUtils.CODE_VERIFIER,
             code = code
         )
     }

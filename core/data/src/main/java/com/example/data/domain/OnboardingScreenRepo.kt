@@ -11,11 +11,5 @@ interface OnboardingScreenRepo {
 
     suspend fun saveRefreshToken(token: String)
 
-    suspend fun getTokens(
-        clientId: String,
-        clientSecret: String,
-        redirectUri: String,
-        codeVerifier: String,
-        code: String
-    ): NetworkResponse<TokensResponse>
+    suspend fun getTokens(code: String): NetworkResponse<TokensResponse>
 }

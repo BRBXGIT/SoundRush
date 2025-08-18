@@ -1,6 +1,5 @@
 package com.example.network.common
 
-import android.util.Log
 import retrofit2.Response
 
 object NetworkRequest {

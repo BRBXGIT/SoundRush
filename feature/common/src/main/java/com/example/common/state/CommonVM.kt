@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.CommonRepo
+import com.example.data.utils.AuthUtils
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.network.common.NetworkErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,7 +55,7 @@ class CommonVM @Inject constructor(
 
     private fun updateTokens(accessToken: String, refreshToken: String) {
         viewModelScope.launch(dispatcherIo) {
-            repo.saveTokens(accessToken, refreshToken)
+            repo.saveTokens("${AuthUtils.TOKEN_TYPE} $accessToken", refreshToken)
         }
     }
 
@@ -65,8 +66,8 @@ class CommonVM @Inject constructor(
             if (result.error == NetworkErrors.SUCCESS) {
                 val response = result.response!!
                 updateTokens(
-                    refreshToken = response.accessToken,
-                    accessToken = response.refreshToken
+                    refreshToken = response.refreshToken,
+                    accessToken = response.accessToken
                 )
             } else {
                 sendRetrySnackbar(
@@ -74,6 +75,12 @@ class CommonVM @Inject constructor(
                     action = { refreshTokens() }
                 )
             }
+        }
+    }
+
+    fun sendIntent(intent: CommonIntent) {
+        when(intent) {
+            CommonIntent.RefreshTokens -> refreshTokens()
         }
     }
 }

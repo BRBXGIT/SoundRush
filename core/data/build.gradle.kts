@@ -37,6 +37,8 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     // Gson
     implementation(libs.converter.gson)
+    // Paging
+    implementation(libs.androidx.paging.runtime.ktx)
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

@@ -59,23 +59,16 @@ class OnboardingScreenRepoTest {
     }
 
     @Test
-    fun `saveAccessToken calls manager method`() = runTest {
-        val token = "OAuth token"
-        coEvery { authManager.saveAccessToken(token) } just Runs
+    fun `saveTokens calls manager method`() = runTest {
+        val accessToken = ""
+        val refreshToken = ""
+        coEvery { authManager.saveAccessToken(accessToken) } just Runs
+        coEvery { authManager.saveRefreshToken(refreshToken) } just Runs
 
-        repo.saveAccessToken(token)
+        repo.saveTokens(accessToken, refreshToken)
 
-        coVerify { authManager.saveAccessToken(token) }
-    }
-
-    @Test
-    fun `saveRefreshToken calls manager method`() = runTest {
-        val token = "token"
-        coEvery { authManager.saveRefreshToken(token) } just Runs
-
-        repo.saveRefreshToken(token)
-
-        coVerify { authManager.saveRefreshToken(token) }
+        coVerify { authManager.saveAccessToken(accessToken) }
+        coVerify { authManager.saveRefreshToken(refreshToken) }
     }
 
     @Test

@@ -26,4 +26,14 @@ object RetrofitModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
+
+    @Provides
+    @Singleton
+    @Named("main_api")
+    fun provideMainRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.soundcloud.com/")
+            .addConverterFactory(gsonConverterFactory)
+            .build()
+    }
 }

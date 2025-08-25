@@ -34,6 +34,9 @@ dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
+    implementation(project(":core:data"))
+    implementation(project(":core:network"))
+    implementation(project(":core:common"))
     // Feature modules
     implementation(project(":feature:common"))
 
@@ -50,4 +53,12 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+    // Paging
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
 }

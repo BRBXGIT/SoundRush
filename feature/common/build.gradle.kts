@@ -51,4 +51,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
+    // Paging
+    implementation(libs.androidx.paging.compose)
 }

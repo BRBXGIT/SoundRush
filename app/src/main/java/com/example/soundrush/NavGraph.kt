@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.common.state.CommonVM
 import com.example.home_screen.navigation.homeScreen
+import com.example.home_screen.screen.HomeScreenVM
 import com.example.onboardng_screen.navigation.onboardingScreen
 
 @Composable
@@ -14,7 +15,10 @@ fun NavGraph(
 ) {
     val navController = rememberNavController()
 
+    // Initialize here to don't reinitialize
     val commonVM = hiltViewModel<CommonVM>()
+
+    val homeScreenVM = hiltViewModel<HomeScreenVM>()
     NavHost(
         startDestination = startDestination,
         navController = navController
@@ -23,7 +27,8 @@ fun NavGraph(
 
         homeScreen(
             navController = navController,
-            commonVM = commonVM
+            commonVM = commonVM,
+            homeScreenVM = homeScreenVM
         )
     }
 

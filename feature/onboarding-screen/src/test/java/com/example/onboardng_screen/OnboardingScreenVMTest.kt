@@ -79,8 +79,7 @@ class OnboardingScreenVMTest {
             repo.getTokens(code)
         } returns successResult()
 
-        coEvery { repo.saveAccessToken(any()) } just Runs
-        coEvery { repo.saveRefreshToken(any()) } just Runs
+        coEvery { repo.saveTokens("acc_123", "ref_123") } just Runs
 
         assertFalse(vm.onboardingScreenState.value.isLoading)
 
@@ -92,8 +91,7 @@ class OnboardingScreenVMTest {
 
         advanceUntilIdle()
 
-        coVerify(exactly = 1) { repo.saveAccessToken("acc_123") }
-        coVerify(exactly = 1) { repo.saveRefreshToken("ref_456") }
+        coVerify(exactly = 1) { repo.saveTokens("acc_123", "ref_123") }
 
         assertFalse(vm.onboardingScreenState.value.isLoading)
     }

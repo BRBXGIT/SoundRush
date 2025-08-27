@@ -8,4 +8,9 @@ object SoundRushIcons {
 
     // Multicolored
     val SoundCloudMulticolored = R.drawable.ic_soundcloud_multicolored
+
+    // Animated
+    val PlaylistsAnimated = R.drawable.ic_playlists_animated
+    val HeartAnimated = R.drawable.ic_heart_animated
+    val SettingsAnimated = R.drawable.ic_settings_animated
 }

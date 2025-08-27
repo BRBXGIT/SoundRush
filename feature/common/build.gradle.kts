@@ -39,10 +39,14 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:common"))
 
+    // Material 3
+    implementation(libs.androidx.material3)
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
+    // Animated icons(compose animation graphics)
+    implementation(libs.androidx.animation.graphics)
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)

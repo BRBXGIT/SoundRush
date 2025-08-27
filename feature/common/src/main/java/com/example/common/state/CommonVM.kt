@@ -81,6 +81,7 @@ class CommonVM @Inject constructor(
     fun sendIntent(intent: CommonIntent) {
         when(intent) {
             CommonIntent.RefreshTokens -> refreshTokens()
+            is CommonIntent.SetNavIndex -> _commonState.update { state -> state.copy(currentNavIndex = intent.index) }
         }
     }
 }

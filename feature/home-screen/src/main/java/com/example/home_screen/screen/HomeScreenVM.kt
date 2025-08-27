@@ -39,15 +39,9 @@ class HomeScreenVM @Inject constructor(
         .flatMapLatest { token -> repo.getPlaylists(token) }
         .cachedIn(viewModelScope)
 
-    private fun fetchAccessToken(token: String) {
-        viewModelScope.launch(dispatcherIo) {
-            _homeScreenState.update { state -> state.copy(token) }
-        }
-    }
-
     fun sendIntent(intent: HomeScreenIntent) {
         when(intent) {
-            is HomeScreenIntent.FetchAccessToken -> fetchAccessToken(intent.token)
+            is HomeScreenIntent.FetchAccessToken -> _homeScreenState.update { state -> state.copy(accessToken = intent.token) }
         }
     }
 }

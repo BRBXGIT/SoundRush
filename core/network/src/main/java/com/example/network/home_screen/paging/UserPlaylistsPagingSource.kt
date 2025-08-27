@@ -31,7 +31,7 @@ class UserPlaylistsPagingSource(
             LoadResult.Page(
                 data = result.collection,
                 prevKey = null,
-                nextKey = result.nextHref.takeIf { it.isNotBlank() }
+                nextKey = result.nextHref.takeIf { !it.isNullOrBlank() }
             )
         } else {
             LoadResult.Error(NetworkException(response.error!!, response.label!!))

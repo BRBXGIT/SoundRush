@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Collection(
     @SerializedName("artwork_url")
-    val artworkUrl: Any? = Any(),
+    val artworkUrl: String? = "",
     @SerializedName("created_at")
     val createdAt: String = "",
     @SerializedName("description")

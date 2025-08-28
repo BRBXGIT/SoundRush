@@ -2,6 +2,7 @@ package com.example.home_screen.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,7 @@ import com.example.common.utils.PagingErrorContainer
 import com.example.design_system.snackbars.SnackbarObserver
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
+import com.example.home_screen.sections.CreatePlaylistFab
 import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
 import kotlinx.coroutines.launch
@@ -73,6 +75,12 @@ fun HomeScreen(
                 scrollBehavior = topBarScrollBehavior
             )
         },
+        floatingActionButton = {
+            CreatePlaylistFab(
+                onClick = {}
+            )
+        },
+        contentWindowInsets = WindowInsets(bottom = navBarBottomPadding()),
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),

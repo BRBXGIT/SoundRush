@@ -11,17 +11,17 @@ data class NavItem(
 val navItems = listOf(
     NavItem(
         icon = SoundRushIcons.PlaylistsAnimated,
-        label = "Playlists",
+        label = BarsUtils.PLAYLISTS,
         destination = ""
     ),
     NavItem(
         icon = SoundRushIcons.HeartAnimated,
-        label = "Likes",
+        label = BarsUtils.LIKES,
         destination = ""
     ),
     NavItem(
         icon = SoundRushIcons.SettingsAnimated,
-        label = "Settings",
+        label = BarsUtils.SETTINGS,
         destination = ""
     )
 )

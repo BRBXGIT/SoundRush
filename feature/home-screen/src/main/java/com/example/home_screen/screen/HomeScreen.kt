@@ -20,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.common.bars.navBarBottomPadding
 import com.example.common.state.CommonIntent
 import com.example.common.state.CommonVM
 import com.example.common.utils.PagingErrorContainer
@@ -80,7 +81,10 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(mColors.background)
-                .padding(innerPadding)
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = navBarBottomPadding()
+                )
         ) {
             PlaylistsLVG(
                 playlists = playlists,

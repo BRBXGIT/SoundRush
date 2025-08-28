@@ -5,6 +5,10 @@ import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -19,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.example.design_system.theme.mColors
 
 @Composable
@@ -27,7 +32,9 @@ fun BoxScope.NavBar(
     onNavItemClick: (Int, Any) -> Unit
 ) {
     NavigationBar(
-        modifier = Modifier.align(Alignment.BottomCenter)
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .height(navBarBottomPadding())
     ) {
         navItems.forEachIndexed { index, navItem ->
             val isSelected = index == selectedItemIndex

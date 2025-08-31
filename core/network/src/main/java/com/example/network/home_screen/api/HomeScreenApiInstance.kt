@@ -1,10 +1,14 @@
 package com.example.network.home_screen.api
 
 import com.example.network.common.NetworkUtils
+import com.example.network.home_screen.models.create_playlist.create_playlist_request.CreatePlaylistRequest
+import com.example.network.home_screen.models.create_playlist.create_playlist_response.CreatePlaylistResponse
 import com.example.network.home_screen.models.user_playlists_response.UserPlaylistsResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
@@ -22,4 +26,10 @@ interface HomeScreenApiInstance {
         @Header("Authorization") accessToken: String,
         @Url nextHref: String
     ): Response<UserPlaylistsResponse>
+
+    @POST("playlists")
+    suspend fun createPlaylist(
+        @Header("Authorization") accessToken: String?,
+        @Body createPlaylistRequest: CreatePlaylistRequest
+    ): Response<CreatePlaylistResponse>
 }

@@ -5,5 +5,7 @@ data class HomeScreenState(
 
     val isCreatePlaylistBSVisible: Boolean = false,
     val playlistName: String = "",
-    val playlistDescription: String = ""
+    val playlistDescription: String = "",
+
+    val didVibrate: Boolean = false
 )

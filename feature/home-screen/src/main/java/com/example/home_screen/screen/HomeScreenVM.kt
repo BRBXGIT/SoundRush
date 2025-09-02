@@ -38,8 +38,8 @@ class HomeScreenVM @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val playlists = _homeScreenState
         .map { it.accessToken }
-        .distinctUntilChanged()
         .filterNotNull()
+        .distinctUntilChanged()
         .flatMapLatest { token -> repo.getPlaylists(token) }
         .cachedIn(viewModelScope)
 
@@ -88,6 +88,12 @@ class HomeScreenVM @Inject constructor(
                 }
             }
             is HomeScreenIntent.CreatePlaylist -> createPlaylist(intent.onComplete)
+
+            is HomeScreenIntent.ChangeDidVibrate -> {
+                _homeScreenState.update { state ->
+                    state.copy(didVibrate = intent.didVibrate)
+                }
+            }
         }
     }
 }

@@ -1,15 +1,21 @@
 package com.example.home_screen.screen
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -34,7 +41,7 @@ import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -70,12 +77,7 @@ fun HomeScreen(
     val topBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        topBar = {
-            HomeScreenTopBar(
-                isLoading = isLoading,
-                scrollBehavior = topBarScrollBehavior
-            )
-        },
+        topBar = { HomeScreenTopBar(isLoading, topBarScrollBehavior) },
         floatingActionButton = {
             CreatePlaylistFab(
                 onClick = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) }
@@ -96,10 +98,12 @@ fun HomeScreen(
             )
         }
 
+        val pullToRefreshState = rememberPullToRefreshState()
         PullToRefreshBox(
-            indicator = {},
+            state = pullToRefreshState,
             isRefreshing = isLoading,
-            onRefresh = { playlists.refresh() },
+            onRefresh = {  },
+            indicator = {},
             modifier = Modifier
                 .fillMaxSize()
                 .background(mColors.background)
@@ -108,10 +112,23 @@ fun HomeScreen(
                     bottom = navBarBottomPadding()
                 )
         ) {
-            PlaylistsLVG(
-                playlists = playlists,
-                onCardClick = {},
-            )
+            Column {
+                // Simple pull to refresh
+                val distance = pullToRefreshState.distanceFraction
+                val animatedPullToRefresh by animateDpAsState((distance * 8).dp)
+                Spacer(Modifier.height(animatedPullToRefresh))
+                CreateVibration(
+                    distance = distance,
+                    didVibrate = screenState.didVibrate,
+                    viewModel = viewModel,
+                    onVibrate = { playlists.refresh() }
+                )
+
+                PlaylistsLVG(
+                    playlists = playlists,
+                    onCardClick = {},
+                )
+            }
         }
     }
 }

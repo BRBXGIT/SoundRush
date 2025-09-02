@@ -16,4 +16,5 @@ object SoundRushIcons {
 
     // Filled
     val PlusFilled = R.drawable.ic_plus_filled
+    val BinFilled = R.drawable.ic_bin_filled
 }

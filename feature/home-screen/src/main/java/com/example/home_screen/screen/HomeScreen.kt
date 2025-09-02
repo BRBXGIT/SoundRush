@@ -37,6 +37,7 @@ import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
 import com.example.home_screen.sections.CreatePlaylistBS
 import com.example.home_screen.sections.CreatePlaylistFab
+import com.example.home_screen.sections.FloatingToolBar
 import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
 import kotlinx.coroutines.launch
@@ -79,8 +80,8 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = { HomeScreenTopBar(isLoading, topBarScrollBehavior) },
         floatingActionButton = {
-            CreatePlaylistFab(
-                onClick = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) }
+            FloatingToolBar(
+                onFabClick = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) }
             )
         },
         contentWindowInsets = WindowInsets(bottom = navBarBottomPadding()),

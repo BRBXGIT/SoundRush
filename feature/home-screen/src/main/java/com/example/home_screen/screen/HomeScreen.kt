@@ -91,7 +91,7 @@ fun HomeScreen(
         if (screenState.isCreatePlaylistBSVisible) {
             CreatePlaylistBS(
                 screenState = screenState,
-                onCreateClick = { viewModel.sendIntent(HomeScreenIntent.CreatePlaylist { playlists.refresh() }) },
+                onCreateClick = { viewModel.sendIntent(HomeScreenIntent.CreatePlaylist) },
                 onDismissRequest = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) },
                 onPlaylistNameChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistName(it)) },
                 onPlaylistDescriptionChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistDescription(it)) },
@@ -102,7 +102,7 @@ fun HomeScreen(
         PullToRefreshBox(
             state = pullToRefreshState,
             isRefreshing = isLoading,
-            onRefresh = {  },
+            onRefresh = { viewModel.sendIntent(HomeScreenIntent.RefreshPlaylists) },
             indicator = {},
             modifier = Modifier
                 .fillMaxSize()
@@ -121,7 +121,6 @@ fun HomeScreen(
                     distance = distance,
                     didVibrate = screenState.didVibrate,
                     viewModel = viewModel,
-                    onVibrate = { playlists.refresh() }
                 )
 
                 PlaylistsLVG(

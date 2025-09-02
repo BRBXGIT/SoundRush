@@ -19,7 +19,6 @@ fun CreateVibration(
     distance: Float,
     didVibrate: Boolean,
     viewModel: HomeScreenVM,
-    onVibrate: () -> Unit
 ) {
     val activity = LocalContext.current as Activity
     LaunchedEffect(distance) {
@@ -35,9 +34,6 @@ fun CreateVibration(
             vibrator.vibrate(effect)
         } else if (distance < 1f) {
             viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(false))
-            if (didVibrate) {
-                onVibrate()
-            }
         }
     }
 }

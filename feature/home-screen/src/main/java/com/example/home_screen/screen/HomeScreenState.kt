@@ -2,6 +2,7 @@ package com.example.home_screen.screen
 
 data class HomeScreenState(
     val accessToken: String? = null,
+    val refreshTrigger: Int = 0,
 
     val isCreatePlaylistBSVisible: Boolean = false,
     val playlistName: String = "",

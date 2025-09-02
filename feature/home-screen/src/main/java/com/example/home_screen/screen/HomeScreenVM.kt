@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -36,16 +37,14 @@ class HomeScreenVM @Inject constructor(
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val playlists = _homeScreenState
-        .map { it.accessToken }
-        .filterNotNull()
-        .distinctUntilChanged()
-        .flatMapLatest { token -> repo.getPlaylists(token) }
+    val playlists = combine(
+        _homeScreenState.map { it.accessToken }.filterNotNull().distinctUntilChanged(),
+        _homeScreenState.map { it.refreshTrigger }.distinctUntilChanged()
+    ) { token, trigger -> token to trigger }
+        .flatMapLatest { (token, trigger) -> repo.getPlaylists(token) }
         .cachedIn(viewModelScope)
 
-    private fun createPlaylist(
-        onComplete: () -> Unit
-    ) {
+    private fun createPlaylist() {
         viewModelScope.launch(dispatcherIo) {
             _homeScreenState.update { state ->
                 state.copy(isCreatePlaylistBSVisible = false)
@@ -58,19 +57,28 @@ class HomeScreenVM @Inject constructor(
             )
 
             if (result.error == NetworkErrors.SUCCESS) {
-                onComplete()
+                refreshPlaylists()
             } else {
                 sendRetrySnackbar(
                     label = result.label!!,
-                    action = { createPlaylist(onComplete) }
+                    action = { createPlaylist() }
                 )
             }
         }
     }
 
+    private fun refreshPlaylists() {
+        _homeScreenState.value = _homeScreenState.value.copy(refreshTrigger = _homeScreenState.value.refreshTrigger + 1)
+    }
+
     fun sendIntent(intent: HomeScreenIntent) {
         when(intent) {
-            is HomeScreenIntent.FetchAccessToken -> _homeScreenState.update { state -> state.copy(accessToken = intent.token) }
+            is HomeScreenIntent.FetchAccessToken -> {
+                _homeScreenState.update { state ->
+                    state.copy(accessToken = intent.token)
+                }
+            }
+            HomeScreenIntent.RefreshPlaylists -> refreshPlaylists()
 
             HomeScreenIntent.ChangeCreatePlaylistBSVisibility -> {
                 _homeScreenState.update { state ->
@@ -87,7 +95,7 @@ class HomeScreenVM @Inject constructor(
                     state.copy(playlistName = intent.name)
                 }
             }
-            is HomeScreenIntent.CreatePlaylist -> createPlaylist(intent.onComplete)
+            HomeScreenIntent.CreatePlaylist -> createPlaylist()
 
             is HomeScreenIntent.ChangeDidVibrate -> {
                 _homeScreenState.update { state ->

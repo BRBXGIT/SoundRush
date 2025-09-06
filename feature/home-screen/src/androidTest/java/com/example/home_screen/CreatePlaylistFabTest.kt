@@ -23,7 +23,8 @@ class CreatePlaylistFabTest {
         composeTestRule.setContent {
             SoundRushTheme {
                 CreatePlaylistFab(
-                    onClick = { number = 1 }
+                    onClick = { number = 1 },
+                    isInDeleteMode = false
                 )
             }
         }

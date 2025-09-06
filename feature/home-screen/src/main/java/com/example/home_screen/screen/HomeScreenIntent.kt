@@ -1,21 +1,22 @@
 package com.example.home_screen.screen
 
 sealed interface HomeScreenIntent {
-    data class FetchAccessToken(val token: String): HomeScreenIntent
-    data object RefreshPlaylists: HomeScreenIntent
+    // Auth & data
+    data class FetchAccessToken(val token: String) : HomeScreenIntent
+    data object RefreshPlaylists : HomeScreenIntent
 
-    data object ChangeCreatePlaylistBSVisibility: HomeScreenIntent
-    data class ChangePlaylistName(val name: String): HomeScreenIntent
-    data class ChangePlaylistDescription(val description: String): HomeScreenIntent
-    data object CreatePlaylist: HomeScreenIntent
+    // Playlist creation
+    data object ChangeCreatePlaylistBSVisibility : HomeScreenIntent
+    data class ChangePlaylistName(val name: String) : HomeScreenIntent
+    data class ChangePlaylistDescription(val description: String) : HomeScreenIntent
+    data object CreatePlaylist : HomeScreenIntent
 
-    data class ChangeDidVibrate(val didVibrate: Boolean): HomeScreenIntent
+    // UX state
+    data class ChangeDidVibrate(val didVibrate: Boolean) : HomeScreenIntent
 
-    data object ChangeIsInDeleteMode: HomeScreenIntent
-    data class AddUrnToDeleteList(
-        val urn: String,
-        val playlistName: String
-    ): HomeScreenIntent
-    data class RemoveUrnFromList(val urn: String): HomeScreenIntent
-    data object DeletePlaylists: HomeScreenIntent
+    // Playlist deletion
+    data object ChangeIsInDeleteMode : HomeScreenIntent
+    data class AddUrnToDeleteList(val urn: String, val playlistName: String) : HomeScreenIntent
+    data class RemoveUrnFromList(val urn: String) : HomeScreenIntent
+    data object DeletePlaylists : HomeScreenIntent
 }

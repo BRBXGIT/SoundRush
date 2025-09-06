@@ -31,7 +31,7 @@ import javax.inject.Inject
 class HomeScreenVM @Inject constructor(
     private val repo: HomeScreenRepo,
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher
-): ViewModel() {
+) : ViewModel() {
 
     private val _homeScreenState = MutableStateFlow(HomeScreenState())
     val homeScreenState = _homeScreenState.stateIn(
@@ -40,25 +40,32 @@ class HomeScreenVM @Inject constructor(
         HomeScreenState()
     )
 
-    // TODO TEST PAGING!!!
     @OptIn(ExperimentalCoroutinesApi::class)
     val playlists = combine(
         _homeScreenState.map { it.accessToken }.filterNotNull().distinctUntilChanged(),
         _homeScreenState.map { it.refreshTrigger }.distinctUntilChanged()
     ) { token, trigger -> token to trigger }
-        .flatMapLatest { (token, trigger) -> repo.getPlaylists(token) }
+        .flatMapLatest { (token, _) -> repo.getPlaylists(token) }
         .cachedIn(viewModelScope)
+
+    // region: private helpers
+    private fun updateState(transform: (HomeScreenState) -> HomeScreenState) {
+        _homeScreenState.update(transform)
+    }
+
+    private fun refreshPlaylists() {
+        updateState { it.copy(refreshTrigger = it.refreshTrigger + 1) }
+    }
 
     private fun createPlaylist() {
         viewModelScope.launch(dispatcherIo) {
-            _homeScreenState.update { state ->
-                state.copy(isCreatePlaylistBSVisible = false)
-            }
+            updateState { it.copy(isCreatePlaylistBSVisible = false) }
 
+            val state = _homeScreenState.value
             val result = repo.createPlaylist(
-                accessToken = _homeScreenState.value.accessToken,
-                playlistName = _homeScreenState.value.playlistName,
-                description = _homeScreenState.value.playlistDescription
+                accessToken = state.accessToken,
+                playlistName = state.playlistName,
+                description = state.playlistDescription
             )
 
             if (result.error == NetworkErrors.SUCCESS) {
@@ -74,21 +81,16 @@ class HomeScreenVM @Inject constructor(
 
     private fun deletePlaylists() {
         viewModelScope.launch(dispatcherIo) {
-            _homeScreenState.update { state ->
-                state.copy(isInDeleteMode = false)
-            }
+            updateState { it.copy(isInDeleteMode = false) }
 
             val urns = _homeScreenState.value.playlistsUrnsForDelete
-
-            urns.forEach { urn ->
-                val result = repo.deletePlaylist(_homeScreenState.value.accessToken, urn.key)
+            urns.forEach { (urn, playlistName) ->
+                val result = repo.deletePlaylist(_homeScreenState.value.accessToken, urn)
 
                 if (result.error == NetworkErrors.SUCCESS) {
-                    _homeScreenState.update { state ->
-                        state.copy(playlistsUrnsForDelete = urns - urn.key)
-                    }
+                    updateState { it.copy(playlistsUrnsForDelete = urns - urn) }
                 } else {
-                    sendSimpleSnackbar("Problem with deleting playlist: ${urn.value}")
+                    sendSimpleSnackbar("Problem with deleting playlist: $playlistName")
                 }
             }
 
@@ -96,57 +98,33 @@ class HomeScreenVM @Inject constructor(
         }
     }
 
-    private fun refreshPlaylists() {
-        _homeScreenState.value = _homeScreenState.value.copy(refreshTrigger = _homeScreenState.value.refreshTrigger + 1)
-    }
-
+    // endregion
     fun sendIntent(intent: HomeScreenIntent) {
-        when(intent) {
-            is HomeScreenIntent.FetchAccessToken -> {
-                _homeScreenState.update { state ->
-                    state.copy(accessToken = intent.token)
-                }
-            }
+        when (intent) {
+            // Auth & data
+            is HomeScreenIntent.FetchAccessToken -> updateState { it.copy(accessToken = intent.token) }
             HomeScreenIntent.RefreshPlaylists -> refreshPlaylists()
 
-            HomeScreenIntent.ChangeCreatePlaylistBSVisibility -> {
-                _homeScreenState.update { state ->
-                    state.copy(isCreatePlaylistBSVisible = !_homeScreenState.value.isCreatePlaylistBSVisible)
-                }
-            }
-            is HomeScreenIntent.ChangePlaylistDescription -> {
-                _homeScreenState.update { state ->
-                    state.copy(playlistDescription = intent.description)
-                }
-            }
-            is HomeScreenIntent.ChangePlaylistName -> {
-                _homeScreenState.update { state ->
-                    state.copy(playlistName = intent.name)
-                }
-            }
+            // Playlist creation
+            HomeScreenIntent.ChangeCreatePlaylistBSVisibility ->
+                updateState { it.copy(isCreatePlaylistBSVisible = !it.isCreatePlaylistBSVisible) }
+            is HomeScreenIntent.ChangePlaylistName ->
+                updateState { it.copy(playlistName = intent.name) }
+            is HomeScreenIntent.ChangePlaylistDescription ->
+                updateState { it.copy(playlistDescription = intent.description) }
             HomeScreenIntent.CreatePlaylist -> createPlaylist()
 
-            is HomeScreenIntent.ChangeDidVibrate -> {
-                _homeScreenState.update { state ->
-                    state.copy(didVibrate = intent.didVibrate)
-                }
-            }
+            // UX state
+            is HomeScreenIntent.ChangeDidVibrate ->
+                updateState { it.copy(didVibrate = intent.didVibrate) }
 
-            HomeScreenIntent.ChangeIsInDeleteMode -> {
-                _homeScreenState.update { state ->
-                    state.copy(isInDeleteMode = !_homeScreenState.value.isInDeleteMode)
-                }
-            }
-            is HomeScreenIntent.AddUrnToDeleteList -> {
-                _homeScreenState.update { state ->
-                    state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete + (intent.urn to intent.playlistName))
-                }
-            }
-            is HomeScreenIntent.RemoveUrnFromList -> {
-                _homeScreenState.update { state ->
-                    state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete - intent.urn)
-                }
-            }
+            // Playlist deletion
+            HomeScreenIntent.ChangeIsInDeleteMode ->
+                updateState { it.copy(isInDeleteMode = !it.isInDeleteMode) }
+            is HomeScreenIntent.AddUrnToDeleteList ->
+                updateState { it.copy(playlistsUrnsForDelete = it.playlistsUrnsForDelete + (intent.urn to intent.playlistName)) }
+            is HomeScreenIntent.RemoveUrnFromList ->
+                updateState { it.copy(playlistsUrnsForDelete = it.playlistsUrnsForDelete - intent.urn) }
             HomeScreenIntent.DeletePlaylists -> deletePlaylists()
         }
     }

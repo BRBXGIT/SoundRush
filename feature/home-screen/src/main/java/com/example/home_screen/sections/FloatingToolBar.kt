@@ -37,7 +37,7 @@ fun FloatingToolBar(
             ) {
                 Icon(
                     painter = painterResource(SoundRushIcons.BinFilled),
-                    contentDescription = ""
+                    contentDescription = null
                 )
             }
         },

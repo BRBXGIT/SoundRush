@@ -23,7 +23,7 @@ fun FloatingToolBar(
             CreatePlaylistFab(
                 onClick = {
                     if (screenState.isInDeleteMode) {
-                        // TODO()
+                        viewModel.sendIntent(HomeScreenIntent.DeletePlaylists)
                     } else {
                         viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility)
                     }

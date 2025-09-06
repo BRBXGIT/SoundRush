@@ -14,9 +14,9 @@ import com.example.network.home_screen.models.user_playlists_response.Collection
 
 @Composable
 fun PlaylistsLVG(
-    selectedPlaylistsUrns: List<String>,
+    selectedPlaylistsUrns: Set<String>,
     playlists: LazyPagingItems<Collection>,
-    onCardClick: (String) -> Unit,
+    onCardClick: (String, String) -> Unit,
     isInDeleteMode: Boolean
 ) {
     LazyVerticalGrid(
@@ -35,7 +35,7 @@ fun PlaylistsLVG(
                     title = playlist.title,
                     trackCount = playlist.trackCount,
                     creator = playlist.user.fullName,
-                    onClick = { onCardClick(playlist.urn) },
+                    onClick = { onCardClick(playlist.urn, playlist.title) },
                     showBorder = isInDeleteMode && playlist.urn in selectedPlaylistsUrns,
                 )
             }

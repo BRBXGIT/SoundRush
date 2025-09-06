@@ -11,5 +11,5 @@ data class HomeScreenState(
     val didVibrate: Boolean = false,
 
     val isInDeleteMode: Boolean = false,
-    val playlistsUrnsForDelete: List<String> = emptyList()
+    val playlistsUrnsForDelete: Map<String, String> = emptyMap()
 )

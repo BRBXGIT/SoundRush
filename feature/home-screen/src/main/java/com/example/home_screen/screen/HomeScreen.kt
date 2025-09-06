@@ -146,15 +146,15 @@ private fun PullToRefreshContent(
             )
 
             PlaylistsLVG(
-                selectedPlaylistsUrns = screenState.playlistsUrnsForDelete,
+                selectedPlaylistsUrns = screenState.playlistsUrnsForDelete.keys,
                 playlists = playlists,
                 isInDeleteMode = screenState.isInDeleteMode,
-                onCardClick = { urn ->
+                onCardClick = { urn, name ->
                     if (screenState.isInDeleteMode) {
                         if (urn in screenState.playlistsUrnsForDelete) {
                             viewModel.sendIntent(HomeScreenIntent.RemoveUrnFromList(urn))
                         } else {
-                            viewModel.sendIntent(HomeScreenIntent.AddUrnToDeleteList(urn))
+                            viewModel.sendIntent(HomeScreenIntent.AddUrnToDeleteList(urn, name))
                         }
                     } else {
                         // TODO: Обычный клик по плейлисту

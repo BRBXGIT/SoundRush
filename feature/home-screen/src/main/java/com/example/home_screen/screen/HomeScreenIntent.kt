@@ -12,6 +12,10 @@ sealed interface HomeScreenIntent {
     data class ChangeDidVibrate(val didVibrate: Boolean): HomeScreenIntent
 
     data object ChangeIsInDeleteMode: HomeScreenIntent
-    data class AddUrnToDeleteList(val urn: String): HomeScreenIntent
+    data class AddUrnToDeleteList(
+        val urn: String,
+        val playlistName: String
+    ): HomeScreenIntent
     data class RemoveUrnFromList(val urn: String): HomeScreenIntent
+    data object DeletePlaylists: HomeScreenIntent
 }

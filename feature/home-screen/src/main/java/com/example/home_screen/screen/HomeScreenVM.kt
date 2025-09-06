@@ -1,12 +1,16 @@
 package com.example.home_screen.screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.HomeScreenRepo
+import com.example.design_system.snackbars.SnackbarController
+import com.example.design_system.snackbars.SnackbarEvent
 import com.example.design_system.snackbars.sendRetrySnackbar
+import com.example.design_system.snackbars.sendSimpleSnackbar
 import com.example.network.common.NetworkErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -68,6 +72,30 @@ class HomeScreenVM @Inject constructor(
         }
     }
 
+    private fun deletePlaylists() {
+        viewModelScope.launch(dispatcherIo) {
+            _homeScreenState.update { state ->
+                state.copy(isInDeleteMode = false)
+            }
+
+            val urns = _homeScreenState.value.playlistsUrnsForDelete
+
+            urns.forEach { urn ->
+                val result = repo.deletePlaylist(_homeScreenState.value.accessToken, urn.key)
+
+                if (result.error == NetworkErrors.SUCCESS) {
+                    _homeScreenState.update { state ->
+                        state.copy(playlistsUrnsForDelete = urns - urn.key)
+                    }
+                } else {
+                    sendSimpleSnackbar("Problem with deleting playlist: ${urn.value}")
+                }
+            }
+
+            refreshPlaylists()
+        }
+    }
+
     private fun refreshPlaylists() {
         _homeScreenState.value = _homeScreenState.value.copy(refreshTrigger = _homeScreenState.value.refreshTrigger + 1)
     }
@@ -111,7 +139,7 @@ class HomeScreenVM @Inject constructor(
             }
             is HomeScreenIntent.AddUrnToDeleteList -> {
                 _homeScreenState.update { state ->
-                    state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete + intent.urn)
+                    state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete + (intent.urn to intent.playlistName))
                 }
             }
             is HomeScreenIntent.RemoveUrnFromList -> {
@@ -119,6 +147,7 @@ class HomeScreenVM @Inject constructor(
                     state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete - intent.urn)
                 }
             }
+            HomeScreenIntent.DeletePlaylists -> deletePlaylists()
         }
     }
 }

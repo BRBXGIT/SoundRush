@@ -18,9 +18,10 @@ class OnboardingScreenRepoImpl @Inject constructor(
 
     override suspend fun saveOnboardingCompleted() = onboardingManager.saveOnBoardingCompleted()
 
-    override suspend fun saveAccessToken(token: String) = authManager.saveAccessToken(token)
-
-    override suspend fun saveRefreshToken(token: String) = authManager.saveRefreshToken(token)
+    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
+        authManager.saveAccessToken(accessToken)
+        authManager.saveRefreshToken(refreshToken)
+    }
 
     override suspend fun getTokens(code: String): NetworkResponse<TokensResponse> = NetworkRequest.exec {
         authApiInstance.getTokens(

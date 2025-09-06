@@ -14,3 +14,5 @@ suspend fun sendRetrySnackbar(
         )
     )
 }
+
+suspend fun sendSimpleSnackbar(label: String) = SnackbarController.sendEvent(SnackbarEvent(message = label))

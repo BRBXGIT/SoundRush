@@ -35,8 +35,7 @@ class OnboardingScreenVM @Inject constructor(
         refreshToken: String
     ) {
         viewModelScope.launch(dispatcherIo) {
-            repo.saveAccessToken(accessToken)
-            repo.saveRefreshToken(refreshToken)
+            repo.saveTokens("${AuthUtils.TOKEN_TYPE} $accessToken", refreshToken)
             repo.saveOnboardingCompleted()
         }
     }

@@ -59,6 +59,8 @@ dependencies {
     implementation(project(":feature:home-screen"))
     implementation(project(":feature:common"))
 
+    // Material 3
+    implementation(libs.androidx.material3.android)
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -75,7 +77,6 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)

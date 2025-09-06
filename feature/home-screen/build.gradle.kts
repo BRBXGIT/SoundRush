@@ -34,13 +34,18 @@ dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
+    implementation(project(":core:data"))
+    implementation(project(":core:network"))
+    implementation(project(":core:common"))
+    // Feature modules
+    implementation(project(":feature:common"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     // Material 3
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.android)
     // Nav
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
@@ -48,4 +53,15 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+    // Paging
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
+    // Android testing
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

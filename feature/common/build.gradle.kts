@@ -39,12 +39,25 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:common"))
 
+    // Material 3
+    implementation(libs.androidx.material3.android)
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
+    // Animated icons(compose animation graphics)
+    implementation(libs.androidx.animation.graphics)
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+    // Paging
+    implementation(libs.androidx.paging.compose)
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    // Android testing
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

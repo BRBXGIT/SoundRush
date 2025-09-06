@@ -1,7 +1,6 @@
 package com.example.onboardng_screen
 
 import com.example.data.domain.OnboardingScreenRepo
-import com.example.design_system.snackbars.SnackbarController
 import com.example.network.auth.models.TokensResponse
 import com.example.network.common.NetworkErrors
 import com.example.network.common.NetworkResponse
@@ -13,17 +12,13 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkObject
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -81,11 +76,10 @@ class OnboardingScreenVMTest {
         val code = "123"
 
         coEvery {
-            repo.getTokens(any(), any(), any(), any(), code)
+            repo.getTokens(code)
         } returns successResult()
 
-        coEvery { repo.saveAccessToken(any()) } just Runs
-        coEvery { repo.saveRefreshToken(any()) } just Runs
+        coEvery { repo.saveTokens("acc_123", "ref_123") } just Runs
 
         assertFalse(vm.onboardingScreenState.value.isLoading)
 
@@ -97,8 +91,7 @@ class OnboardingScreenVMTest {
 
         advanceUntilIdle()
 
-        coVerify(exactly = 1) { repo.saveAccessToken("acc_123") }
-        coVerify(exactly = 1) { repo.saveRefreshToken("ref_456") }
+        coVerify(exactly = 1) { repo.saveTokens("acc_123", "ref_123") }
 
         assertFalse(vm.onboardingScreenState.value.isLoading)
     }
@@ -106,7 +99,7 @@ class OnboardingScreenVMTest {
     @Test
     fun `on error do not call and loading state is false`() = runTest {
         val code = "123"
-        coEvery { repo.getTokens(any(), any(), any(), any(), code) } returns errorResult()
+        coEvery { repo.getTokens(code) } returns errorResult()
 
         vm.sendIntent(
             OnboardingScreenIntent.GetTokens(

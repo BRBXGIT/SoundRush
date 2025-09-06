@@ -36,6 +36,7 @@ class HomeScreenVM @Inject constructor(
         HomeScreenState()
     )
 
+    // TODO TEST PAGING!!!
     @OptIn(ExperimentalCoroutinesApi::class)
     val playlists = combine(
         _homeScreenState.map { it.accessToken }.filterNotNull().distinctUntilChanged(),
@@ -100,6 +101,22 @@ class HomeScreenVM @Inject constructor(
             is HomeScreenIntent.ChangeDidVibrate -> {
                 _homeScreenState.update { state ->
                     state.copy(didVibrate = intent.didVibrate)
+                }
+            }
+
+            HomeScreenIntent.ChangeIsInDeleteMode -> {
+                _homeScreenState.update { state ->
+                    state.copy(isInDeleteMode = !_homeScreenState.value.isInDeleteMode)
+                }
+            }
+            is HomeScreenIntent.AddUrnToDeleteList -> {
+                _homeScreenState.update { state ->
+                    state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete + intent.urn)
+                }
+            }
+            is HomeScreenIntent.RemoveUrnFromList -> {
+                _homeScreenState.update { state ->
+                    state.copy(playlistsUrnsForDelete = _homeScreenState.value.playlistsUrnsForDelete - intent.urn)
                 }
             }
         }

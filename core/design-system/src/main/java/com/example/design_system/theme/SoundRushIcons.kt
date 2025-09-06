@@ -17,4 +17,7 @@ object SoundRushIcons {
     // Filled
     val PlusFilled = R.drawable.ic_plus_filled
     val BinFilled = R.drawable.ic_bin_filled
+    val CheckCircleFilled = R.drawable.ic_check_circle_filled
+    val CheckFilled = R.drawable.ic_check_filled
+    val CrossFilled = R.drawable.ic_cross_filled
 }

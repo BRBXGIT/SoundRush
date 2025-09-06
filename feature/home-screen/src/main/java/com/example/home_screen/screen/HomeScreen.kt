@@ -3,6 +3,7 @@ package com.example.home_screen.screen
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.bars.navBarBottomPadding
 import com.example.common.state.CommonIntent
@@ -36,10 +38,11 @@ import com.example.design_system.snackbars.SnackbarObserver
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
 import com.example.home_screen.sections.CreatePlaylistBS
-import com.example.home_screen.sections.CreatePlaylistFab
 import com.example.home_screen.sections.FloatingToolBar
 import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
+import com.example.network.home_screen.models.create_playlist_request.Playlist
+import com.example.network.home_screen.models.user_playlists_response.Collection
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -51,21 +54,14 @@ fun HomeScreen(
 ) {
     val commonState by commonVM.commonState.collectAsStateWithLifecycle()
     val screenState by viewModel.homeScreenState.collectAsStateWithLifecycle()
-
-    val accessToken = commonState.accessToken
-    LaunchedEffect(accessToken) {
-        if (accessToken != null) {
-            viewModel.sendIntent(HomeScreenIntent.FetchAccessToken(accessToken))
-        }
-    }
-
-    // Snackbars stuff
-    val snackbarHostState = remember { SnackbarHostState() }
-    SnackbarObserver(snackbarHostState)
-    val snackbarScope = rememberCoroutineScope()
-
-    // Paging stuff
     val playlists = viewModel.playlists.collectAsLazyPagingItems()
+
+    HandleAccessToken(commonState.accessToken, viewModel)
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarScope = rememberCoroutineScope()
+    SnackbarObserver(snackbarHostState)
+
     PagingErrorContainer(
         items = playlists,
         onUnauthorized = { commonVM.sendIntent(CommonIntent.RefreshTokens) },
@@ -74,61 +70,97 @@ fun HomeScreen(
         }
     )
 
-    val isLoading = (commonState.isLoading) or (playlists.loadState.refresh is LoadState.Loading)
+    val isLoading = commonState.isLoading || playlists.loadState.refresh is LoadState.Loading
     val topBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = { HomeScreenTopBar(isLoading, topBarScrollBehavior) },
-        floatingActionButton = {
-            FloatingToolBar(
-                onFabClick = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) }
-            )
-        },
+        floatingActionButton = { FloatingToolBar(screenState, viewModel) },
         contentWindowInsets = WindowInsets(bottom = navBarBottomPadding()),
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
+
         if (screenState.isCreatePlaylistBSVisible) {
             CreatePlaylistBS(
                 screenState = screenState,
-                onCreateClick = { viewModel.sendIntent(HomeScreenIntent.CreatePlaylist) },
-                onDismissRequest = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) },
-                onPlaylistNameChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistName(it)) },
-                onPlaylistDescriptionChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistDescription(it)) },
+                viewModel = viewModel,
             )
         }
 
-        val pullToRefreshState = rememberPullToRefreshState()
-        PullToRefreshBox(
-            state = pullToRefreshState,
-            isRefreshing = isLoading,
-            onRefresh = { viewModel.sendIntent(HomeScreenIntent.RefreshPlaylists) },
-            indicator = {},
-            modifier = Modifier
-                .fillMaxSize()
-                .background(mColors.background)
-                .padding(
-                    top = innerPadding.calculateTopPadding(),
-                    bottom = navBarBottomPadding()
-                )
-        ) {
-            Column {
-                // Simple pull to refresh
-                val distance = pullToRefreshState.distanceFraction
-                val animatedPullToRefresh by animateDpAsState((distance * 8).dp)
-                Spacer(Modifier.height(animatedPullToRefresh))
-                CreateVibration(
-                    distance = distance,
-                    didVibrate = screenState.didVibrate,
-                    viewModel = viewModel,
-                )
+        PullToRefreshContent(
+            isLoading = isLoading,
+            innerPadding = innerPadding,
+            screenState = screenState,
+            playlists = playlists,
+            viewModel = viewModel
+        )
+    }
+}
 
-                PlaylistsLVG(
-                    playlists = playlists,
-                    onCardClick = {},
-                )
-            }
+@Composable
+private fun HandleAccessToken(accessToken: String?, viewModel: HomeScreenVM) {
+    LaunchedEffect(accessToken) {
+        accessToken?.let {
+            viewModel.sendIntent(HomeScreenIntent.FetchAccessToken(it))
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PullToRefreshContent(
+    isLoading: Boolean,
+    innerPadding: PaddingValues,
+    screenState: HomeScreenState,
+    playlists: LazyPagingItems<Collection>,
+    viewModel: HomeScreenVM,
+) {
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        state = pullToRefreshState,
+        isRefreshing = isLoading,
+        onRefresh = { viewModel.sendIntent(HomeScreenIntent.RefreshPlaylists) },
+        indicator = {},
+        modifier = Modifier
+            .fillMaxSize()
+            .background(mColors.background)
+            .padding(
+                top = innerPadding.calculateTopPadding(),
+                bottom = navBarBottomPadding()
+            )
+    ) {
+        Column {
+            val distance = pullToRefreshState.distanceFraction
+            val animatedPullToRefresh by animateDpAsState((distance * 8).dp)
+
+            Spacer(Modifier.height(animatedPullToRefresh))
+
+            CreateVibration(
+                distance = distance,
+                didVibrate = screenState.didVibrate,
+                viewModel = viewModel,
+            )
+
+            PlaylistsLVG(
+                selectedPlaylistsUrns = screenState.playlistsUrnsForDelete,
+                playlists = playlists,
+                isInDeleteMode = screenState.isInDeleteMode,
+                onCardClick = { urn ->
+                    if (screenState.isInDeleteMode) {
+                        if (urn in screenState.playlistsUrnsForDelete) {
+                            viewModel.sendIntent(HomeScreenIntent.RemoveUrnFromList(urn))
+                        } else {
+                            viewModel.sendIntent(HomeScreenIntent.AddUrnToDeleteList(urn))
+                        }
+                    } else {
+                        // TODO: Обычный клик по плейлисту
+                    }
+                },
+            )
         }
     }
 }

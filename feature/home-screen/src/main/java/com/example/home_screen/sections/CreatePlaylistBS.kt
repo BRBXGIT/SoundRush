@@ -18,19 +18,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.design_system.theme.UiConstants
 import com.example.design_system.theme.mShapes
+import com.example.home_screen.screen.HomeScreenIntent
 import com.example.home_screen.screen.HomeScreenState
+import com.example.home_screen.screen.HomeScreenVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatePlaylistBS(
     screenState: HomeScreenState,
-    onPlaylistNameChange: (String) -> Unit,
-    onPlaylistDescriptionChange: (String) -> Unit,
-    onCreateClick: () -> Unit,
-    onDismissRequest: () -> Unit
+    viewModel: HomeScreenVM,
 ) {
     ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { viewModel.sendIntent(HomeScreenIntent.ChangeCreatePlaylistBSVisibility) },
         shape = mShapes.small,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ) {
@@ -43,20 +42,20 @@ fun CreatePlaylistBS(
         ) {
             CreatePlaylistBSTextField(
                 value = screenState.playlistName,
-                onValueChange = { onPlaylistNameChange(it) },
+                onValueChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistName(it)) },
                 label = "Playlist name",
                 maxLines = 1
             )
 
             CreatePlaylistBSTextField(
                 value = screenState.playlistDescription,
-                onValueChange = { onPlaylistDescriptionChange(it) },
+                onValueChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistDescription(it)) },
                 label = "Playlist description",
                 maxLines = 2
             )
 
             Button(
-                onClick = onCreateClick,
+                onClick = { viewModel.sendIntent(HomeScreenIntent.CreatePlaylist) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = mShapes.small
             ) {

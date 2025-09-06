@@ -8,6 +8,7 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 
 object HomeScreenUtils {
@@ -20,20 +21,34 @@ fun CreateVibration(
     didVibrate: Boolean,
     viewModel: HomeScreenVM,
 ) {
-    val activity = LocalContext.current as Activity
+    val context = LocalContext.current
+    val vibrator = remember(context) { context.getVibrator() }
+
     LaunchedEffect(distance) {
-        if (distance >= 1.5f && !didVibrate) {
-            viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(true))
-            val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val vibratorManager = activity.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator
-            } else {
-                activity.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        when {
+            distance >= 1.5f && !didVibrate -> {
+                viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(true))
+                vibrator?.vibrateOnce()
             }
-            val effect = VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
-            vibrator.vibrate(effect)
-        } else if (distance < 1f) {
-            viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(false))
+            distance < 1f && didVibrate -> {
+                viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(false))
+            }
         }
     }
+}
+
+@Suppress("DEPRECATION")
+private fun Context.getVibrator(): Vibrator? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val manager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+        manager?.defaultVibrator
+    } else {
+        getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+    }
+}
+
+@Suppress("DEPRECATION")
+private fun Vibrator.vibrateOnce(duration: Long = 50L) {
+    val effect = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
+    vibrate(effect)
 }

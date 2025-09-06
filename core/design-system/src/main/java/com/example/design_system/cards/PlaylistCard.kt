@@ -1,6 +1,7 @@
 package com.example.design_system.cards
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +28,8 @@ fun PlaylistCard(
     title: String,
     trackCount: Int,
     creator: String,
-    onClick: () -> Unit
+    showBorder: Boolean = false,
+    onClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -36,6 +38,17 @@ fun PlaylistCard(
             .clip(mShapes.small)
             .clickable(onClick = onClick)
             .background(mColors.surfaceContainerLow)
+            .then(
+                other = if (showBorder) {
+                    Modifier.border(
+                        width = 2.dp,
+                        color = mColors.tertiary,
+                        shape = mShapes.small
+                    )
+                } else {
+                    Modifier
+                }
+            )
             .padding(8.dp)
     ) {
         Box(
@@ -73,7 +86,8 @@ fun PlaylistCardPreview() {
                 title = "Playlist",
                 trackCount = 228,
                 creator = "BRBX",
-                onClick = {}
+                onClick = {},
+                showBorder = false,
             )
         }
     }

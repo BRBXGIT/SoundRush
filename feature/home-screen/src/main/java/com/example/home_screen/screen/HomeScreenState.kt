@@ -8,5 +8,8 @@ data class HomeScreenState(
     val playlistName: String = "",
     val playlistDescription: String = "",
 
-    val didVibrate: Boolean = false
+    val didVibrate: Boolean = false,
+
+    val isInDeleteMode: Boolean = false,
+    val playlistsUrnsForDelete: List<String> = emptyList()
 )

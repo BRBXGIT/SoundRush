@@ -15,12 +15,22 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.UiConstants
 import com.example.design_system.theme.mShapes
 import com.example.home_screen.screen.HomeScreenIntent
 import com.example.home_screen.screen.HomeScreenState
 import com.example.home_screen.screen.HomeScreenVM
+
+object CreatePlaylistBSConstants {
+    const val PLAYLIST_NAME_STRING = "Playlist name"
+    const val PLAYLIST_DESCRIPTION_STRING = "Playlist description"
+    const val CREATE_PLAYLIST_STRING = "Create playlist"
+    const val CREATE_BUTTON_TEST_TAG = "CreateButtonTestTag"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,24 +53,26 @@ fun CreatePlaylistBS(
             CreatePlaylistBSTextField(
                 value = screenState.playlistName,
                 onValueChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistName(it)) },
-                label = "Playlist name",
+                label = CreatePlaylistBSConstants.PLAYLIST_NAME_STRING,
                 maxLines = 1
             )
 
             CreatePlaylistBSTextField(
                 value = screenState.playlistDescription,
                 onValueChange = { viewModel.sendIntent(HomeScreenIntent.ChangePlaylistDescription(it)) },
-                label = "Playlist description",
+                label = CreatePlaylistBSConstants.PLAYLIST_DESCRIPTION_STRING,
                 maxLines = 2
             )
 
             Button(
                 onClick = { viewModel.sendIntent(HomeScreenIntent.CreatePlaylist) },
-                modifier = Modifier.fillMaxWidth(),
-                shape = mShapes.small
+                shape = mShapes.small,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(CreatePlaylistBSConstants.CREATE_BUTTON_TEST_TAG),
             ) {
                 Text(
-                    text = "Create playlist"
+                    text = CreatePlaylistBSConstants.CREATE_PLAYLIST_STRING
                 )
             }
 
@@ -87,4 +99,17 @@ private fun CreatePlaylistBSTextField(
         modifier = Modifier.fillMaxWidth(),
         maxLines = maxLines
     )
+}
+
+@Preview
+@Composable
+private fun CreatePlaylistBSTextFieldPreview() {
+    SoundRushTheme {
+        CreatePlaylistBSTextField(
+            value = "value",
+            onValueChange = {},
+            label = "label",
+            maxLines = 1
+        )
+    }
 }

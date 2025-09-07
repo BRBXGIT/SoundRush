@@ -41,7 +41,6 @@ import com.example.home_screen.sections.CreatePlaylistBS
 import com.example.home_screen.sections.FloatingToolBar
 import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
-import com.example.network.home_screen.models.create_playlist_request.Playlist
 import com.example.network.home_screen.models.user_playlists_response.Collection
 import kotlinx.coroutines.launch
 
@@ -101,7 +100,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HandleAccessToken(accessToken: String?, viewModel: HomeScreenVM) {
+fun HandleAccessToken(accessToken: String?, viewModel: HomeScreenVM) {
     LaunchedEffect(accessToken) {
         accessToken?.let {
             viewModel.sendIntent(HomeScreenIntent.FetchAccessToken(it))

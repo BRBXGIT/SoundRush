@@ -30,6 +30,13 @@ android {
     }
 }
 
+configurations {
+    all {
+        exclude(group = "org.junit.jupiter")
+        exclude(group = "org.junit.platform")
+    }
+}
+
 dependencies {
 
     // Core modules
@@ -42,7 +49,7 @@ dependencies {
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     // Material 3
     implementation(libs.androidx.material3.android)
@@ -56,12 +63,16 @@ dependencies {
     // Paging
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime.ktx)
-    // Testing
+
+    // -- Testing --
+    // Unit tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.turbine)
-    // Android testing
+    // Android tests
+    androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.mockk.android)
 }

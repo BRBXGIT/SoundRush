@@ -17,7 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.theme.SoundRushIcons
 import com.example.design_system.theme.SoundRushTheme
-import com.example.home_screen.screen.HomeScreenUtils
+
+object CreatePlaylistFabConstants {
+    const val CREATE_PLAYLIST_FAB_TEST_TAG = "CreatePlaylistFabTestTag"
+}
 
 @Composable
 fun CreatePlaylistFab(
@@ -26,7 +29,7 @@ fun CreatePlaylistFab(
 ) {
     FloatingActionButton(
         onClick = onClick,
-        modifier = Modifier.testTag(HomeScreenUtils.CREATE_PLAYLIST_FAB_TEST_TAG)
+        modifier = Modifier.testTag(CreatePlaylistFabConstants.CREATE_PLAYLIST_FAB_TEST_TAG)
     ) {
         IconContainer(!isInDeleteMode) {
             Icon(

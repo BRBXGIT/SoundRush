@@ -6,7 +6,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.design_system.theme.SoundRushIcons
+import com.example.design_system.theme.SoundRushTheme
 import com.example.home_screen.screen.HomeScreenIntent
 import com.example.home_screen.screen.HomeScreenState
 import com.example.home_screen.screen.HomeScreenVM
@@ -42,4 +45,17 @@ fun FloatingToolBar(
             }
         },
     )
+}
+
+@Preview
+@Composable
+private fun FloatingToolBarPreview() {
+    val homeScreenVM = hiltViewModel<HomeScreenVM>()
+
+    SoundRushTheme {
+        FloatingToolBar(
+            screenState = HomeScreenState(),
+            viewModel = homeScreenVM
+        )
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.home_screen.screen
 
-import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
@@ -10,10 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-
-object HomeScreenUtils {
-    const val CREATE_PLAYLIST_FAB_TEST_TAG = "create_playlist_fab_test_tag"
-}
 
 @Composable
 fun CreateVibration(

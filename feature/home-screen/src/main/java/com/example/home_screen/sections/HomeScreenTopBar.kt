@@ -11,9 +11,18 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.design_system.theme.SoundRushTheme
+
+object HomeScreenTopBarConstants {
+    const val PLAYLISTS_TEST_TEXT = "Playlists"
+    const val PROGRESS_BAR_TEST_TEG = "ProgressBarTestTag"
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -26,7 +35,7 @@ fun HomeScreenTopBar(
             scrollBehavior = scrollBehavior,
             title = {
                 Text(
-                    text = "Playlists"
+                    text = HomeScreenTopBarConstants.PLAYLISTS_TEST_TEXT
                 )
             }
         )
@@ -37,7 +46,19 @@ fun HomeScreenTopBar(
             exit = fadeOut(tween(300)),
             modifier = Modifier.fillMaxWidth()
         ) {
-            LinearWavyProgressIndicator()
+            LinearWavyProgressIndicator(modifier = Modifier.testTag(HomeScreenTopBarConstants.PROGRESS_BAR_TEST_TEG))
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun HomeScreenTopBarPreview() {
+    SoundRushTheme {
+        HomeScreenTopBar(
+            isLoading = false,
+            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        )
     }
 }

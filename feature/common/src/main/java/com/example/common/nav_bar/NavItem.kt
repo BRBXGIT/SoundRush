@@ -1,4 +1,4 @@
-package com.example.common.bars
+package com.example.common.nav_bar
 
 import com.example.design_system.theme.SoundRushIcons
 

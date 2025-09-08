@@ -1,4 +1,4 @@
-package com.example.common.bars
+package com.example.common.nav_bar
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues

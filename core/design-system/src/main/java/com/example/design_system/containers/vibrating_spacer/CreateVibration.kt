@@ -1,4 +1,4 @@
-package com.example.home_screen.screen
+package com.example.design_system.containers.vibrating_spacer
 
 import android.content.Context
 import android.os.Build
@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 fun CreateVibration(
     distance: Float,
     didVibrate: Boolean,
-    viewModel: HomeScreenVM,
+    onVibrateChange: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val vibrator = remember(context) { context.getVibrator() }
@@ -22,11 +22,11 @@ fun CreateVibration(
     LaunchedEffect(distance) {
         when {
             distance >= 1.5f && !didVibrate -> {
-                viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(true))
+                onVibrateChange(true)
                 vibrator?.vibrateOnce()
             }
             distance < 1f && didVibrate -> {
-                viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(false))
+                onVibrateChange(false)
             }
         }
     }

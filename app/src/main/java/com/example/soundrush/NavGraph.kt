@@ -10,7 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.common.bars.NavBar
+import com.example.common.nav_bar.NavBar
 import com.example.common.state.CommonIntent
 import com.example.common.state.CommonVM
 import com.example.home_screen.navigation.homeScreen

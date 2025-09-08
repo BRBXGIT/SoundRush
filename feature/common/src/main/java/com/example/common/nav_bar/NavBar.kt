@@ -1,4 +1,4 @@
-package com.example.common.bars
+package com.example.common.nav_bar
 
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter

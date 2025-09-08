@@ -1,4 +1,4 @@
-package com.example.common.bars
+package com.example.common.nav_bar
 
 object BarsUtils {
     const val NAV_BAR_HEIGHT = 80

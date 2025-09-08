@@ -10,7 +10,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PlaylistScreenRoute(
-    val playlistUrn: String
+    val playlistUrn: String,
+    val playlistName: String
 )
 
 fun NavGraphBuilder.playlistScreen(
@@ -18,10 +19,12 @@ fun NavGraphBuilder.playlistScreen(
     commonVM: CommonVM
 ) = composable<PlaylistScreenRoute> {
     val playlistUrn = it.toRoute<PlaylistScreenRoute>().playlistUrn
+    val playlistName = it.toRoute<PlaylistScreenRoute>().playlistName
 
     PlaylistScreen(
         navController = navController,
         playlistUrn = playlistUrn,
-        commonVM = commonVM
+        commonVM = commonVM,
+        playlistName = playlistName
     )
 }

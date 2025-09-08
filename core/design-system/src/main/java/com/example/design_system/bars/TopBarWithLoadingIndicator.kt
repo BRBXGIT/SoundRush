@@ -1,4 +1,4 @@
-package com.example.home_screen.sections
+package com.example.design_system.bars
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -19,14 +19,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.design_system.theme.SoundRushTheme
 
-object HomeScreenTopBarConstants {
-    const val PLAYLISTS_TEST_TEXT = "Playlists"
-    const val PROGRESS_BAR_TEST_TEG = "ProgressBarTestTag"
+object TopBarWithLoadingIndicatorConstants {
+    const val PROGRESS_BAR_TEST_TEG = "ProgressbarTestTag"
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HomeScreenTopBar(
+fun TopBarWithLoadingIndicator(
+    title: String,
     isLoading: Boolean,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
@@ -35,7 +35,7 @@ fun HomeScreenTopBar(
             scrollBehavior = scrollBehavior,
             title = {
                 Text(
-                    text = HomeScreenTopBarConstants.PLAYLISTS_TEST_TEXT
+                    text = title
                 )
             }
         )
@@ -46,7 +46,7 @@ fun HomeScreenTopBar(
             exit = fadeOut(tween(300)),
             modifier = Modifier.fillMaxWidth()
         ) {
-            LinearWavyProgressIndicator(modifier = Modifier.testTag(HomeScreenTopBarConstants.PROGRESS_BAR_TEST_TEG))
+            LinearWavyProgressIndicator(modifier = Modifier.testTag(TopBarWithLoadingIndicatorConstants.PROGRESS_BAR_TEST_TEG))
         }
     }
 }
@@ -54,11 +54,12 @@ fun HomeScreenTopBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun HomeScreenTopBarPreview() {
+private fun TopBarWithLoadingIndicatorPreview() {
     SoundRushTheme {
-        HomeScreenTopBar(
+        TopBarWithLoadingIndicator(
             isLoading = false,
-            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+            title = "Some title"
         )
     }
 }

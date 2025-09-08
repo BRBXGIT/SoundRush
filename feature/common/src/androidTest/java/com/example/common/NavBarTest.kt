@@ -7,8 +7,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.example.common.bars.BarsUtils
-import com.example.common.bars.NavBar
+import com.example.common.`nav_bar\`.BarsUtils
+import com.example.common.`nav_bar\`.NavBar
 import com.example.design_system.theme.SoundRushTheme
 import junit.framework.TestCase.assertEquals
 import org.junit.Rule

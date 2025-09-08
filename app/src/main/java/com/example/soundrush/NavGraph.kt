@@ -16,6 +16,7 @@ import com.example.common.state.CommonVM
 import com.example.home_screen.navigation.homeScreen
 import com.example.home_screen.screen.HomeScreenVM
 import com.example.onboardng_screen.navigation.onboardingScreen
+import com.example.playlist_screen.navigation.playlistScreen
 
 @Composable
 fun NavGraph(
@@ -41,6 +42,11 @@ fun NavGraph(
                 navController = navController,
                 commonVM = commonVM,
                 homeScreenVM = homeScreenVM
+            )
+
+            playlistScreen(
+                navController = navController,
+                commonVM = commonVM
             )
         }
 

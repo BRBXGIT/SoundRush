@@ -31,7 +31,7 @@ fun BoxScope.NavBar(
     NavigationBar(
         modifier = Modifier
             .align(Alignment.BottomCenter)
-            .height(navBarBottomPadding())
+            .height(calculateNavBarBottomPadding())
     ) {
         navItems.forEachIndexed { index, navItem ->
             val isSelected = index == selectedItemIndex

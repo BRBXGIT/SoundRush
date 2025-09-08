@@ -1,6 +1,5 @@
 package com.example.home_screen.screen
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,7 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.common.bars.navBarBottomPadding
+import com.example.common.bars.calculateNavBarBottomPadding
 import com.example.common.state.CommonIntent
 import com.example.common.state.CommonVM
 import com.example.common.utils.PagingErrorContainer
@@ -43,6 +42,7 @@ import com.example.home_screen.sections.FloatingToolBar
 import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
 import com.example.network.home_screen.models.user_playlists_response.Collection
+import com.example.playlist_screen.navigation.PlaylistScreenRoute
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -77,7 +77,7 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = { HomeScreenTopBar(isLoading, topBarScrollBehavior) },
         floatingActionButton = { FloatingToolBar(screenState, viewModel) },
-        contentWindowInsets = WindowInsets(bottom = navBarBottomPadding()),
+        contentWindowInsets = WindowInsets(bottom = calculateNavBarBottomPadding()),
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
@@ -95,7 +95,8 @@ fun HomeScreen(
             innerPadding = innerPadding,
             screenState = screenState,
             playlists = playlists,
-            viewModel = viewModel
+            viewModel = viewModel,
+            navController = navController
         )
     }
 }
@@ -117,6 +118,7 @@ private fun PullToRefreshContent(
     screenState: HomeScreenState,
     playlists: LazyPagingItems<Collection>,
     viewModel: HomeScreenVM,
+    navController: NavController
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
 
@@ -130,7 +132,7 @@ private fun PullToRefreshContent(
             .background(mColors.background)
             .padding(
                 top = innerPadding.calculateTopPadding(),
-                bottom = navBarBottomPadding()
+                bottom = calculateNavBarBottomPadding()
             )
     ) {
         Column {
@@ -157,7 +159,7 @@ private fun PullToRefreshContent(
                             viewModel.sendIntent(HomeScreenIntent.AddUrnToDeleteList(urn, name))
                         }
                     } else {
-                        // TODO: Обычный клик по плейлисту
+                        navController.navigate(PlaylistScreenRoute(urn))
                     }
                 },
             )

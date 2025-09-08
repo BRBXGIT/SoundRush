@@ -1,11 +1,11 @@
 [versions]
 # Basic versions
 agp = "8.10.1"
-kotlin = "2.1.21"
+kotlin = "2.2.10"
 coreKtx = "1.17.0"
-lifecycleRuntimeKtx = "2.9.2"
+lifecycleRuntimeKtx = "2.9.3"
 activityCompose = "1.10.1"
-composeBom = "2025.08.00"
+composeBom = "2025.08.01"
 
 # Testing
 mockk = "1.14.5"
@@ -18,33 +18,33 @@ androidxTestExtJunit = "1.2.1"
 material3Android = "1.4.0-alpha14"
 
 # Hilt
-hiltAndroid = "2.56.2"
+hiltAndroid = "2.57.1"
 hiltNavigationCompose = "1.2.0"
 
 # Navigation & serialization
 composeNavigation = "2.9.3"
-serialization = "1.8.1"
+serialization = "1.9.0"
 
 # Room
 roomKtx = "2.7.2"
 
 # Coil
-coilCompose = "2.6.0"
+coilCompose = "2.7.0"
 
 # Ksp
-kspPlugin = "2.1.21-2.0.1"
+kspPlugin = "2.2.10-2.0.2"
 
 # Paging
 pagingCompose = "3.3.6"
 
 # Lottie
-lottie = "6.5.2"
+lottie = "6.6.7"
 
 # Splashscreen
 coreSplashscreen = "1.0.1"
 
 # Haze
-hazeMaterials = "1.6.6"
+hazeMaterials = "1.6.10"
 
 # Datastore
 datastorePreferences = "1.1.7"
@@ -53,8 +53,8 @@ datastorePreferences = "1.1.7"
 animationGraphics = "1.9.0"
 
 # Retrofit
-retrofit = "2.11.0"
-converterGson = "2.11.0"
+retrofit = "3.0.0"
+converterGson = "3.0.0"
 
 # Exo player
 media3Exoplayer = "1.8.0"

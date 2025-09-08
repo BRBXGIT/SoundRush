@@ -12,7 +12,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.home_screen"
+    namespace = "com.example.playlist_screen"
     compileSdk = 36
 
     defaultConfig {
@@ -30,23 +30,14 @@ android {
     }
 }
 
-configurations {
-    all {
-        exclude(group = "org.junit.jupiter")
-        exclude(group = "org.junit.platform")
-    }
-}
-
 dependencies {
 
     // Core modules
     implementation(project(":core:design-system"))
     implementation(project(":core:data"))
-    implementation(project(":core:network"))
     implementation(project(":core:common"))
     // Feature modules
     implementation(project(":feature:common"))
-    implementation(project(":feature:playlist-screen"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -64,16 +55,4 @@ dependencies {
     // Paging
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime.ktx)
-
-    // -- Testing --
-    // Unit tests
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.turbine)
-    // Android tests
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    androidTestImplementation(libs.mockk.android)
 }

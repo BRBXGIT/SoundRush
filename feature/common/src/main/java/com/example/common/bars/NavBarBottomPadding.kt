@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun navBarBottomPadding(): Dp {
+fun calculateNavBarBottomPadding(): Dp {
     val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     return BarsUtils.NAV_BAR_HEIGHT.dp + bottomPadding

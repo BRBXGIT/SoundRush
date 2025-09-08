@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/feature/common" />
             <option value="$PROJECT_DIR$/feature/home-screen" />
             <option value="$PROJECT_DIR$/feature/onboarding-screen" />
+            <option value="$PROJECT_DIR$/feature/playlist-screen" />
           </set>
         </option>
       </GradleProjectSettings>

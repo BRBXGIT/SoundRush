@@ -25,7 +25,7 @@ class CreatePlaylistBSTest {
     private val vm: HomeScreenVM = mockk(relaxed = true)
 
     @Test
-    fun bottomSheetShowStringsAndSendIntentToVM() {
+    fun bottomSheet_show_strings_and_send_intent_to_vm() {
         composeTestRule.setContent {
             SoundRushTheme {
                 CreatePlaylistBS(

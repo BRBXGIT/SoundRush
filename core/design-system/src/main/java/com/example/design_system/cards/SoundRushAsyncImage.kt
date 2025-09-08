@@ -8,6 +8,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -28,7 +29,7 @@ import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mShapes
 
 @Composable
-fun SoundRushAsyncImage(
+fun BoxScope.SoundRushAsyncImage(
     imagePath: String?
 ) {
     SubcomposeAsyncImage(

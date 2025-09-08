@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import com.example.design_system.theme.SoundRushTheme
-import com.example.home_screen.sections.CreatePlaylistBSConstants
 import com.example.home_screen.sections.CreatePlaylistFab
 import com.example.home_screen.sections.CreatePlaylistFabConstants
 import junit.framework.TestCase.assertEquals
@@ -18,7 +17,7 @@ class CreatePlaylistFabTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun createPlaylistFabCallsOnClick() {
+    fun createPlaylistFab_calls_onClick() {
         var clicked = 0
 
         composeTestRule.setContent {

@@ -20,7 +20,7 @@ class HomeScreenTopbarTest {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Test
-    fun homeScreenTopBarShowPlaylistsTest() {
+    fun homeScreenTopBar_show_playlists_text_and_progress_bar() {
         composeTestRule.setContent {
             SoundRushTheme {
                 HomeScreenTopBar(

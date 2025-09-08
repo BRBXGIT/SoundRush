@@ -1,4 +1,4 @@
-package com.example.design_system.cards
+package com.example.design_system.cards.playlist_card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.design_system.cards.SoundRushAsyncImage
 import com.example.design_system.theme.SoundRushTheme
 import com.example.design_system.theme.mColors
 import com.example.design_system.theme.mShapes
@@ -34,7 +35,7 @@ fun PlaylistCard(
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier
-            .width(CardsUtils.PLAYLIST_CARD_SIZE.dp)
+            .width(PlaylistCardUtils.PLAYLIST_CARD_SIZE.dp)
             .clip(mShapes.small)
             .clickable(onClick = onClick)
             .background(mColors.surfaceContainerLow)
@@ -53,7 +54,7 @@ fun PlaylistCard(
     ) {
         Box(
             modifier = Modifier
-                .size(CardsUtils.PLAYLIST_CARD_SIZE.dp)
+                .size(PlaylistCardUtils.PLAYLIST_CARD_SIZE.dp)
                 .clip(mShapes.small)
         ) {
             SoundRushAsyncImage(posterPath)

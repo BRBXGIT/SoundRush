@@ -109,7 +109,7 @@ fun PlaylistScreen(
                             TrackCard(
                                 posterPath = current.artworkUrl,
                                 name = current.title,
-                                author = current.user.fullName,
+                                author = current.user.username,
                                 duration = current.duration
                             )
                         }

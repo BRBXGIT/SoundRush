@@ -1,5 +1,6 @@
 package com.example.design_system.cards.track_card
 
+import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.cards.SoundRushAsyncImage
 import com.example.design_system.theme.SoundRushTheme
+import com.example.design_system.theme.mColors
 import com.example.design_system.theme.mShapes
 import com.example.design_system.theme.mTypography
 import java.util.concurrent.TimeUnit
@@ -31,7 +33,7 @@ fun TrackCard(
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -45,13 +47,14 @@ fun TrackCard(
         Column {
             Text(
                 text = name,
-                style = mTypography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                style = mTypography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
 
             val formatDuration = formatDuration(duration)
             Text(
+                style = mTypography.bodyMedium.copy(color = mColors.secondary),
                 text = "$author • $formatDuration",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

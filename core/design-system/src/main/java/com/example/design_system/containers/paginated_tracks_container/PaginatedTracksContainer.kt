@@ -12,7 +12,7 @@ fun PaginatedTracksContainer(
     content: LazyListScope.() -> Unit
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(0.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp),
     ) {
         content()

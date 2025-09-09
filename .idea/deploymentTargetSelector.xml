@@ -13,13 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="PlaylistCardTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="TrackCardTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="TopBarWithLoadingIndicatorTest">
+      <SelectionState runConfigName="navbar_displays_labels_and_calls_on_click()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

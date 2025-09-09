@@ -62,7 +62,7 @@ fun TrackCard(
             Column {
                 Text(
                     text = name,
-                    style = mTypography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    style = mTypography.bodyMedium.copy(fontWeight = FontWeight.W700),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

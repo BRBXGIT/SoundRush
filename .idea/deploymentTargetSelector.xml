@@ -16,6 +16,9 @@
       <SelectionState runConfigName="navbar_displays_labels_and_calls_on_click()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="handleAccessTokenCallsOnHandle()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

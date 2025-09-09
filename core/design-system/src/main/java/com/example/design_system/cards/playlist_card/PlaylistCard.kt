@@ -62,8 +62,7 @@ fun PlaylistCard(
 
         Text(
             text = title,
-            fontWeight = FontWeight.Bold,
-            style = mTypography.bodyLarge
+            style = mTypography.bodyLarge.copy(fontWeight = FontWeight.W700)
         )
         
         Text(

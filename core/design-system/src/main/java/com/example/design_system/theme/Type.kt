@@ -9,18 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.example.design_system.R
 
 private val fontFamily = FontFamily(
-    Font(R.font.roboto_regular),
-    Font(R.font.roboto_bold),
-    Font(R.font.roboto_black),
-    Font(R.font.roboto_blackitalic),
-    Font(R.font.roboto_bolditalic),
-    Font(R.font.roboto_italic),
-    Font(R.font.roboto_light),
-    Font(R.font.roboto_lightitalic),
-    Font(R.font.roboto_medium),
-    Font(R.font.roboto_mediumitalic),
-    Font(R.font.roboto_thin),
-    Font(R.font.roboto_thinitalic)
+    Font(R.font.roboto_flex)
 )
 
 // Set of Material typography styles to start with

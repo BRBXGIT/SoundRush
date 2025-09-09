@@ -11,7 +11,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.common.nav_bar.NavBar
-import com.example.common.state.CommonIntent
 import com.example.common.state.CommonVM
 import com.example.home_screen.navigation.homeScreen
 import com.example.home_screen.screen.HomeScreenVM
@@ -53,9 +52,9 @@ fun NavGraph(
         val commonState by commonVM.commonState.collectAsStateWithLifecycle()
         NavBar(
             selectedItemIndex = commonState.currentNavIndex,
-            onNavItemClick = { index, destination ->
-                commonVM.sendIntent(CommonIntent.SetNavIndex(index))
-            }
+            commonVM = commonVM,
+            commonState = commonState,
+            navController = navController,
         )
     }
 }

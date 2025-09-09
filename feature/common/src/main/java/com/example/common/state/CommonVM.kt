@@ -35,6 +35,7 @@ class CommonVM @Inject constructor(
         CommonState()
     )
 
+    // Auth & data region
     private fun observeTokens() {
         viewModelScope.launch(dispatcherIo) {
             combine(
@@ -78,10 +79,25 @@ class CommonVM @Inject constructor(
         }
     }
 
+    // Private helpers region
+    private fun updateState(transform: (CommonState) -> CommonState) {
+        _commonState.update(transform)
+    }
+
+    // End region
     fun sendIntent(intent: CommonIntent) {
         when(intent) {
+            // Auth & data
             CommonIntent.RefreshTokens -> refreshTokens()
-            is CommonIntent.SetNavIndex -> _commonState.update { state -> state.copy(currentNavIndex = intent.index) }
+
+            // Ui state
+            is CommonIntent.SetNavIndex -> updateState { it.copy(currentNavIndex = it.currentNavIndex) }
+
+            // TODO Create tests
+            is CommonIntent.SetCurrentTrack ->
+                updateState { it.copy(posterPath = intent.posterPath, name = intent.name, author = intent.author) }
+            CommonIntent.ChangeIsPlaying ->
+                updateState { it.copy(isPlaying = !it.isPlaying) }
         }
     }
 }

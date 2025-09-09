@@ -46,7 +46,7 @@ fun TrackBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(mColors.surfaceContainer)
-            .padding(8.dp),
+            .padding(16.dp, 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -78,12 +78,11 @@ private fun TrackInfo(
         Column {
             Text(
                 text = name,
-                style = mTypography.labelMedium.copy(fontWeight = FontWeight.W700)
+                style = mTypography.bodyMedium.copy(fontWeight = FontWeight.W700, color = mColors.onSurface)
             )
             Text(
                 text = author,
-                style = mTypography.labelMedium,
-                color = mColors.secondary
+                style = mTypography.bodyMedium.copy(color = mColors.secondary),
             )
         }
     }
@@ -120,7 +119,7 @@ private fun PlayPauseButton(
             painter = animatedPainter,
             contentDescription = null,
             modifier = Modifier.size(16.dp),
-            colorFilter = ColorFilter.tint(mColors.onSecondaryContainer)
+            colorFilter = ColorFilter.tint(mColors.onSurface)
         )
     }
 }

@@ -5,6 +5,8 @@ import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -21,54 +23,84 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavController
+import com.example.common.state.CommonIntent
+import com.example.common.state.CommonState
+import com.example.common.state.CommonVM
 import com.example.design_system.theme.mColors
 
 @Composable
 fun BoxScope.NavBar(
     selectedItemIndex: Int,
-    onNavItemClick: (Int, Any) -> Unit
+    commonVM: CommonVM,
+    commonState: CommonState,
+    navController: NavController
 ) {
-    NavigationBar(
+    Column(
         modifier = Modifier
             .align(Alignment.BottomCenter)
             .height(calculateNavBarBottomPadding())
     ) {
-        navItems.forEachIndexed { index, navItem ->
-            val isSelected = index == selectedItemIndex
-            var animatedSelection by rememberSaveable { mutableStateOf(false) }
+        TrackBar(
+            posterPath = commonState.posterPath,
+            author = commonState.author,
+            name = commonState.name,
+            isPlaying = commonState.isPlaying,
+            onPlayClick = { commonVM.sendIntent(CommonIntent.ChangeIsPlaying) }
+        )
 
-            // Change local state to start animation
-            LaunchedEffect(isSelected) {
-                animatedSelection = isSelected
-            }
-
-            val animatedImage = AnimatedImageVector.animatedVectorResource(navItem.icon)
-            val animatedPainter = rememberAnimatedVectorPainter(animatedImageVector = animatedImage, atEnd = animatedSelection)
-
-            NavigationBarItem(
-                modifier = Modifier.testTag(BarsUtils.NAV_BAR_ITEM_TEST_TAG),
-                selected = isSelected,
-                onClick = {
-                    if (!isSelected) {
-                        onNavItemClick(index, navItem.destination)
+        NavigationBar {
+            navItems.forEachIndexed { index, navItem ->
+                NavBarItem(
+                    index = index,
+                    navItem = navItem,
+                    isSelected = index == selectedItemIndex,
+                    onNavItemClick = { index, destination ->
+                        commonVM.sendIntent(CommonIntent.SetNavIndex(index))
                     }
-                },
-                icon = {
-                    Image(
-                        painter = animatedPainter,
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(mColors.onSecondaryContainer),
-                    )
-                },
-                label = {
-                    Text(
-                        text = navItem.label,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            )
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun RowScope.NavBarItem(
+    index: Int,
+    navItem: NavItem,
+    isSelected: Boolean,
+    onNavItemClick: (Int, Any) -> Unit
+) {
+    var animatedSelection by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(isSelected) {
+        animatedSelection = isSelected
+    }
+
+    val animatedImage = AnimatedImageVector.animatedVectorResource(navItem.icon)
+    val animatedPainter = rememberAnimatedVectorPainter(
+        animatedImageVector = animatedImage,
+        atEnd = animatedSelection
+    )
+
+    NavigationBarItem(
+        modifier = Modifier.testTag(BarsUtils.NAV_BAR_ITEM_TEST_TAG),
+        selected = isSelected,
+        onClick = { if (!isSelected) onNavItemClick(index, navItem.destination) },
+        icon = {
+            Image(
+                painter = animatedPainter,
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(mColors.onSecondaryContainer),
+            )
+        },
+        label = {
+            Text(
+                text = navItem.label,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    )
 }

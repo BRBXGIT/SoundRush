@@ -19,6 +19,9 @@
       <SelectionState runConfigName="handleAccessTokenCallsOnHandle()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="trackBar_shows_labels_and_call_onPlayClick()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

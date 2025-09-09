@@ -1,6 +1,5 @@
 package com.example.playlist_screen.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -38,6 +37,7 @@ import com.example.design_system.containers.vibrating_spacer.VibratingSpacer
 import com.example.design_system.snackbars.SnackbarObserver
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
+import com.example.design_system.utils.getHighQualityArtwork
 import com.example.design_system.utils.getLowQualityArtwork
 import com.example.network.playlist_screen.models.Collection
 import com.example.playlist_screen.sections.PlayFab
@@ -100,6 +100,7 @@ fun PlaylistScreen(
             screenState = screenState,
             tracks = tracks,
             viewModel = viewModel,
+            commonVM = commonVM,
             navController = navController
         )
     }
@@ -113,6 +114,7 @@ private fun PullToRefreshContent(
     screenState: PlaylistScreenState,
     tracks: LazyPagingItems<Collection>,
     viewModel: PlaylistScreenVM,
+    commonVM: CommonVM,
     navController: NavController
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
@@ -138,12 +140,23 @@ private fun PullToRefreshContent(
             PaginatedTracksContainer {
                 items(tracks.itemCount) { index ->
                     tracks[index]?.let { track ->
+                        val lowQualityArtwork = getLowQualityArtwork(track.artworkUrl)
+                        val highQualityArtwork = getHighQualityArtwork(track.artworkUrl)
+
                         TrackCard(
-                            posterPath = getLowQualityArtwork(track.artworkUrl),
+                            posterPath = lowQualityArtwork,
                             name = track.title,
                             author = track.user.username,
                             duration = track.duration,
-                            onClick = {}
+                            onClick = {
+                                commonVM.sendIntent(
+                                    CommonIntent.SetCurrentTrack(
+                                        posterPath = highQualityArtwork,
+                                        name = track.title,
+                                        author = track.user.username
+                                    )
+                                )
+                            }
                         )
                     }
                 }

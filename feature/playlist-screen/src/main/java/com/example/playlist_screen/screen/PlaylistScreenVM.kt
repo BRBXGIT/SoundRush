@@ -68,6 +68,10 @@ class PlaylistScreenVM @Inject constructor(
             // UX state
             PlaylistScreenIntent.ChangeDidVibrate ->
                 updateState { it.copy(didVibrate = !it.didVibrate) }
+
+            // Ui state
+            PlaylistScreenIntent.ChangeIsPlaying ->
+                updateState { it.copy(isPlaying = !it.isPlaying) }
         }
     }
 }

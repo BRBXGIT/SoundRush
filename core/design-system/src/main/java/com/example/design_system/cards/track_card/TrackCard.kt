@@ -35,49 +35,67 @@ fun TrackCard(
     name: String,
     author: String,
     duration: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         onClick = onClick,
         shape = mShapes.small,
         color = mColors.surfaceContainerLow,
-        modifier = Modifier.testTag(TrackCardConstants.SURFACE_TEST_TAG)
+        modifier = modifier.testTag(TrackCardConstants.SURFACE_TEST_TAG)
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(mShapes.extraSmall)
-            ) {
-                SoundRushAsyncImage(posterPath)
-            }
-
-            Column {
-                Text(
-                    text = name,
-                    style = mTypography.bodyMedium.copy(fontWeight = FontWeight.W700),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                val formatDuration = formatDuration(duration)
-                Text(
-                    style = mTypography.bodyMedium.copy(color = mColors.secondary),
-                    text = "$author • $formatDuration",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            TrackPoster(posterPath)
+            TrackInfo(
+                name = name,
+                author = author,
+                duration = duration
+            )
         }
     }
 }
+
+@Composable
+private fun TrackPoster(posterPath: String?) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .clip(mShapes.extraSmall),
+        contentAlignment = Alignment.Center
+    ) {
+        SoundRushAsyncImage(posterPath)
+    }
+}
+
+@Composable
+private fun TrackInfo(
+    name: String,
+    author: String,
+    duration: Int
+) {
+    Column {
+        Text(
+            text = name,
+            style = mTypography.bodyMedium.copy(fontWeight = FontWeight.W700),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Text(
+            text = "$author • ${formatDuration(duration)}",
+            style = mTypography.bodyMedium.copy(color = mColors.secondary),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
 
 fun formatDuration(milliseconds: Int): String {
     val hours = TimeUnit.MILLISECONDS.toHours(milliseconds.toLong())

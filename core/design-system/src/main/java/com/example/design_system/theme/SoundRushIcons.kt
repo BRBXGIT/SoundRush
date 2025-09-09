@@ -13,6 +13,7 @@ object SoundRushIcons {
     val PlaylistsAnimated = R.drawable.ic_playlists_animated
     val HeartAnimated = R.drawable.ic_heart_animated
     val SettingsAnimated = R.drawable.ic_settings_animated
+    val PlayPauseAnimated = R.drawable.ic_play_pause_animated
 
     // Filled
     val PlusFilled = R.drawable.ic_plus_filled

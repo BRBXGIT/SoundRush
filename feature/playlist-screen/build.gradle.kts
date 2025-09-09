@@ -56,6 +56,8 @@ dependencies {
     // Paging
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime.ktx)
+    // Animated icons(compose animation graphics)
+    implementation(libs.androidx.animation.graphics)
 
     // -- Testing --
     // Unit tests

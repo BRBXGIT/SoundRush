@@ -74,7 +74,7 @@ fun PlaylistCard(
 
 @Preview
 @Composable
-fun PlaylistCardPreview() {
+private fun PlaylistCardPreview() {
     SoundRushTheme {
         Column(
             modifier = Modifier

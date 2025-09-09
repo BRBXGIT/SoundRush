@@ -1,5 +1,6 @@
 package com.example.playlist_screen.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -39,6 +40,7 @@ import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
 import com.example.design_system.utils.getLowQualityArtwork
 import com.example.network.playlist_screen.models.Collection
+import com.example.playlist_screen.sections.PlayFab
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -81,6 +83,12 @@ fun PlaylistScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = { TopBarWithLoadingIndicator(playlistName, isLoading, topBarScrollBehavior) },
         contentWindowInsets = WindowInsets(bottom = calculateNavBarBottomPadding()),
+        floatingActionButton = {
+            PlayFab(
+                onClick = { viewModel.sendIntent(PlaylistScreenIntent.ChangeIsPlaying) },
+                isPlaying = screenState.isPlaying
+            )
+        },
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),

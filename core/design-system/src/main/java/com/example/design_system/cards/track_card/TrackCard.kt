@@ -1,12 +1,13 @@
 package com.example.design_system.cards.track_card
 
-import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,37 +29,46 @@ fun TrackCard(
     posterPath: String?,
     name: String,
     author: String,
-    duration: Int
+    duration: Int,
+    onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    Surface(
+        onClick = onClick,
+        shape = mShapes.small,
+        color = mColors.surfaceContainerLow
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .size(48.dp)
-                .clip(mShapes.extraSmall)
+                .fillMaxWidth()
+                .padding(8.dp),
         ) {
-            SoundRushAsyncImage(posterPath)
-        }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(mShapes.extraSmall)
+            ) {
+                SoundRushAsyncImage(posterPath)
+            }
 
-        Column {
-            Text(
-                text = name,
-                style = mTypography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Column {
+                Text(
+                    text = name,
+                    style = mTypography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-            val formatDuration = formatDuration(duration)
-            Text(
-                style = mTypography.bodyMedium.copy(color = mColors.secondary),
-                text = "$author • $formatDuration",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+                val formatDuration = formatDuration(duration)
+                Text(
+                    style = mTypography.bodyMedium.copy(color = mColors.secondary),
+                    text = "$author • $formatDuration",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
@@ -86,7 +96,8 @@ private fun TrackCardPreview() {
             posterPath = "",
             name = "В миноре (Prod. by Wex & Lawzy)",
             author = "Heronwater",
-            duration = 132049
+            duration = 132049,
+            onClick = {}
         )
     }
 }

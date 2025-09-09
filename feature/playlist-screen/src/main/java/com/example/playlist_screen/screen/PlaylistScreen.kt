@@ -1,10 +1,12 @@
 package com.example.playlist_screen.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -21,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.nav_bar.calculateNavBarBottomPadding
 import com.example.common.state.CommonIntent
@@ -34,9 +37,11 @@ import com.example.design_system.containers.vibrating_spacer.VibratingSpacer
 import com.example.design_system.snackbars.SnackbarObserver
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
+import com.example.design_system.utils.getLowQualityArtwork
+import com.example.network.playlist_screen.models.Collection
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PlaylistScreen(
     navController: NavController,
@@ -46,11 +51,8 @@ fun PlaylistScreen(
 ) {
     val viewModel = hiltViewModel<PlaylistScreenVM>()
     val screenState by viewModel.playlistScreenState.collectAsStateWithLifecycle()
-
     val commonState by commonVM.commonState.collectAsStateWithLifecycle()
     val tracks = viewModel.tracks.collectAsLazyPagingItems()
-
-    val isLoading = commonState.isLoading || tracks.loadState.refresh is LoadState.Loading
 
     HandleAccessToken(
         accessToken = commonState.accessToken,
@@ -72,47 +74,69 @@ fun PlaylistScreen(
         }
     )
 
+    val isLoading = commonState.isLoading || tracks.loadState.refresh is LoadState.Loading
     val topBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        contentWindowInsets = WindowInsets(bottom = calculateNavBarBottomPadding()),
         topBar = { TopBarWithLoadingIndicator(playlistName, isLoading, topBarScrollBehavior) },
+        contentWindowInsets = WindowInsets(bottom = calculateNavBarBottomPadding()),
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
-        val pullToRefreshState = rememberPullToRefreshState()
 
-        PullToRefreshBox(
-            state = pullToRefreshState,
-            indicator = {},
-            onRefresh = { viewModel.sendIntent(PlaylistScreenIntent.RefreshTracks) },
-            isRefreshing = isLoading,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(mColors.background)
-                .padding(
-                    top = innerPadding.calculateTopPadding(),
-                    bottom = calculateNavBarBottomPadding()
-                )
+        PullToRefreshContent(
+            isLoading = isLoading,
+            innerPadding = innerPadding,
+            screenState = screenState,
+            tracks = tracks,
+            viewModel = viewModel,
+            navController = navController
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PullToRefreshContent(
+    isLoading: Boolean,
+    innerPadding: PaddingValues,
+    screenState: PlaylistScreenState,
+    tracks: LazyPagingItems<Collection>,
+    viewModel: PlaylistScreenVM,
+    navController: NavController
+) {
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        state = pullToRefreshState,
+        isRefreshing = isLoading,
+        onRefresh = { viewModel.sendIntent(PlaylistScreenIntent.RefreshTracks) },
+        indicator = {},
+        modifier = Modifier
+            .fillMaxSize()
+            .background(mColors.background)
+            .padding(
+                top = innerPadding.calculateTopPadding(),
+                bottom = calculateNavBarBottomPadding()
+            )
+    ) {
+        VibratingSpacer(
+            didVibrate = screenState.didVibrate,
+            distance = pullToRefreshState.distanceFraction,
+            onVibrateChange = { viewModel.sendIntent(PlaylistScreenIntent.ChangeDidVibrate) }
         ) {
-            VibratingSpacer(
-                didVibrate = screenState.didVibrate,
-                distance = pullToRefreshState.distanceFraction,
-                onVibrateChange = { viewModel.sendIntent(PlaylistScreenIntent.ChangeDidVibrate) }
-            ) {
-                PaginatedTracksContainer {
-                    items(tracks.itemCount) { index ->
-                        val current = tracks[index]
-
-                        current?.let {
-                            TrackCard(
-                                posterPath = current.artworkUrl,
-                                name = current.title,
-                                author = current.user.username,
-                                duration = current.duration
-                            )
-                        }
+            PaginatedTracksContainer {
+                items(tracks.itemCount) { index ->
+                    tracks[index]?.let { track ->
+                        TrackCard(
+                            posterPath = getLowQualityArtwork(track.artworkUrl),
+                            name = track.title,
+                            author = track.user.username,
+                            duration = track.duration,
+                            onClick = {}
+                        )
                     }
                 }
             }

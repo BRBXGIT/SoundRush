@@ -20,12 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaylistScreenVM @Inject constructor(
     private val repo: PlaylistScreenRepo
-): ViewModel() {
+) : ViewModel() {
 
     private val _playlistScreenState = MutableStateFlow(PlaylistScreenState())
     val playlistScreenState = _playlistScreenState.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(1),
+        SharingStarted.Lazily,
         PlaylistScreenState()
     )
 
@@ -41,22 +41,33 @@ class PlaylistScreenVM @Inject constructor(
             refreshTrigger = trigger
         )
     }
-        .flatMapLatest { (token, playlistUrn, trigger) -> repo.getPlaylistTracks(token, playlistUrn) }
+        .flatMapLatest { (token, playlistUrn, _) ->
+            repo.getPlaylistTracks(token, playlistUrn)
+        }
         .cachedIn(viewModelScope)
 
-    // region private helpers
+    // region: private helpers
     private fun updateState(transform: (PlaylistScreenState) -> PlaylistScreenState) {
         _playlistScreenState.update(transform)
     }
 
-    // end region
-    fun sendIntent(intent: PlaylistScreenIntent) {
-        when(intent) {
-            is PlaylistScreenIntent.FetchAccessToken -> updateState { it.copy(accessToken = intent.token) }
-            PlaylistScreenIntent.RefreshTracks -> updateState { it.copy(refreshTrigger = it.refreshTrigger + 1) }
-            is PlaylistScreenIntent.SetPlaylistUrn -> updateState { it.copy(playlistUrn = intent.urn) }
+    private fun refreshTracks() {
+        updateState { it.copy(refreshTrigger = it.refreshTrigger + 1) }
+    }
+    // endregion
 
-            PlaylistScreenIntent.ChangeDidVibrate -> updateState { it.copy(didVibrate = !it.didVibrate) }
+    fun sendIntent(intent: PlaylistScreenIntent) {
+        when (intent) {
+            // Auth & data
+            is PlaylistScreenIntent.FetchAccessToken ->
+                updateState { it.copy(accessToken = intent.token) }
+            is PlaylistScreenIntent.SetPlaylistUrn ->
+                updateState { it.copy(playlistUrn = intent.urn) }
+            PlaylistScreenIntent.RefreshTracks -> refreshTracks()
+
+            // UX state
+            PlaylistScreenIntent.ChangeDidVibrate ->
+                updateState { it.copy(didVibrate = !it.didVibrate) }
         }
     }
 }

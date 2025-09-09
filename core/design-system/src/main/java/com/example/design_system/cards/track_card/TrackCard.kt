@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +24,10 @@ import com.example.design_system.theme.mColors
 import com.example.design_system.theme.mShapes
 import com.example.design_system.theme.mTypography
 import java.util.concurrent.TimeUnit
+
+object TrackCardConstants {
+    const val SURFACE_TEST_TAG = "SurfaceTestTag"
+}
 
 @Composable
 fun TrackCard(
@@ -35,7 +40,8 @@ fun TrackCard(
     Surface(
         onClick = onClick,
         shape = mShapes.small,
-        color = mColors.surfaceContainerLow
+        color = mColors.surfaceContainerLow,
+        modifier = Modifier.testTag(TrackCardConstants.SURFACE_TEST_TAG)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

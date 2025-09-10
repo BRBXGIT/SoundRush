@@ -31,7 +31,6 @@ import com.example.design_system.theme.mColors
 
 @Composable
 fun BoxScope.NavBar(
-    selectedItemIndex: Int,
     commonVM: CommonVM,
     commonState: CommonState,
     navController: NavController
@@ -54,7 +53,7 @@ fun BoxScope.NavBar(
                 NavBarItem(
                     index = index,
                     navItem = navItem,
-                    isSelected = index == selectedItemIndex,
+                    isSelected = index == commonState.currentNavIndex,
                     onNavItemClick = { index, destination ->
                         commonVM.sendIntent(CommonIntent.SetNavIndex(index))
                     }

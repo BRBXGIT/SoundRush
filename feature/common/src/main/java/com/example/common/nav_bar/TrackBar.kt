@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.cards.SoundRushAsyncImage
@@ -34,6 +36,7 @@ object TrackBarConstants {
     const val PLAY_PAUSE_TEST_TAG = "PlayPauseTestTag"
 }
 
+// TODO FIX BUG WITH LONG NAME
 @Composable
 fun TrackBar(
     posterPath: String?,
@@ -64,7 +67,7 @@ fun TrackBar(
 }
 
 @Composable
-private fun TrackInfo(
+private fun RowScope.TrackInfo(
     posterPath: String?,
     name: String,
     author: String
@@ -72,16 +75,21 @@ private fun TrackInfo(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.weight(1f)
     ) {
         PosterImage(posterPath)
 
         Column {
             Text(
                 text = name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = mTypography.bodyMedium.copy(fontWeight = FontWeight.W700, color = mColors.onSurface)
             )
             Text(
                 text = author,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = mTypography.bodyMedium.copy(color = mColors.secondary),
             )
         }

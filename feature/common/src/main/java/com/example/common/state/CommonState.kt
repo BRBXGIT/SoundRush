@@ -10,8 +10,12 @@ data class CommonState(
 
     val currentNavIndex: Int = 0,
 
+    // Current track
     val isPlaying: Boolean = false,
     val posterPath: String? = null,
     val name: String = "Nothing is playing",
-    val author: String = "Unknown"
+    val author: String = "Unknown",
+
+    // Tracks queue
+    val tracksQueue: List<String> = emptyList()
 )

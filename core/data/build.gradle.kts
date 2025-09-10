@@ -39,7 +39,11 @@ dependencies {
     implementation(libs.converter.gson)
     // Paging
     implementation(libs.androidx.paging.runtime.ktx)
-    // Testing
+    // ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+
+    // -- Testing --
+    // Unit tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)

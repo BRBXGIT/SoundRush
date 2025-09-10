@@ -51,7 +51,6 @@ fun NavGraph(
 
         val commonState by commonVM.commonState.collectAsStateWithLifecycle()
         NavBar(
-            selectedItemIndex = commonState.currentNavIndex,
             commonVM = commonVM,
             commonState = commonState,
             navController = navController,

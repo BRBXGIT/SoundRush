@@ -2,6 +2,7 @@ package com.example.common.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.exoplayer.ExoPlayer
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.CommonRepo
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommonVM @Inject constructor(
+    private val player: ExoPlayer,
     private val repo: CommonRepo,
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher
 ): ViewModel() {
@@ -34,6 +36,11 @@ class CommonVM @Inject constructor(
         SharingStarted.Eagerly,
         CommonState()
     )
+
+    // Player region
+    private fun setUpPlayer() {
+
+    }
 
     // Auth & data region
     private fun observeTokens() {
@@ -91,9 +98,8 @@ class CommonVM @Inject constructor(
             CommonIntent.RefreshTokens -> refreshTokens()
 
             // Ui state
-            is CommonIntent.SetNavIndex -> updateState { it.copy(currentNavIndex = it.currentNavIndex) }
+            is CommonIntent.SetNavIndex -> updateState { it.copy(currentNavIndex = intent.index) }
 
-            // TODO Create tests
             is CommonIntent.SetCurrentTrack ->
                 updateState { it.copy(posterPath = intent.posterPath, name = intent.name, author = intent.author) }
             CommonIntent.ChangeIsPlaying ->

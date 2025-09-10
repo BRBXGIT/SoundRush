@@ -1,8 +1,14 @@
 package com.example.common.state
 
+import androidx.annotation.OptIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.ConcatenatingMediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.CommonRepo
@@ -38,8 +44,29 @@ class CommonVM @Inject constructor(
     )
 
     // Player region
+    @OptIn(UnstableApi::class)
     private fun setUpPlayer() {
+        val queue = _commonState.value.tracksQueue
+        if (queue.isEmpty()) return
 
+        val dataSourceFactory = DefaultHttpDataSource.Factory()
+            .setDefaultRequestProperties(
+                mapOf("Authorization" to _commonState.value.accessToken!!)
+            )
+
+        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
+
+        val mediaSources = queue.map { track ->
+            mediaSourceFactory.createMediaSource(
+                MediaItem.fromUri(track.link)
+            )
+        }
+
+        val concatenated = ConcatenatingMediaSource(*mediaSources.toTypedArray())
+
+        player.setMediaSource(concatenated)
+        player.prepare()
+        player.playWhenReady = true
     }
 
     // Auth & data region
@@ -100,10 +127,15 @@ class CommonVM @Inject constructor(
             // Ui state
             is CommonIntent.SetNavIndex -> updateState { it.copy(currentNavIndex = intent.index) }
 
+            // Player state
             is CommonIntent.SetCurrentTrack ->
-                updateState { it.copy(posterPath = intent.posterPath, name = intent.name, author = intent.author) }
+                updateState { it.copy(currentTrack = intent.track) }
             CommonIntent.ChangeIsPlaying ->
-                updateState { it.copy(isPlaying = !it.isPlaying) }
+                updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = !it.currentTrack.isPlaying)) }
+            is CommonIntent.SetQueue -> {
+                updateState { it.copy(tracksQueue = intent.tracks) }
+                setUpPlayer()
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.playlist_screen.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -28,6 +29,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.nav_bar.calculateNavBarBottomPadding
 import com.example.common.state.CommonIntent
 import com.example.common.state.CommonVM
+import com.example.common.state.Track
 import com.example.common.utils.HandleAccessToken
 import com.example.common.utils.PagingErrorContainer
 import com.example.design_system.bars.TopBarWithLoadingIndicator
@@ -149,13 +151,29 @@ private fun PullToRefreshContent(
                             author = track.user.username,
                             duration = track.duration,
                             onClick = {
-                                commonVM.sendIntent(
-                                    CommonIntent.SetCurrentTrack(
-                                        posterPath = highQualityArtwork,
-                                        name = track.title,
-                                        author = track.user.username
+                                // TODO refractor and create test
+                                val allTracks = tracks.itemSnapshotList.items.map { item ->
+                                    Track(
+                                        link = item.streamUrl,
+                                        posterPath = getHighQualityArtwork(item.artworkUrl),
+                                        name = item.title,
+                                        author = item.user.username
                                     )
-                                )
+                                }
+
+                                val clickedIndex = allTracks.indexOfFirst { it.link == track.streamUrl }
+
+                                val queue = if (clickedIndex != -1) {
+                                    allTracks.drop(clickedIndex)
+                                } else {
+                                    emptyList()
+                                }
+
+                                commonVM.sendIntent(CommonIntent.SetQueue(queue))
+
+                                if (queue.isNotEmpty()) {
+                                    commonVM.sendIntent(CommonIntent.SetCurrentTrack(queue.first()))
+                                }
                             }
                         )
                     }

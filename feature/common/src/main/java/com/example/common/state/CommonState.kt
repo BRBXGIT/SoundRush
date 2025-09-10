@@ -7,15 +7,9 @@ data class CommonState(
 
     // Ui state
     val isLoading: Boolean = false,
-
     val currentNavIndex: Int = 0,
-
-    // Current track
-    val isPlaying: Boolean = false,
-    val posterPath: String? = null,
-    val name: String = "Nothing is playing",
-    val author: String = "Unknown",
+    val currentTrack: Track = Track(),
 
     // Tracks queue
-    val tracksQueue: List<String> = emptyList()
+    val tracksQueue: List<Track> = emptyList()
 )

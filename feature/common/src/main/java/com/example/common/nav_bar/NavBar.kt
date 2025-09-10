@@ -40,11 +40,12 @@ fun BoxScope.NavBar(
             .align(Alignment.BottomCenter)
             .height(calculateNavBarBottomPadding())
     ) {
+        val currentTrack = commonState.currentTrack
         TrackBar(
-            posterPath = commonState.posterPath,
-            author = commonState.author,
-            name = commonState.name,
-            isPlaying = commonState.isPlaying,
+            posterPath = currentTrack.posterPath,
+            author = currentTrack.author,
+            name = currentTrack.name,
+            isPlaying = currentTrack.isPlaying,
             onPlayClick = { commonVM.sendIntent(CommonIntent.ChangeIsPlaying) }
         )
 

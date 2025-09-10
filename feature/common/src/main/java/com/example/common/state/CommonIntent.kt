@@ -8,10 +8,7 @@ sealed interface CommonIntent {
     // Ui state
     data class SetNavIndex(val index: Int): CommonIntent
 
-    data class SetCurrentTrack(
-        val posterPath: String?,
-        val name: String,
-        val author: String
-    ): CommonIntent
+    data class SetCurrentTrack(val track: Track): CommonIntent
+    data class SetQueue(val tracks: List<Track>): CommonIntent
     data object ChangeIsPlaying: CommonIntent
 }

@@ -8,7 +8,4 @@ sealed interface PlaylistScreenIntent {
 
     // Ux state
     data object ChangeDidVibrate: PlaylistScreenIntent
-
-    // Ui state
-    data object ChangeIsPlaying: PlaylistScreenIntent
 }

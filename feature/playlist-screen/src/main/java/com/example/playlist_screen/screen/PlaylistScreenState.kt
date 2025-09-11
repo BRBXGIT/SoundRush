@@ -8,7 +8,4 @@ data class PlaylistScreenState(
 
     // Ux state
     val didVibrate: Boolean = false,
-
-    // Ui state
-    val isPlaying: Boolean = false
 )

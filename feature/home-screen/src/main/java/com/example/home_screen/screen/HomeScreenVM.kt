@@ -1,14 +1,11 @@
 package com.example.home_screen.screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.HomeScreenRepo
-import com.example.design_system.snackbars.SnackbarController
-import com.example.design_system.snackbars.SnackbarEvent
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.snackbars.sendSimpleSnackbar
 import com.example.network.common.NetworkErrors

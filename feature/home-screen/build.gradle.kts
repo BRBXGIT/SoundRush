@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":core:common"))
     // Feature modules
     implementation(project(":feature:common"))
+    implementation(project(":feature:playlist-screen"))
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))

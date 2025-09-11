@@ -5,60 +5,97 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.cards.SoundRushAsyncImage
 import com.example.design_system.theme.SoundRushTheme
+import com.example.design_system.theme.mColors
 import com.example.design_system.theme.mShapes
 import com.example.design_system.theme.mTypography
 import java.util.concurrent.TimeUnit
+
+object TrackCardConstants {
+    const val SURFACE_TEST_TAG = "SurfaceTestTag"
+}
 
 @Composable
 fun TrackCard(
     posterPath: String?,
     name: String,
     author: String,
-    duration: Int
+    duration: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    Surface(
+        onClick = onClick,
+        shape = mShapes.small,
+        color = mColors.surfaceContainerLow,
+        modifier = modifier.testTag(TrackCardConstants.SURFACE_TEST_TAG)
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Row(
             modifier = Modifier
-                .size(48.dp)
-                .clip(mShapes.extraSmall)
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SoundRushAsyncImage(posterPath)
-        }
-
-        Column {
-            Text(
-                text = name,
-                style = mTypography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            val formatDuration = formatDuration(duration)
-            Text(
-                text = "$author • $formatDuration",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+            TrackPoster(posterPath)
+            TrackInfo(
+                name = name,
+                author = author,
+                duration = duration
             )
         }
     }
 }
+
+@Composable
+private fun TrackPoster(posterPath: String?) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .clip(mShapes.extraSmall),
+        contentAlignment = Alignment.Center
+    ) {
+        SoundRushAsyncImage(posterPath)
+    }
+}
+
+@Composable
+private fun TrackInfo(
+    name: String,
+    author: String,
+    duration: Int
+) {
+    Column {
+        Text(
+            text = name,
+            style = mTypography.bodyMedium.copy(fontWeight = FontWeight.W700),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Text(
+            text = "$author • ${formatDuration(duration)}",
+            style = mTypography.bodyMedium.copy(color = mColors.secondary),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
 
 fun formatDuration(milliseconds: Int): String {
     val hours = TimeUnit.MILLISECONDS.toHours(milliseconds.toLong())
@@ -83,7 +120,8 @@ private fun TrackCardPreview() {
             posterPath = "",
             name = "В миноре (Prod. by Wex & Lawzy)",
             author = "Heronwater",
-            duration = 132049
+            duration = 132049,
+            onClick = {}
         )
     }
 }

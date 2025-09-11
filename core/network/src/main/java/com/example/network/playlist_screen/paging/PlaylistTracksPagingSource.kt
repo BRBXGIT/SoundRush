@@ -10,7 +10,8 @@ import com.example.network.playlist_screen.models.Collection
 
 class PlaylistTracksPagingSource(
     private val api: PlaylistScreenApiInstance,
-    private val accessToken: String
+    private val accessToken: String?,
+    private val playlistUrn: String
 ): PagingSource<String, Collection>() {
 
     override fun getRefreshKey(state: PagingState<String, Collection>): String? {
@@ -21,7 +22,7 @@ class PlaylistTracksPagingSource(
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, Collection> {
         val response = if (params.key == null) {
-            NetworkRequest.exec { api.getPlaylistTracks(accessToken) }
+            NetworkRequest.exec { api.getPlaylistTracks(playlistUrn, accessToken) }
         } else {
             NetworkRequest.exec { api.getPlaylistTracksNext(accessToken, params.key!!) }
         }

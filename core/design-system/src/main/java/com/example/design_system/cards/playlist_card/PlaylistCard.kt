@@ -62,8 +62,7 @@ fun PlaylistCard(
 
         Text(
             text = title,
-            fontWeight = FontWeight.Bold,
-            style = mTypography.bodyLarge
+            style = mTypography.bodyLarge.copy(fontWeight = FontWeight.W700)
         )
         
         Text(
@@ -75,7 +74,7 @@ fun PlaylistCard(
 
 @Preview
 @Composable
-fun PlaylistCardPreview() {
+private fun PlaylistCardPreview() {
     SoundRushTheme {
         Column(
             modifier = Modifier

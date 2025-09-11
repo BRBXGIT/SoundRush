@@ -55,6 +55,7 @@ dependencies {
     // Feature modules
     implementation(project(":feature:onboarding-screen"))
     implementation(project(":feature:home-screen"))
+    implementation(project(":feature:playlist-screen"))
     implementation(project(":feature:common"))
 
     // Material 3
@@ -75,6 +76,9 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+
+    // -- Testing --
+    // Unit tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)

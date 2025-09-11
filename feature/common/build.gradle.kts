@@ -43,7 +43,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     // Animated icons(compose animation graphics)
     implementation(libs.androidx.animation.graphics)
@@ -53,11 +53,19 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     // Paging
     implementation(libs.androidx.paging.compose)
-    // Testing
+    // ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.hls)
+    implementation(libs.androidx.media3.session)
+
+    // -- Testing --
+    // Unit tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
-    // Android testing
+    testImplementation(libs.turbine)
+    // Android tests
+    androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

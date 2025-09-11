@@ -1,7 +1,14 @@
 package com.example.common.state
 
+import androidx.annotation.OptIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.ConcatenatingMediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.example.common.dispatchers.Dispatcher
 import com.example.common.dispatchers.SoundRushDispatchers
 import com.example.data.domain.CommonRepo
@@ -20,9 +27,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommonVM @Inject constructor(
+    private val player: ExoPlayer,
     private val repo: CommonRepo,
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher
-): ViewModel() {
+) : ViewModel() {
 
     init {
         observeTokens()
@@ -35,6 +43,41 @@ class CommonVM @Inject constructor(
         CommonState()
     )
 
+    // Player region
+    @OptIn(UnstableApi::class)
+    private fun setUpPlayer() {
+        val queue = _commonState.value.tracksQueue
+        if (queue.isEmpty()) return
+
+        val dataSourceFactory = DefaultHttpDataSource.Factory()
+            .setDefaultRequestProperties(
+                mapOf("Authorization" to _commonState.value.accessToken!!)
+            )
+
+        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
+
+        val mediaSources = queue.map { track ->
+            mediaSourceFactory.createMediaSource(
+                MediaItem.fromUri(track.link)
+            )
+        }
+
+        val concatenated = ConcatenatingMediaSource(*mediaSources.toTypedArray())
+
+        player.setMediaSource(concatenated)
+        player.prepare()
+        player.playWhenReady = true
+        updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = true)) }
+    }
+
+    private fun playPause() {
+        updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = !it.currentTrack.isPlaying)) }
+
+        val isPlaying = _commonState.value.currentTrack.isPlaying
+        if (isPlaying) player.pause() else player.play()
+    }
+
+    // Auth & data region
     private fun observeTokens() {
         viewModelScope.launch(dispatcherIo) {
             combine(
@@ -78,10 +121,27 @@ class CommonVM @Inject constructor(
         }
     }
 
+    // Private helpers region
+    private fun updateState(transform: (CommonState) -> CommonState) {
+        _commonState.update(transform)
+    }
+
+    // End region
     fun sendIntent(intent: CommonIntent) {
-        when(intent) {
+        when (intent) {
+            // Auth & data
             CommonIntent.RefreshTokens -> refreshTokens()
-            is CommonIntent.SetNavIndex -> _commonState.update { state -> state.copy(currentNavIndex = intent.index) }
+
+            // Ui state
+            is CommonIntent.SetNavIndex -> updateState { it.copy(currentNavIndex = intent.index) }
+
+            // Player state
+            is CommonIntent.SetCurrentTrack -> updateState { it.copy(currentTrack = intent.track) }
+            CommonIntent.ChangeIsPlaying -> playPause()
+            is CommonIntent.SetQueue -> {
+                updateState { it.copy(tracksQueue = intent.tracks) }
+                setUpPlayer()
+            }
         }
     }
 }

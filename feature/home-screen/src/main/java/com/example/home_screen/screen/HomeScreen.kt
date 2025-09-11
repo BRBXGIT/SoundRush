@@ -1,14 +1,9 @@
 package com.example.home_screen.screen
 
-import android.util.Log
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -19,30 +14,31 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.common.bars.navBarBottomPadding
+import com.example.common.nav_bar.calculateNavBarBottomPadding
 import com.example.common.state.CommonIntent
 import com.example.common.state.CommonVM
+import com.example.common.utils.HandleAccessToken
 import com.example.common.utils.PagingErrorContainer
+import com.example.design_system.bars.TopBarWithLoadingIndicator
+import com.example.design_system.containers.vibrating_spacer.VibratingSpacer
 import com.example.design_system.snackbars.SnackbarObserver
 import com.example.design_system.snackbars.sendRetrySnackbar
 import com.example.design_system.theme.mColors
 import com.example.home_screen.sections.CreatePlaylistBS
 import com.example.home_screen.sections.FloatingToolBar
-import com.example.home_screen.sections.HomeScreenTopBar
 import com.example.home_screen.sections.PlaylistsLVG
 import com.example.network.home_screen.models.user_playlists_response.Collection
+import com.example.playlist_screen.navigation.PlaylistScreenRoute
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -56,7 +52,10 @@ fun HomeScreen(
     val screenState by viewModel.homeScreenState.collectAsStateWithLifecycle()
     val playlists = viewModel.playlists.collectAsLazyPagingItems()
 
-    HandleAccessToken(commonState.accessToken, viewModel)
+    HandleAccessToken(
+        accessToken = commonState.accessToken,
+        onHandle = { viewModel.sendIntent(HomeScreenIntent.FetchAccessToken(it)) }
+    )
 
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarScope = rememberCoroutineScope()
@@ -75,9 +74,9 @@ fun HomeScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        topBar = { HomeScreenTopBar(isLoading, topBarScrollBehavior) },
+        topBar = { TopBarWithLoadingIndicator("Playlists", isLoading, topBarScrollBehavior) },
         floatingActionButton = { FloatingToolBar(screenState, viewModel) },
-        contentWindowInsets = WindowInsets(bottom = navBarBottomPadding()),
+        contentWindowInsets = WindowInsets(bottom = calculateNavBarBottomPadding()),
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
@@ -95,17 +94,9 @@ fun HomeScreen(
             innerPadding = innerPadding,
             screenState = screenState,
             playlists = playlists,
-            viewModel = viewModel
+            viewModel = viewModel,
+            navController = navController
         )
-    }
-}
-
-@Composable
-fun HandleAccessToken(accessToken: String?, viewModel: HomeScreenVM) {
-    LaunchedEffect(accessToken) {
-        accessToken?.let {
-            viewModel.sendIntent(HomeScreenIntent.FetchAccessToken(it))
-        }
     }
 }
 
@@ -117,6 +108,7 @@ private fun PullToRefreshContent(
     screenState: HomeScreenState,
     playlists: LazyPagingItems<Collection>,
     viewModel: HomeScreenVM,
+    navController: NavController
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
 
@@ -130,21 +122,14 @@ private fun PullToRefreshContent(
             .background(mColors.background)
             .padding(
                 top = innerPadding.calculateTopPadding(),
-                bottom = navBarBottomPadding()
+                bottom = calculateNavBarBottomPadding()
             )
     ) {
-        Column {
-            val distance = pullToRefreshState.distanceFraction
-            val animatedPullToRefresh by animateDpAsState((distance * 8).dp)
-
-            Spacer(Modifier.height(animatedPullToRefresh))
-
-            CreateVibration(
-                distance = distance,
-                didVibrate = screenState.didVibrate,
-                viewModel = viewModel,
-            )
-
+        VibratingSpacer(
+            didVibrate = screenState.didVibrate,
+            distance = pullToRefreshState.distanceFraction,
+            onVibrateChange = { viewModel.sendIntent(HomeScreenIntent.ChangeDidVibrate(it)) }
+        ) {
             PlaylistsLVG(
                 selectedPlaylistsUrns = screenState.playlistsUrnsForDelete.keys,
                 playlists = playlists,
@@ -157,7 +142,7 @@ private fun PullToRefreshContent(
                             viewModel.sendIntent(HomeScreenIntent.AddUrnToDeleteList(urn, name))
                         }
                     } else {
-                        // TODO: Обычный клик по плейлисту
+                        navController.navigate(PlaylistScreenRoute(urn, name))
                     }
                 },
             )

@@ -29,9 +29,12 @@ android {
 
 dependencies {
 
+    // Core modules
+    implementation(project(":core:network")) // For models data classes
+
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     // Material 3
     implementation(libs.androidx.material3.android)
@@ -39,6 +42,8 @@ dependencies {
     implementation(libs.coil.compose)
 
     // -- Testing --
+    // Unit tests
+    testImplementation(libs.junit)
     // Android tests
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)

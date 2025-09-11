@@ -1,0 +1,27 @@
+package com.example.common.nav_bar
+
+import com.example.design_system.theme.SoundRushIcons
+
+data class NavItem(
+    val icon: Int, // Icon already animated from outlined to filled
+    val label: String,
+    val destination: Any
+)
+
+val navItems = listOf(
+    NavItem(
+        icon = SoundRushIcons.PlaylistsAnimated,
+        label = BarsUtils.PLAYLISTS,
+        destination = ""
+    ),
+    NavItem(
+        icon = SoundRushIcons.HeartAnimated,
+        label = BarsUtils.LIKES,
+        destination = ""
+    ),
+    NavItem(
+        icon = SoundRushIcons.SettingsAnimated,
+        label = BarsUtils.SETTINGS,
+        destination = ""
+    )
+)

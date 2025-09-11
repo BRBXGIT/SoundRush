@@ -11,6 +11,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.design_system.cards.playlist_card.PlaylistCardUtils
 import com.example.design_system.cards.playlist_card.PlaylistCard
 import com.example.design_system.theme.UiConstants
+import com.example.design_system.utils.getLowQualityArtwork
 import com.example.network.home_screen.models.user_playlists_response.Collection
 
 @Composable
@@ -32,7 +33,7 @@ fun PlaylistsLVG(
         ) { index ->
             playlists[index]?.let { playlist ->
                 PlaylistCard(
-                    posterPath = playlist.artworkUrl,
+                    posterPath = getLowQualityArtwork(playlist.artworkUrl),
                     title = playlist.title,
                     trackCount = playlist.trackCount,
                     creator = playlist.user.fullName,

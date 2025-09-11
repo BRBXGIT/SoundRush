@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistScreenRepo {
 
-    fun getPlaylistTracks(accessToken: String): Flow<PagingData<Collection>>
+    fun getPlaylistTracks(accessToken: String?, playlistUrn: String): Flow<PagingData<Collection>>
 }

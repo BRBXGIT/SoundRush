@@ -36,7 +36,6 @@ object TrackBarConstants {
     const val PLAY_PAUSE_TEST_TAG = "PlayPauseTestTag"
 }
 
-// TODO FIX BUG WITH LONG NAME
 @Composable
 fun TrackBar(
     posterPath: String?,
@@ -116,7 +115,7 @@ private fun PlayPauseButton(
     val animatedImage = AnimatedImageVector.animatedVectorResource(SoundRushIcons.PlayPauseAnimated)
     val animatedPainter = rememberAnimatedVectorPainter(
         animatedImageVector = animatedImage,
-        atEnd = isPlaying
+        atEnd = !isPlaying
     )
 
     IconButton(

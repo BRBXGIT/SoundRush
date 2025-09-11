@@ -67,6 +67,17 @@ class CommonVM @Inject constructor(
         player.setMediaSource(concatenated)
         player.prepare()
         player.playWhenReady = true
+        updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = true)) }
+    }
+
+    private fun playPause() {
+        updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = !it.currentTrack.isPlaying)) }
+
+        if (_commonState.value.currentTrack.isPlaying) {
+            player.pause()
+        } else {
+            player.play()
+        }
     }
 
     // Auth & data region
@@ -130,8 +141,7 @@ class CommonVM @Inject constructor(
             // Player state
             is CommonIntent.SetCurrentTrack ->
                 updateState { it.copy(currentTrack = intent.track) }
-            CommonIntent.ChangeIsPlaying ->
-                updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = !it.currentTrack.isPlaying)) }
+            CommonIntent.ChangeIsPlaying -> playPause()
             is CommonIntent.SetQueue -> {
                 updateState { it.copy(tracksQueue = intent.tracks) }
                 setUpPlayer()

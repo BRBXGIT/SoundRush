@@ -60,6 +60,7 @@ converterGson = "3.0.0"
 media3Exoplayer = "1.8.0"
 media3ExoplayerHls = "1.8.0"
 media3Session = "1.8.0"
+espressoCore = "3.7.0"
 
 
 [libraries]
@@ -132,6 +133,7 @@ androidx-media3-session = { module = "androidx.media3:media3-session", version.r
 # Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
 
 [plugins]

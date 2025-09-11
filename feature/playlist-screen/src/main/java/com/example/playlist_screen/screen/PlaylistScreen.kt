@@ -1,6 +1,7 @@
 package com.example.playlist_screen.screen
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -83,7 +84,13 @@ fun PlaylistScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        topBar = { TopBarWithLoadingIndicator(playlistName, isLoading, topBarScrollBehavior) },
+        topBar = {
+            TopBarWithLoadingIndicator(
+                title = playlistName,
+                isLoading = isLoading,
+                scrollBehavior = topBarScrollBehavior
+            )
+        },
         contentWindowInsets = WindowInsets(bottom = calculateNavBarBottomPadding()),
         floatingActionButton = {
             PlayFab(
@@ -95,7 +102,6 @@ fun PlaylistScreen(
             .fillMaxSize()
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
-
         PullToRefreshContent(
             isLoading = isLoading,
             innerPadding = innerPadding,
@@ -142,43 +148,40 @@ private fun PullToRefreshContent(
             PaginatedTracksContainer {
                 items(tracks.itemCount) { index ->
                     tracks[index]?.let { track ->
-                        val lowQualityArtwork = getLowQualityArtwork(track.artworkUrl)
-                        val highQualityArtwork = getHighQualityArtwork(track.artworkUrl)
-
                         TrackCard(
-                            posterPath = lowQualityArtwork,
+                            posterPath = getLowQualityArtwork(track.artworkUrl),
                             name = track.title,
                             author = track.user.username,
                             duration = track.duration,
-                            onClick = {
-                                // TODO refractor and create test
-                                val allTracks = tracks.itemSnapshotList.items.map { item ->
-                                    Track(
-                                        link = item.streamUrl,
-                                        posterPath = getHighQualityArtwork(item.artworkUrl),
-                                        name = item.title,
-                                        author = item.user.username
-                                    )
-                                }
-
-                                val clickedIndex = allTracks.indexOfFirst { it.link == track.streamUrl }
-
-                                val queue = if (clickedIndex != -1) {
-                                    allTracks.drop(clickedIndex)
-                                } else {
-                                    emptyList()
-                                }
-
-                                commonVM.sendIntent(CommonIntent.SetQueue(queue))
-
-                                if (queue.isNotEmpty()) {
-                                    commonVM.sendIntent(CommonIntent.SetCurrentTrack(queue.first()))
-                                }
-                            }
+                            onClick = { handleTrackClick(track, tracks, commonVM) }
                         )
                     }
                 }
             }
         }
+    }
+}
+
+@VisibleForTesting
+internal fun handleTrackClick(
+    track: Collection,
+    tracks: LazyPagingItems<Collection>,
+    commonVM: CommonVM
+) {
+    val allTracks = tracks.itemSnapshotList.items.map { item ->
+        Track(
+            link = item.streamUrl,
+            posterPath = getHighQualityArtwork(item.artworkUrl),
+            name = item.title,
+            author = item.user.username
+        )
+    }
+
+    val clickedIndex = allTracks.indexOfFirst { it.link == track.streamUrl }
+    val queue = if (clickedIndex != -1) allTracks.drop(clickedIndex) else emptyList()
+
+    commonVM.sendIntent(CommonIntent.SetQueue(queue))
+    if (queue.isNotEmpty()) {
+        commonVM.sendIntent(CommonIntent.SetCurrentTrack(queue.first()))
     }
 }

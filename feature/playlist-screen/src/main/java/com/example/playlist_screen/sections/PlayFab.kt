@@ -9,9 +9,14 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.design_system.theme.SoundRushIcons
 import com.example.design_system.theme.mColors
+
+object PlayFabConstants {
+    const val PLAY_FAB_TEST_TAG = "PlayFabTestTag"
+}
 
 @Composable
 fun PlayFab(
@@ -19,7 +24,8 @@ fun PlayFab(
     isPlaying: Boolean
 ) {
     FloatingActionButton(
-        onClick = onClick
+        onClick = onClick,
+        modifier = Modifier.testTag(PlayFabConstants.PLAY_FAB_TEST_TAG)
     ) {
         val animatedImage = AnimatedImageVector.animatedVectorResource(SoundRushIcons.PlayPauseAnimated)
         val animatedPainter = rememberAnimatedVectorPainter(

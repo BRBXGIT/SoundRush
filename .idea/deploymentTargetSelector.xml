@@ -13,10 +13,10 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="handleAccessTokenCallsOnHandle()">
+      <SelectionState runConfigName="trackBar_shows_labels_and_call_onPlayClick()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="trackBar_shows_labels_and_call_onPlayClick()">
+      <SelectionState runConfigName="playFab_calls_onClick()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

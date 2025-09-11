@@ -1,9 +1,11 @@
 package com.example.common
 
+import androidx.media3.exoplayer.ExoPlayer
 import app.cash.turbine.test
 import com.example.common.state.CommonIntent
 import com.example.common.state.CommonState
 import com.example.common.state.CommonVM
+import com.example.common.state.Track
 import com.example.data.domain.CommonRepo
 import com.example.data.utils.AuthUtils
 import com.example.network.auth.models.TokensResponse
@@ -36,13 +38,14 @@ class CommonVMTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val repo: CommonRepo = mockk(relaxed = true)
+    private val player: ExoPlayer = mockk(relaxed = true)
 
     private lateinit var vm: CommonVM
 
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
-        vm = CommonVM(repo, dispatcher)
+        vm = CommonVM(player, repo, dispatcher)
     }
 
     @After
@@ -82,17 +85,14 @@ class CommonVMTest {
             assertEquals(CommonState(), initial)
 
             vm.sendIntent(CommonIntent.SetNavIndex(1))
-            val posterPath = null
-            val name = "name"
-            val author = "author"
-            vm.sendIntent(CommonIntent.SetCurrentTrack(posterPath, name, author))
+
+            val link = "someLink"
+            vm.sendIntent(CommonIntent.SetCurrentTrack(Track(link = link)))
             vm.sendIntent(CommonIntent.ChangeIsPlaying)
 
             val after = awaitItem()
-            assertNull(after.posterPath)
-            assertEquals(name, after.name)
-            assertEquals(author, after.author)
-            assertTrue(after.isPlaying)
+            assertEquals(link, after.currentTrack.link)
+            assertEquals(true, after.currentTrack.isPlaying)
         }
     }
 }

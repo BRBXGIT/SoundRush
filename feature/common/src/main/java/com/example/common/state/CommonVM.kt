@@ -30,7 +30,7 @@ class CommonVM @Inject constructor(
     private val player: ExoPlayer,
     private val repo: CommonRepo,
     @Dispatcher(SoundRushDispatchers.IO) private val dispatcherIo: CoroutineDispatcher
-): ViewModel() {
+) : ViewModel() {
 
     init {
         observeTokens()
@@ -73,11 +73,8 @@ class CommonVM @Inject constructor(
     private fun playPause() {
         updateState { it.copy(currentTrack = it.currentTrack.copy(isPlaying = !it.currentTrack.isPlaying)) }
 
-        if (_commonState.value.currentTrack.isPlaying) {
-            player.pause()
-        } else {
-            player.play()
-        }
+        val isPlaying = _commonState.value.currentTrack.isPlaying
+        if (isPlaying) player.pause() else player.play()
     }
 
     // Auth & data region
@@ -131,7 +128,7 @@ class CommonVM @Inject constructor(
 
     // End region
     fun sendIntent(intent: CommonIntent) {
-        when(intent) {
+        when (intent) {
             // Auth & data
             CommonIntent.RefreshTokens -> refreshTokens()
 
@@ -139,8 +136,7 @@ class CommonVM @Inject constructor(
             is CommonIntent.SetNavIndex -> updateState { it.copy(currentNavIndex = intent.index) }
 
             // Player state
-            is CommonIntent.SetCurrentTrack ->
-                updateState { it.copy(currentTrack = intent.track) }
+            is CommonIntent.SetCurrentTrack -> updateState { it.copy(currentTrack = intent.track) }
             CommonIntent.ChangeIsPlaying -> playPause()
             is CommonIntent.SetQueue -> {
                 updateState { it.copy(tracksQueue = intent.tracks) }
